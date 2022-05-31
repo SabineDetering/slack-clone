@@ -30,7 +30,7 @@
               "src/favicon.ico",
               "src/assets"
             ],
-            "styles": [
+            "styles": ["./node_modules/material-icons-font/material-icons-font.css",
               "src/styles.scss"
             ],
             "scripts": []
