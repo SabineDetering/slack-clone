@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "slack-clone-asv": {
+      "hosting": {
+        "slack-clone": [
+          "slack-clone-asv"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "slack-clone-asv"
+  }
+}
