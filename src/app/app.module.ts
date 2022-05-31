@@ -10,6 +10,9 @@ import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+
+import { MatIconModule } from '@angular/material/icon';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -21,7 +24,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
     provideFirestore(() => getFirestore()),
-    NoopAnimationsModule
+    NoopAnimationsModule,
+
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
