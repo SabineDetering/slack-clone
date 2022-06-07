@@ -11,11 +11,21 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
+
+import { ChannelListComponent } from './channel-list/channel-list.component';
+import { ThreadsComponent } from './threads/threads.component';
+import { DirectMsgListComponent } from './direct-msg-list/direct-msg-list.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ChannelListComponent,
+    ThreadsComponent,
+    DirectMsgListComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +36,11 @@ import { MatIconModule } from '@angular/material/icon';
     provideFirestore(() => getFirestore()),
     NoopAnimationsModule,
 
-    MatIconModule
+    MatIconModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatButtonModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

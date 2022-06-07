@@ -1,0 +1,21 @@
+@import 'src/styles/mixins.scss';
+
+mat-sidenav {
+    height: calc(100vh - 64px);
+    overflow: hidden;
+}
+
+
+mat-sidenav-content {
+    @include flex();
+    height: calc(100vh - 64px);
+}
+
+
+router-outlet {
+    flex: 1;
+}
+
+app-threads {
+    width: 25vw;
+}
