@@ -1,8 +1,12 @@
 @import 'src/styles/mixins.scss';
+@import 'src/styles/main.scss';
+@import 'src/styles/themes.scss';
+@import 'src/styles/variables.scss';
 
 mat-sidenav {
     height: calc(100vh - 64px);
     overflow: hidden;
+    padding:$padding-main;
 }
 
 
