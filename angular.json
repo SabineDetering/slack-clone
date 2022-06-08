@@ -31,7 +31,7 @@
               "src/assets"
             ],
             "styles": ["./node_modules/material-icons-font/material-icons-font.css",
-              "src/styles/main.scss"
+              "src/styles.scss"
             ],
             "scripts": []
           },

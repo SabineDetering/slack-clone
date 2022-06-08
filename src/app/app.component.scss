@@ -1,17 +1,15 @@
-@import 'src/styles/mixins.scss';
-@import 'src/styles/main.scss';
-@import 'src/styles/themes.scss';
-@import 'src/styles/variables.scss';
+@use '../styles/variables' as var;
+@use '../styles/mixins' as mix;
 
 mat-sidenav {
     height: calc(100vh - 64px);
     overflow: hidden;
-    padding:$padding-main;
+    padding: var.$padding-main;
 }
 
 
 mat-sidenav-content {
-    @include flex();
+    @include mix.flex();
     height: calc(100vh - 64px);
 }
 
