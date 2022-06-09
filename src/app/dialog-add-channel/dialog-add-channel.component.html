@@ -1,0 +1,58 @@
+<h2 mat-dialog-title>Create a new channel</h2>
+
+<button
+  class="close-btn"
+  mat-icon-button
+  mat-dialog-close
+  title="close without saving"
+>
+  <mat-icon>close</mat-icon>
+</button>
+
+<mat-dialog-content>
+  <p>
+    Use a channel name that reflects the subject to be discussed in the channel.
+    Name
+  </p>
+  <form #addChannelForm="ngForm">
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input
+        [(ngModel)]="channel.channelName"
+        name="channelName"
+        #channelName="ngModel"
+        matInput
+        minlength="3"
+        maxlength="30"
+        required
+      />
+      <mat-error
+        *ngIf="
+          channelName.invalid && (channelName.dirty || channelName.touched)
+        "
+      >
+        Please enter a name with at least 3 and at most 30 letters.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <input
+        matInput
+        [(ngModel)]="channel.channelDescription"
+        name="description"
+      />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button
+    mat-button
+    mat-dialog-close
+    [disabled]="!addChannelForm.valid"
+    (click)="saveChannel()"
+  >
+    Save
+  </button>
+</mat-dialog-actions>

@@ -1,1 +1,17 @@
-<p>channel-list works!</p>
+<div class="channel-container">
+  <h3>Channels</h3>
+  <button
+    mat-mini-fab
+    color="primary"
+    title="Add new channel"
+    (click)="openAddChannelDialog()"
+    data-cy="addChannel"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+<ul>
+  <li *ngFor="let channel of Data.channels$ | async">
+    {{ channel.channelName }}
+  </li>
+</ul>
