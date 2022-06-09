@@ -1,3 +1,6 @@
+@forward 'variables';
+@use 'variables';
+
 @mixin flex($justify: flex-start, $align: flex-start, $dir: row, $gap: 0) {
     display: flex;
     justify-content: $justify;
