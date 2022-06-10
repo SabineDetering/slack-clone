@@ -5,7 +5,7 @@
 
 .channel-header {
     @include mix.flex(space-between, center);
-    padding: mix.$padding-main;
+    padding: mix.$padding-main mix.$padding-main 0 mix.$padding-main;
     width: 100%;
     cursor: pointer;
 
@@ -23,5 +23,15 @@
 }
 
 .channel-list {
-    padding: 0 mix.$padding-main mix.$padding-main ;
+    padding-bottom: mix.$padding-main ;
+    @include mix.flex($dir: column);
+
+    a {
+        padding: mix.$padding-small mix.$padding-main;
+        width: 100%;
+
+        &:hover {
+            background-color: mix.$primary-hover;
+        }
+    }
 }
