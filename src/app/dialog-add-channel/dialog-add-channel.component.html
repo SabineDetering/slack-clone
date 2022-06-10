@@ -12,11 +12,11 @@
 <mat-dialog-content>
   <p>
     Use a channel name that reflects the subject to be discussed in the channel.
-    Name
   </p>
   <form #addChannelForm="ngForm">
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="full-width" cdkFocusInitial>
       <mat-label>Name</mat-label>
+      <span matPrefix># &nbsp;</span>
       <input
         [(ngModel)]="channel.channelName"
         name="channelName"
@@ -26,6 +26,7 @@
         maxlength="30"
         required
       />
+      <mat-hint align="end">{{ channelName.value?.length || 0 }}/30</mat-hint>
       <mat-error
         *ngIf="
           channelName.invalid && (channelName.dirty || channelName.touched)
@@ -34,13 +35,20 @@
         Please enter a name with at least 3 and at most 30 letters.
       </mat-error>
     </mat-form-field>
-    <mat-form-field appearance="outline">
+
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Description</mat-label>
-      <input
+      <textarea
         matInput
+        maxlength="120"
+        cdkTextareaAutosize
         [(ngModel)]="channel.channelDescription"
+        #channelDescription="ngModel"
         name="description"
-      />
+      ></textarea>
+      <mat-hint align="end"
+        >{{ channelDescription.value?.length || 0 }}/120</mat-hint
+      >
     </mat-form-field>
   </form>
 </mat-dialog-content>
