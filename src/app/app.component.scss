@@ -1,9 +1,10 @@
-@use '../styles/mixins' as mix;//also imports _variables.scss
+@use '../styles/mixins' as mix; //also imports _variables.scss
 
 mat-sidenav {
     height: calc(100vh - 64px);
-    overflow: hidden;
-    padding: mix.$padding-main;
+    // overflow: hidden;
+    background-color: mix.$primary-color ;
+    color: white;
 }
 
 
@@ -13,7 +14,7 @@ mat-sidenav-content {
 }
 
 
-router-outlet {
+.outlet {
     flex: 1;
 }
 

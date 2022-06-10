@@ -1,17 +1,20 @@
 <div class="channel-container">
-  <h3>Channels</h3>
-  <button
-    mat-mini-fab
-    color="primary"
-    title="Add new channel"
-    (click)="openAddChannelDialog()"
-    data-cy="addChannel"
-  >
-    <mat-icon>add</mat-icon>
-  </button>
+  <div class="channel-header" (click)="toggleChannels()">
+    <mat-icon>{{ channelsOpen ? "arrow_drop_down" : "arrow_right" }}</mat-icon>
+    <h3>Channel</h3>
+    <button
+      mat-icon-button
+      title="Add new channel"
+      class="add-btn"
+      (click)="openAddChannelDialog($event)"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <mat-nav-list *ngIf="channelsOpen" class="channel-list">
+    <a list-item *ngFor="let channel of Data.channels$ | async"  [routerLink]="['/channel/'+channel.channelID]" >
+      # {{ channel.channelName }}
+    </a>
+  </mat-nav-list>
 </div>
-<ul>
-  <li *ngFor="let channel of Data.channels$ | async">
-    {{ channel.channelName }}
-  </li>
-</ul>

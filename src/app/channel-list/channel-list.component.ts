@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { DataService } from 'src/services/data.service';
 import { DialogAddChannelComponent } from '../dialog-add-channel/dialog-add-channel.component';
 
@@ -10,17 +11,25 @@ import { DialogAddChannelComponent } from '../dialog-add-channel/dialog-add-chan
 })
 export class ChannelListComponent implements OnInit {
 
-  
+  channelsOpen = true;
+
   constructor(
     public dialog: MatDialog,
-    public Data:DataService
+    public Data: DataService,
+    private router:Router
   ) { }
 
   ngOnInit(): void {
   }
 
-  openAddChannelDialog() {
+  toggleChannels() {
+    this.channelsOpen = !this.channelsOpen;
+  }
+
+  openAddChannelDialog(event) {
+    event.stopPropagation();
     this.dialog.open(DialogAddChannelComponent);
   }
+
 
 }

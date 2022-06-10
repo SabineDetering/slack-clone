@@ -1,3 +1,5 @@
+@use 'mixins' as mix;
+
 /*material icons fonts*/
 @import '~material-icons-font/sass/variables';
 @import '~material-icons-font/sass/mixins';
@@ -6,13 +8,24 @@ $MaterialIcons_FontPath: "~material-icons-font/fonts";
 @import '~material-icons-font/sass/Regular';
 
 
-*{
-  margin:0;
-  padding:0;
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 
+.bg-primary {
+  background-color: mix.$primary-color ;
+  color: white;
+}

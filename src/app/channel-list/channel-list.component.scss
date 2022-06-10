@@ -1,5 +1,27 @@
 @use '../../styles/mixins' as mix; //also imports _variables.scss
 
-.channel-container{
-    @include mix.flex();
+
+.channel-container {}
+
+.channel-header {
+    @include mix.flex(space-between, center);
+    padding: mix.$padding-main;
+    width: 100%;
+    cursor: pointer;
+
+    .add-btn {
+        visibility: hidden;
+    }
+
+    &:hover {
+        background-color: mix.$primary-hover;
+
+        .add-btn {
+            visibility: visible;
+        }
+    }
+}
+
+.channel-list {
+    padding: 0 mix.$padding-main mix.$padding-main ;
 }
