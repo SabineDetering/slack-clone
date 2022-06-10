@@ -12,10 +12,13 @@
   </button>
 </mat-toolbar>
 
-<mat-sidenav-container>
-  <mat-sidenav mode="side" #sidenav opened>
-    <div>
-      <app-channel-list></app-channel-list>
+<mat-sidenav-container  [hasBackdrop]="mobileQuery.matches">
+  <mat-sidenav mode="side" #sidenav 
+    [mode]="mobileQuery.matches ? 'over' : 'side'"
+    [opened]="!mobileQuery.matches">
+    <div 
+      (click)="mobileQuery.matches?sidenav.toggle():null">
+      <app-channel-list [mobile]="mobileQuery.matches"></app-channel-list>
       <app-direct-msg-list></app-direct-msg-list>
       Impressum
     </div>

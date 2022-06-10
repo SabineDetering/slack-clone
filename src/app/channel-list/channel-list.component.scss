@@ -1,8 +1,6 @@
 @use '../../styles/mixins' as mix; //also imports _variables.scss
 
 
-.channel-container {}
-
 .channel-header {
     @include mix.flex(space-between, center);
     padding: mix.$padding-main mix.$padding-main 0 mix.$padding-main;

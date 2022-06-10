@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DataService } from 'src/services/data.service';
@@ -12,6 +12,7 @@ import { DialogAddChannelComponent } from '../dialog-add-channel/dialog-add-chan
 export class ChannelListComponent implements OnInit {
 
   channelsOpen = true;
+  @Input() mobile: boolean;
 
   constructor(
     public dialog: MatDialog,
@@ -22,7 +23,8 @@ export class ChannelListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  toggleChannels() {
+  toggleChannels(event) {
+    event.stopPropagation();
     this.channelsOpen = !this.channelsOpen;
   }
 
