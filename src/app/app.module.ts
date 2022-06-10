@@ -21,6 +21,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { ChannelListComponent } from './channel-list/channel-list.component';
 import { ThreadsComponent } from './threads/threads.component';
@@ -53,7 +54,8 @@ import { DialogAddChannelComponent } from './dialog-add-channel/dialog-add-chann
     MatDialogModule,
     MatInputModule,
     MatFormFieldModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatExpansionModule
 
   ],
   providers: [],
