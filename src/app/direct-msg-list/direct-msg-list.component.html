@@ -15,11 +15,12 @@
   <mat-nav-list *ngIf="directMsgOpen" class="direct-msg-list">
     <a
       list-item
-      *ngFor="let directMsg of Data.directMsg$ | async"
+      *ngFor="
+        let directMsg of Data.directMsg$ | async | orderBy:'directMsgName'
+      "
       [routerLink]="['/direct-msg/' + directMsg.directMsgID]"
     >
-       {{ directMsg.directMsgName }}
+      {{ directMsg.directMsgName }}
     </a>
   </mat-nav-list>
 </div>
-

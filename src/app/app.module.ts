@@ -3,12 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire/compat';
-import { provideDatabase,getDatabase } from '@angular/fire/database';
-import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import { provideDatabase, getDatabase } from '@angular/fire/database';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 
@@ -34,6 +34,7 @@ import { MainContainerComponent } from './main-container/main-container.componen
 import { ThreadComponent } from './thread/thread.component';
 import { InputboxComponent } from './inputbox/inputbox.component';
 import { DialogAddDirectMsgComponent } from './dialog-add-direct-msg/dialog-add-direct-msg.component';
+import { OrderByPipe } from 'src/pipes/order-by-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { DialogAddDirectMsgComponent } from './dialog-add-direct-msg/dialog-add-
     MainContainerComponent,
     ThreadComponent,
     InputboxComponent,
-    DialogAddDirectMsgComponent
+    DialogAddDirectMsgComponent,
+    OrderByPipe
   ],
   imports: [
     BrowserModule,
@@ -72,7 +74,8 @@ import { DialogAddDirectMsgComponent } from './dialog-add-direct-msg/dialog-add-
     MatSelectModule
 
   ],
-  providers: [],
+  providers: [
+    OrderByPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

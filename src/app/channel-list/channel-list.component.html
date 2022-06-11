@@ -15,7 +15,7 @@
   <mat-nav-list *ngIf="channelsOpen" class="channel-list">
     <a
       list-item
-      *ngFor="let channel of Data.channels$ | async"
+      *ngFor="let channel of Data.channels$ | async| orderBy:'channelName'"
       [routerLink]="['/channel/' + channel.channelID]"
     >
       # {{ channel.channelName }}
