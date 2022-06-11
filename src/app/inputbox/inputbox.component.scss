@@ -2,24 +2,44 @@
 
 :host {
     @include mix.flex(flex-start, center, column, 8px);
-    padding: mix.$padding-medium;
-    background-color: rgb(219, 41, 41);
     width: 90%;
+    height: fit-content;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
-.toolbar{
+.toolbar {
     @include mix.flex(flex-start, center, row, 12px);
     width: 100%;
-
+    padding: mix.$padding-medium;
+    background: rgba(106, 104, 104, 0.077);
 }
 
-textarea{
+textarea {
     width: 100%;
+    padding: mix.$padding-medium;
+    height: fit-content;
+    max-height: 50vh;
     resize: none;
-    overflow-y: auto;
+    outline: none;
+    border: none;
+    background: none;
 }
 
-.footer{
+.footer {
     @include mix.flex(flex-end, center);
     width: 100%;
+    padding: mix.$padding-medium;
+}
+
+mat-icon {
+    font-size: 20px;
+    opacity: 0.8;
+    cursor: pointer;
+    transition: all 150ms ease-in-out;
+
+    &:hover {
+        opacity: 0.6;
+    }
 }

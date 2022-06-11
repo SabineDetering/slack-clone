@@ -2,15 +2,42 @@
 // flex($justify: flex-start, $align: flex-start, $dir: row, $gap: 0)
 
 :host {
-    @include mix.flex(center, flex-start, column);
+    @include mix.flex(center, flex-start, row, 12px);
     background-color: white;
     width: 100%;
     padding: mix.$padding-medium;
 }
 
 .author {
-
+    font-weight: bold;
+    margin-right: 8px;
 }
 
 .timestamp {
+    font-size: 12px;
+    color: grey;
+}
+
+.mainContainer {
+    @include mix.flex(flex-start, flex-start, column);
+    width: 100%;
+}
+.bottomRow {
+    @include mix.flex(flex-start, center, row, 8px);
+    width: 100%;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+button {
+    border: none;
+    font-size: 12px;
+    text-decoration: underline;
+    background: none;
 }
