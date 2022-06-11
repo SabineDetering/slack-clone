@@ -33,3 +33,5 @@ body {
 .full-width{
   width:100%;
 }
+
+ @include mix.scrollbar(mix.$primary-color, mix.$primary-hover, mix.$primary-hover);

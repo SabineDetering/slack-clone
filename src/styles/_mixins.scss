@@ -8,3 +8,32 @@
     flex-direction: $dir;
     gap: $gap;
 }
+
+@mixin scrollbar($bg-track, $handle-color, $handle-hover-color) {
+
+    // custom scrollbar
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        background: $bg-track;
+        border-radius: 5px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: $handle-color;
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 5px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: $handle-hover-color;
+        box-shadow: inset 0 0 5px grey;
+    }
+}
