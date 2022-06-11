@@ -1,0 +1,16 @@
+@use "../../styles/mixins" as mix; //also imports _variables.scss
+// flex($justify: flex-start, $align: flex-start, $dir: row, $gap: 0)
+
+:host {
+    @include mix.flex(center, flex-start, column);
+    background-color: white;
+    width: 100%;
+    padding: mix.$padding-medium;
+}
+
+.author {
+
+}
+
+.timestamp {
+}

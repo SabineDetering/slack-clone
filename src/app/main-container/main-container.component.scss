@@ -1,0 +1,29 @@
+@use '../../styles/mixins' as mix; //also imports _variables.scss
+
+:host{
+    @include mix.flex(flex-start, center, column);    
+    position: relative;
+    height: calc(100vh - 64px);
+    background-color: rgba(211, 211, 211, 0.255);
+}
+
+app-inputbox{
+    position: absolute;
+    bottom: 16px;
+}
+
+.head{
+    @include mix.flex(flex-start,center);    
+    width: 100%;
+    height: 46px;
+    font-size: 1.2rem;
+    border-bottom:grey solid 1px;
+}
+
+.threadContainer{
+    @include mix.flex(flex-start,center, column, 16px);    
+    width: 100%;
+    padding-top: mix.$padding-main;
+    padding-bottom: mix.$padding-main;
+    overflow-y: auto;
+}
