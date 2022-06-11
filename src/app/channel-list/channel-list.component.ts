@@ -23,12 +23,12 @@ export class ChannelListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  toggleChannels(event) {
+  toggleChannels(event: Event) {
     event.stopPropagation();
     this.channelsOpen = !this.channelsOpen;
   }
 
-  openAddChannelDialog(event) {
+  openAddChannelDialog(event: Event) {
     event.stopPropagation();
     this.dialog.open(DialogAddChannelComponent);
   }
