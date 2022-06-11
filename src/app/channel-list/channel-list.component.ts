@@ -16,8 +16,7 @@ export class ChannelListComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    public Data: DataService,
-    private router:Router
+    public Data: DataService
   ) { }
 
   ngOnInit(): void {
