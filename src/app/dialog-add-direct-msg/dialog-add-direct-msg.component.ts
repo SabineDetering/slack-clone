@@ -20,12 +20,19 @@ export class DialogAddDirectMsgComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<DialogAddDirectMsgComponent>,
-    public Data: DataService) {
+    public Data: DataService,
+    private _snackBar: MatSnackBar
+  ) {
   }
 
   async ngOnInit(): Promise<void> {
     this.users = await firstValueFrom(this.Data.users$);
     this.filteredUsers = this.users;
+  }
+
+
+  openSnackBar(message: string, action?: string) {
+    this._snackBar.open(message, action, { duration: 3000 });
   }
 
 
@@ -37,10 +44,12 @@ export class DialogAddDirectMsgComponent implements OnInit {
 
 
   saveDirectMsg() {
-    this.dm.directMsgName = this.members.map(memberArr => memberArr[1]).join(', ');
+    let memberNames = this.members.map(memberArr => memberArr[1]);
+    this.dm.directMsgName = memberNames.sort().join(', ');
     this.dm.directMsgMembers = this.members.map(memberArr => memberArr[0]);
     console.log(this.dm);
     this.Data.saveDirectMsg(this.dm.toJSON());
-    this.dialogRef.close('dm.directMsgMembers');
+    this.dialogRef.close('saved');
+    this.openSnackBar('New chat has been created.');
   }
 }
