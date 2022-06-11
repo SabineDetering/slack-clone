@@ -5,7 +5,8 @@ import { MainContainerComponent } from './main-container/main-container.componen
 
 const routes: Routes = [
   { path: '', component: MainContainerComponent },  // change later to Login
-  { path: 'channel/:channelID', component: MainContainerComponent }
+  { path: 'channel/:channelID', component: MainContainerComponent },
+  { path: 'direct-msg/:directMsgID', component: MainContainerComponent }
 ];
 
 @NgModule({

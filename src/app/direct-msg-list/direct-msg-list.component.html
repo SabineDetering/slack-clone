@@ -1,1 +1,25 @@
-<p>direct-msg-list works!</p>
+<div class="dirct-msg-container">
+  <div class="direct-msg-header" (click)="toggleDirectMsg($event)">
+    <mat-icon>{{ directMsgOpen ? "arrow_drop_down" : "arrow_right" }}</mat-icon>
+    <h3>Direct Messages</h3>
+    <button
+      mat-icon-button
+      title="Add new chat"
+      class="add-btn"
+      (click)="openAddDirectMsgDialog($event)"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <mat-nav-list *ngIf="directMsgOpen" class="direct-msg-list">
+    <a
+      list-item
+      *ngFor="let directMsg of Data.directMsg$ | async"
+      [routerLink]="['/direct-msg/' + directMsg.directMsgID]"
+    >
+       {{ directMsg.directMsgName }}
+    </a>
+  </mat-nav-list>
+</div>
+

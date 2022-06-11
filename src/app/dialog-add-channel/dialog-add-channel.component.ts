@@ -31,7 +31,6 @@ export class DialogAddChannelComponent implements OnInit {
   saveChannel() {
     this.Data.saveChannel(this.channel.toJSON());
     this.openSnackBar('New channel has been created.');
-
   }
 
 }

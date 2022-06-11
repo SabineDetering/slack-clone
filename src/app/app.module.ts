@@ -23,6 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
 
 import { ChannelListComponent } from './channel-list/channel-list.component';
 import { ThreadsComponent } from './threads/threads.component';
@@ -32,6 +33,7 @@ import { LoginComponent } from './login/login.component';
 import { MainContainerComponent } from './main-container/main-container.component';
 import { ThreadComponent } from './thread/thread.component';
 import { InputboxComponent } from './inputbox/inputbox.component';
+import { DialogAddDirectMsgComponent } from './dialog-add-direct-msg/dialog-add-direct-msg.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,8 @@ import { InputboxComponent } from './inputbox/inputbox.component';
     LoginComponent,
     MainContainerComponent,
     ThreadComponent,
-    InputboxComponent
+    InputboxComponent,
+    DialogAddDirectMsgComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +68,8 @@ import { InputboxComponent } from './inputbox/inputbox.component';
     MatFormFieldModule,
     MatSnackBarModule,
     MatExpansionModule,
-    MatListModule
+    MatListModule,
+    MatSelectModule
 
   ],
   providers: [],

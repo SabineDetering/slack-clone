@@ -1,0 +1,13 @@
+:host {
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+h2 {
+    max-width: calc(100% - 40px)
+}

@@ -1,0 +1,35 @@
+@use '../../styles/mixins' as mix; //also imports _variables.scss
+
+
+.direct-msg-header {
+    @include mix.flex(space-between, center);
+    padding: mix.$padding-main mix.$padding-main 0 mix.$padding-main;
+    width: 100%;
+    cursor: pointer;
+
+    .add-btn {
+        visibility: hidden;
+    }
+
+    &:hover {
+        background-color: mix.$primary-hover;
+
+        .add-btn {
+            visibility: visible;
+        }
+    }
+}
+
+.direct-msg-list {
+    padding-bottom: mix.$padding-main ;
+    @include mix.flex($dir: column);
+
+    a {
+        padding: mix.$padding-small mix.$padding-main;
+        width: 100%;
+
+        &:hover {
+            background-color: mix.$primary-hover;
+        }
+    }
+}

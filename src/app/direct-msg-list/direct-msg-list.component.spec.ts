@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AngularFireModule } from '@angular/fire/compat';
+import { MatDialogModule } from '@angular/material/dialog';
+import { environment } from 'src/environments/environment';
 
 import { DirectMsgListComponent } from './direct-msg-list.component';
 
@@ -8,6 +11,10 @@ describe('DirectMsgListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        MatDialogModule,
+        AngularFireModule.initializeApp(environment.firebase)
+      ],
       declarations: [ DirectMsgListComponent ]
     })
     .compileComponents();

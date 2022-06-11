@@ -2,10 +2,12 @@
 
 mat-sidenav {
     height: calc(100vh - 64px);
-    // overflow: hidden;
+    // min-width: 220px;
+    overflow: auto;
     background-color: mix.$primary-color ;
     color: white;
 }
+
 
 
 mat-sidenav-content {
