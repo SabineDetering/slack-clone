@@ -29,6 +29,7 @@ import { ThreadsComponent } from './threads/threads.component';
 import { DirectMsgListComponent } from './direct-msg-list/direct-msg-list.component';
 import { DialogAddChannelComponent } from './dialog-add-channel/dialog-add-channel.component';
 import { LoginComponent } from './login/login.component';
+import { MainContainerComponent } from './main-container/main-container.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { LoginComponent } from './login/login.component';
     ThreadsComponent,
     DirectMsgListComponent,
     DialogAddChannelComponent,
-    LoginComponent
+    LoginComponent,
+    MainContainerComponent
   ],
   imports: [
     BrowserModule,
