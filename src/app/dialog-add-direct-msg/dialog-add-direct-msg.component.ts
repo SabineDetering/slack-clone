@@ -16,7 +16,7 @@ export class DialogAddDirectMsgComponent implements OnInit {
   dm = new DirectMsg();
   users: User[];
   members: any[];
-  filteredUsers: User[];
+  loggedInUserID: string = 'nqZXy3cBYvWQKprRI2Nq'; //replace with user from authentication
 
   constructor(
     private dialogRef: MatDialogRef<DialogAddDirectMsgComponent>,
@@ -25,9 +25,7 @@ export class DialogAddDirectMsgComponent implements OnInit {
   ) {
   }
 
-  async ngOnInit(): Promise<void> {
-    this.users = await firstValueFrom(this.Data.users$);
-    this.filteredUsers = this.users;
+  ngOnInit(): void {
   }
 
 
@@ -36,17 +34,14 @@ export class DialogAddDirectMsgComponent implements OnInit {
   }
 
 
-  applyUserFilter($event: Event) {
-    let filterString = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.filteredUsers = this.users.filter(user =>
-      (user.userName.toLowerCase().includes(filterString)) || (user.userEmail.toLowerCase().includes(filterString)));
-  }
-
-
   saveDirectMsg() {
-    let memberNames = this.members.map(memberArr => memberArr[1]);
-    this.dm.directMsgName = memberNames.sort().join(', ');
+    if (!this.dm.directMsgName) {
+      //needs review: memberNames must be dynamic, always excluding logged in user
+      let memberNames = this.members.map(memberArr => memberArr[1]);
+      this.dm.directMsgName = memberNames.sort().join(', ');
+    }
     this.dm.directMsgMembers = this.members.map(memberArr => memberArr[0]);
+    this.dm.directMsgMembers.push(this.loggedInUserID);//replace by authentication
     console.log(this.dm);
     this.Data.saveDirectMsg(this.dm.toJSON());
     this.dialogRef.close('saved');

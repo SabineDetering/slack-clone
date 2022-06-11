@@ -12,21 +12,34 @@
 <mat-dialog-content>
   <form #addDMForm="ngForm">
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Owner</mat-label>
+      <mat-label>Participants</mat-label>
       <mat-select
         multiple
         [(ngModel)]="members"
         name="userID"
         required
       >
-        <input class="full-width p-m" (keyup)="applyUserFilter($event)" />
-        <mat-option
-          *ngFor="let user of filteredUsers"
-          [value]="[user.userID, user.userName]"
-        >
-          {{ user.userName }}
-        </mat-option>
+        <ng-container *ngFor="let user of Data.users$ | async">
+          <mat-option
+            *ngIf="user.userID != loggedInUserID"
+            [value]="[user.userID, user.userName]"
+          >
+            {{ user.userName }}
+          </mat-option>
+        </ng-container>
       </mat-select>
+    </mat-form-field>
+    <p>
+      By default, you can identify your chat by the list of participants. You have the possibility to create a custom name below. 
+    </p>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Chat name (optional)</mat-label>
+      <input
+        matInput
+        [(ngModel)]="dm.directMsgName"
+        #directMsgName="ngModel"
+        name="name"
+      />
     </mat-form-field>
   </form>
 </mat-dialog-content>

@@ -2,7 +2,7 @@
   <button mat-icon-button (click)="sidenav.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>My App</span>
+  <span>Slacky</span>
   <span class="example-spacer"></span>
   <button mat-icon-button>
     <mat-icon>favorite</mat-icon>
@@ -12,15 +12,25 @@
   </button>
 </mat-toolbar>
 
-<mat-sidenav-container  [hasBackdrop]="mobileQuery.matches">
-  <mat-sidenav mode="side" #sidenav 
+<!-- mobile view: sidenav closed by default, open in mode 'over' with backdrop, closes on click on sidenav (or menu button) -->
+<!-- desktop view: sidenav open by default in mode 'side'-->
+<mat-sidenav-container [hasBackdrop]="mobileQuery.matches">
+  <mat-sidenav
+    mode="side"
+    #sidenav
     [mode]="mobileQuery.matches ? 'over' : 'side'"
-    [opened]="!mobileQuery.matches">
-    <div 
-      (click)="mobileQuery.matches?sidenav.toggle():null">
-      <app-channel-list [mobile]="mobileQuery.matches"></app-channel-list>
-      <app-direct-msg-list></app-direct-msg-list>
-      Impressum
+    [opened]="!mobileQuery.matches"
+    (click)="mobileQuery.matches ? sidenav.toggle() : null"
+  >
+    <div class="sidenav-wrapper">
+      <div>
+        <app-channel-list [mobile]="mobileQuery.matches"></app-channel-list>
+        <app-direct-msg-list></app-direct-msg-list>
+      </div>
+      <mat-nav-list class="legal-list">
+        <a list-item [routerLink]="['legal-notice']"> Legal Notice </a>
+        <a list-item [routerLink]="['privacy-notice']"> Privacy Notice </a>
+      </mat-nav-list>
     </div>
   </mat-sidenav>
 

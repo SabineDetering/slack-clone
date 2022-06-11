@@ -6,6 +6,26 @@ mat-sidenav {
     overflow: auto;
     background-color: mix.$primary-color ;
     color: white;
+
+    .sidenav-wrapper {
+        height:100%;
+        @include mix.flex($dir: column, $justify: space-between);
+    }
+
+    .legal-list {
+        @include mix.flex($dir: column);
+        font-size: 14px;
+        padding-bottom:mix.$padding-main;
+
+        a {
+            padding: mix.$padding-small mix.$padding-main;
+            width: 100%;
+
+            &:hover {
+                background-color: mix.$primary-hover;
+            }
+        }
+    }
 }
 
 
