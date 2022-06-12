@@ -6,8 +6,8 @@ export class Channel {
 
     constructor(obj?: any) {
         this.channelID = obj ? obj.channelID : '';
-        this.channelName = obj ? obj.channelName : '';
-        this.channelDescription = obj ? obj.channelDescription : '';
+        this.channelName = obj ? obj.channelName : 'New Channel';
+        this.channelDescription = obj ? obj.channelDescription : 'Description';
     }
 
     toJSON() {
