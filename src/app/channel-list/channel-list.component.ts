@@ -34,7 +34,7 @@ export class ChannelListComponent implements OnInit {
   }
 
   setCurrentChannel(channel:Channel) {
-    this.Data.currentChannel = channel;
+    this.Data.currentChannel$.next(channel);
   }
 
 
