@@ -27,13 +27,13 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { ChannelListComponent } from './channel-list/channel-list.component';
 import { ThreadsComponent } from './threads/threads.component';
-import { DirectMsgListComponent } from './direct-msg-list/direct-msg-list.component';
+import { DirectChannelListComponent } from './direct-channel-list/direct-channel-list.component';
 import { DialogAddChannelComponent } from './dialog-add-channel/dialog-add-channel.component';
 import { LoginComponent } from './login/login.component';
 import { MainContainerComponent } from './main-container/main-container.component';
 import { ThreadComponent } from './thread/thread.component';
 import { InputboxComponent } from './inputbox/inputbox.component';
-import { DialogAddDirectMsgComponent } from './dialog-add-direct-msg/dialog-add-direct-msg.component';
+import { DialogAddDirectChannelComponent } from './dialog-add-direct-channel/dialog-add-direct-channel.component';
 import { OrderByPipe } from 'src/pipes/order-by-pipe.pipe';
 
 @NgModule({
@@ -41,13 +41,13 @@ import { OrderByPipe } from 'src/pipes/order-by-pipe.pipe';
     AppComponent,
     ChannelListComponent,
     ThreadsComponent,
-    DirectMsgListComponent,
+    DirectChannelListComponent,
     DialogAddChannelComponent,
     LoginComponent,
     MainContainerComponent,
     ThreadComponent,
     InputboxComponent,
-    DialogAddDirectMsgComponent,
+    DialogAddDirectChannelComponent,
     OrderByPipe
   ],
   imports: [

@@ -3,11 +3,11 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { MatDialogModule } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 
-import { DirectMsgListComponent } from './direct-msg-list.component';
+import { DirectChannelListComponent } from './direct-channel-list.component';
 
-describe('DirectMsgListComponent', () => {
-  let component: DirectMsgListComponent;
-  let fixture: ComponentFixture<DirectMsgListComponent>;
+describe('DirectChannelListComponent', () => {
+  let component: DirectChannelListComponent;
+  let fixture: ComponentFixture<DirectChannelListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -15,13 +15,13 @@ describe('DirectMsgListComponent', () => {
         MatDialogModule,
         AngularFireModule.initializeApp(environment.firebase)
       ],
-      declarations: [ DirectMsgListComponent ]
+      declarations: [DirectChannelListComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DirectMsgListComponent);
+    fixture = TestBed.createComponent(DirectChannelListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

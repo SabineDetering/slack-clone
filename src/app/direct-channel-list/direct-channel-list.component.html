@@ -1,0 +1,30 @@
+<div class="dirct-channel-container">
+  <div class="direct-channel-header" (click)="toggleDirectChannels($event)">
+    <mat-icon>{{ directChannelsOpen ? "arrow_drop_down" : "arrow_right" }}</mat-icon>
+    <h3>Direct Messages</h3>
+    <button
+      mat-icon-button
+      title="Add new chat"
+      class="add-btn"
+      (click)="openAddDirectChannelDialog($event)"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <mat-nav-list *ngIf="directChannelsOpen" class="direct-channel-list">
+    <ng-container *ngFor="let directChannel of directChannels | orderBy: 'directChannelName'"
+      ><div
+        *ngIf="directChannel.directChannelMembers.includes(loggedInUserID)"
+        class="direct-channel-list-item"
+      >
+        <a list-item [routerLink]="['/direct-channel/' + directChannel.directChannelID]">
+          {{ directChannel.directChannelName }}
+        </a>
+        <button mat-icon-button title="More" class="more-btn">
+          <mat-icon> more_vert</mat-icon>
+        </button>
+      </div>
+    </ng-container>
+  </mat-nav-list>
+</div>

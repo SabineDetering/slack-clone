@@ -1,7 +1,7 @@
 @use '../../styles/mixins' as mix; //also imports _variables.scss
 
 
-.direct-msg-header {
+.direct-channel-header {
     @include mix.flex(space-between, center);
     padding: mix.$padding-main mix.$padding-main 0 mix.$padding-main;
     width: 100%;
@@ -20,11 +20,11 @@
     }
 }
 
-.direct-msg-list {
+.direct-channel-list {
     padding-bottom: mix.$padding-main ;
     @include mix.flex($dir: column);
 
-    .direct-msg-list-item {
+    .direct-channel-list-item {
         padding-left: mix.$padding-main;
         width: 100%;
         @include mix.flex($justify: space-between, $align: center);
