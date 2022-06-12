@@ -27,6 +27,12 @@ textarea {
     background: none;
 }
 
+::placeholder{
+    color: rgba(128, 128, 128, 0.766);
+    font-size: 14px;
+    font-family: "Roboto", "Helvetica Neue", sans-serif;
+}
+
 .footer {
     @include mix.flex(flex-end, center);
     width: 100%;

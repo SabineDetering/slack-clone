@@ -2,6 +2,7 @@
 
 :host{
     @include mix.flex(flex-start, center, column);    
+    padding-left: mix.$padding-medium;
     position: relative;
     height: calc(100vh - 64px);
     border-right: 1px solid #e0e0e0;
@@ -14,6 +15,8 @@ app-inputbox{
 
 .head{
     @include mix.flex(flex-start,center);    
+    padding-left: 5%;
+    padding-right: 5%;
     width: 100%;
     height: 46px;
     font-size: 1.2rem;
