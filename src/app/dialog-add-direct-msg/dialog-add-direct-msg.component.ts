@@ -15,7 +15,6 @@ export class DialogAddDirectMsgComponent implements OnInit {
 
   dm = new DirectMsg();
   users: User[];
-  members: any[];
   loggedInUserID: string = 'nqZXy3cBYvWQKprRI2Nq'; //replace with user from authentication
 
   constructor(
@@ -35,12 +34,6 @@ export class DialogAddDirectMsgComponent implements OnInit {
 
 
   saveDirectMsg() {
-    if (!this.dm.directMsgName) {
-      //needs review: memberNames must be dynamic, always excluding logged in user
-      let memberNames = this.members.map(memberArr => memberArr[1]);
-      this.dm.directMsgName = memberNames.sort().join(', ');
-    }
-    this.dm.directMsgMembers = this.members.map(memberArr => memberArr[0]);
     this.dm.directMsgMembers.push(this.loggedInUserID);//replace by authentication
     console.log(this.dm);
     this.Data.saveDirectMsg(this.dm.toJSON());

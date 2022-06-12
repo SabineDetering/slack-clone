@@ -13,14 +13,18 @@
   </div>
 
   <mat-nav-list *ngIf="directMsgOpen" class="direct-msg-list">
-    <a
-      list-item
-      *ngFor="
-        let directMsg of Data.directMsg$ | async | orderBy:'directMsgName'
-      "
-      [routerLink]="['/direct-msg/' + directMsg.directMsgID]"
-    >
-      {{ directMsg.directMsgName }}
-    </a>
+    <ng-container *ngFor="let directMsg of directMsg | orderBy: 'directMsgName'"
+      ><div
+        *ngIf="directMsg.directMsgMembers.includes(loggedInUserID)"
+        class="direct-msg-list-item"
+      >
+        <a list-item [routerLink]="['/direct-msg/' + directMsg.directMsgID]">
+          {{ directMsg.directMsgName }}
+        </a>
+        <button mat-icon-button title="More" class="more-btn">
+          <mat-icon> more_vert</mat-icon>
+        </button>
+      </div>
+    </ng-container>
   </mat-nav-list>
 </div>

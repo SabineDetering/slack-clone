@@ -24,12 +24,21 @@
     padding-bottom: mix.$padding-main ;
     @include mix.flex($dir: column);
 
-    a {
-        padding: mix.$padding-small mix.$padding-main;
+    .direct-msg-list-item {
+        padding-left: mix.$padding-main;
         width: 100%;
+        @include mix.flex($justify: space-between, $align: center);
+
+        .more-btn {
+            visibility: hidden;
+        }
 
         &:hover {
             background-color: mix.$primary-hover;
+
+            .more-btn {
+                visibility: visible;
+            }
         }
     }
 }
