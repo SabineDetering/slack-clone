@@ -13,12 +13,19 @@
   </div>
 
   <mat-nav-list *ngIf="channelsOpen" class="channel-list">
-    <a
-      list-item
-      *ngFor="let channel of Data.channels$ | async| orderBy:'channelName'"
-      [routerLink]="['/channel/' + channel.channelID]"
+    <div class="channel-list-item"
+      *ngFor="let channel of Data.channels$ | async | orderBy: 'channelName'"
     >
-      # {{ channel.channelName }}
-    </a>
+      <a list-item [routerLink]="['/channel/' + channel.channelID]" (click)="setCurrentChannel(channel)">
+        # {{ channel.channelName }}
+      </a>
+      <button
+        mat-icon-button
+        title="More"
+        class="more-btn"
+      >
+        <mat-icon> more_vert</mat-icon>
+      </button>
+    </div>
   </mat-nav-list>
 </div>

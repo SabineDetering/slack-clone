@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Channel } from 'src/models/channel.class';
 import { DataService } from 'src/services/data.service';
 import { DialogAddChannelComponent } from '../dialog-add-channel/dialog-add-channel.component';
 
@@ -30,6 +31,10 @@ export class ChannelListComponent implements OnInit {
   openAddChannelDialog(event: Event) {
     event.stopPropagation();
     this.dialog.open(DialogAddChannelComponent);
+  }
+
+  setCurrentChannel(channel:Channel) {
+    this.Data.currentChannel = channel;
   }
 
 
