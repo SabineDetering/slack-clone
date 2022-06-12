@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ThreadMsg } from 'src/models/threadMsg.class';
+import { Message } from 'src/models/message.class';
 import { DataService } from 'src/services/data.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { DataService } from 'src/services/data.service';
 })
 export class InputboxComponent implements OnInit {
 
-  private threadMsg = new ThreadMsg();
+  private message = new Message();
 
   constructor(private data: DataService) {}
 
@@ -17,9 +17,9 @@ export class InputboxComponent implements OnInit {
 
   saveNewThreadMsg(inputText: string) {
     if (inputText.length > 0) {
-      this.threadMsg.messageText = inputText;
-      this.threadMsg.timestamp = new Date().getTime();
-      this.data.saveThreadMsg(this.threadMsg);
+      this.message.messageText = inputText;
+      this.message.timestamp = new Date().getTime();
+      this.data.saveMessage(this.message);
     } else {
       alert('no input');
     }

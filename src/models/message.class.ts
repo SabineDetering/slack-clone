@@ -1,4 +1,4 @@
-export class ThreadMsg {
+export class Message {
 
     threadID: string;
     authorID: string;
