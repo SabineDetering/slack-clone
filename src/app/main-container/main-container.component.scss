@@ -14,13 +14,18 @@ app-inputbox{
 }
 
 .head{
-    @include mix.flex(flex-start,center);    
-    padding-left: 5%;
-    padding-right: 5%;
+    @include mix.flex(flex-start,flex-start, column);  
+    padding: mix.$padding-medium 5%;
     width: 100%;
-    height: 46px;
-    font-size: 1.2rem;
     border-bottom: 1px solid #e0e0e0;
+
+    .channelName{
+        font-weight: bold;
+        font-size: 20px;
+    }
+    .channelDescription{
+
+    }
 }
 
 .threadContainer{

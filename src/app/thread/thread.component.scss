@@ -5,6 +5,11 @@
     @include mix.flex(center, flex-start, row, 12px);
     width: 90%;
     padding: mix.$padding-medium;
+    border-radius: 12px;
+
+    &:hover{
+        background-color: rgba(106, 104, 104, 0.043);
+    }
 }
 
 .author {

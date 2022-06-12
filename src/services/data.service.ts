@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/comp
 import { Observable } from 'rxjs';
 import { Channel } from 'src/models/channel.class';
 import { DirectMsg } from 'src/models/directMsg.class';
+import { ThreadMsg } from 'src/models/threadMsg.class';
 import { User } from 'src/models/user.class';
 
 
@@ -21,6 +22,11 @@ export class DataService {
   private directMsgCollection: AngularFirestoreCollection<DirectMsg>;
   public directMsg$: Observable<DirectMsg[]>;
 
+  private threadMsgCollection: AngularFirestoreCollection<ThreadMsg>;
+  public threadMsg$: Observable<ThreadMsg[]>;
+
+  public currentChannel: Channel;
+
 
   constructor(private readonly firestore: AngularFirestore) {
 
@@ -32,6 +38,9 @@ export class DataService {
 
     this.directMsgCollection = this.firestore.collection<DirectMsg>('directMsg');
     this.directMsg$ = this.directMsgCollection.valueChanges({ idField: 'directMsgID' });
+   
+    this.threadMsgCollection = this.firestore.collection<ThreadMsg>('threadMsg');
+    this.threadMsg$ = this.threadMsgCollection.valueChanges({ idField: 'threadMsgID' });
   }
 
 
@@ -39,9 +48,12 @@ export class DataService {
     this.channelCollection.doc().set(channel);
   }
 
-  
   saveDirectMsg(directMsg: any) {
     this.directMsgCollection.doc().set(directMsg);
+  }
+
+  saveThreadMsg(threadMsg: any) {
+    this.threadMsgCollection.doc().set(threadMsg);
   }
 
 

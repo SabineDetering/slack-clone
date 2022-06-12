@@ -9,7 +9,7 @@ export class ThreadMsg {
     constructor(obj?: any) {
         this.threadID = obj ? obj.threadID : '';
         this.authorID = obj ? obj.authorID : '';
-        this.timestamp = obj ? obj.timestamp : '';
+        this.timestamp = obj ? obj.timestamp : new Date().getTime();
         this.messageText = obj ? obj.messageText : '';
         this.images = obj ? obj.images : [];
     }

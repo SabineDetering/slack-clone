@@ -3,7 +3,7 @@
     <span>I</span>
     <mat-icon aria-hidden="false" aria-label="send-icon">code</mat-icon>
 </div>
-<textarea rows="1" placeholder="Write a channel message ..."></textarea>
+<textarea #inputfield rows="1" placeholder="Write a channel message ..."></textarea>
 <div class="footer">
-    <mat-icon aria-hidden="false" aria-label="send-icon">send</mat-icon>
+    <mat-icon (click)="saveNewThreadMsg(inputfield.value)" aria-hidden="false" aria-label="send-icon">send</mat-icon>
 </div>
