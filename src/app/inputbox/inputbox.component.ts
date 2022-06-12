@@ -24,4 +24,16 @@ export class InputboxComponent implements OnInit {
       alert('no input');
     }
   }
+
+  makeBold(){
+    document.execCommand('bold');
+  }
+
+  makeItalic(){
+    document.execCommand('italic');
+  }
+
+  toCodeFormat(){
+    document.execCommand('italic');
+  }
 }
