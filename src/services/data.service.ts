@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Channel } from 'src/models/channel.class';
 import { DirectMsg } from 'src/models/directMsg.class';
 import { ThreadMsg } from 'src/models/threadMsg.class';
@@ -25,7 +25,7 @@ export class DataService {
   private threadMsgCollection: AngularFirestoreCollection<ThreadMsg>;
   public threadMsg$: Observable<ThreadMsg[]>;
 
-  public currentChannel: Channel = new Channel();
+  public currentChannel$: BehaviorSubject<any> = new BehaviorSubject(new Channel());
 
 
   constructor(private readonly firestore: AngularFirestore) {
@@ -40,9 +40,13 @@ export class DataService {
     this.directMsg$ = this.directMsgCollection.valueChanges({ idField: 'directMsgID' });
    
     this.threadMsgCollection = this.firestore.collection<ThreadMsg>('threadMsg');
-    this.threadMsg$ = this.threadMsgCollection.valueChanges({ idField: 'threadMsgID' });
+    // this.threadMsg$ = this.threadMsgCollection.valueChanges({ idField: 'threadMsgID' });
   }
 
+
+  getThreadMsgs(channelID: string) {
+    this.threadMsg$ = this.firestore.collection<ThreadMsg>('threadMsg', ref => ref.where('channelID', '==', channelID)).valueChanges({ idField: 'threadMsgID' });
+  }
 
   saveChannel(channel: any) {
     this.channelCollection.doc().set(channel);

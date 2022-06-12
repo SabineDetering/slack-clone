@@ -13,8 +13,10 @@ export class MainContainerComponent implements OnInit {
   currentChannel: Channel;
 
   constructor(public Data: DataService) { 
-  //  this.Data.currentChannel = this.currentChannel;
-   console.log(this.Data.currentChannel);
+    this.Data.currentChannel$.subscribe(channel => {
+      this.currentChannel = channel;
+   console.log(this.currentChannel)})
+
    }
 
   ngOnInit(): void {
