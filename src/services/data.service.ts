@@ -25,7 +25,7 @@ export class DataService {
   private threadMsgCollection: AngularFirestoreCollection<ThreadMsg>;
   public threadMsg$: Observable<ThreadMsg[]>;
 
-  public currentChannel: Channel;
+  public currentChannel: Channel = new Channel();
 
 
   constructor(private readonly firestore: AngularFirestore) {

@@ -10,8 +10,11 @@ import { DataService } from 'src/services/data.service';
 })
 export class MainContainerComponent implements OnInit {
 
-  constructor(private data: DataService) { 
-   
+  currentChannel: Channel;
+
+  constructor(public Data: DataService) { 
+  //  this.Data.currentChannel = this.currentChannel;
+   console.log(this.Data.currentChannel);
    }
 
   ngOnInit(): void {
