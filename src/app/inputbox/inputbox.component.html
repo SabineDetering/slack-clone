@@ -1,7 +1,8 @@
 <div class="toolbar">
-    <span>B</span>
-    <span>I</span>
-    <mat-icon aria-hidden="false" aria-label="send-icon">code</mat-icon>
+    <button (click)="makeBold()">B</button>
+    <button (click)="makeItalic()">I</button>
+    <button (click)="toCodeFormat()"><mat-icon aria-hidden="false" aria-label="send-icon">code</mat-icon></button>
+    
 </div>
 <textarea #inputfield rows="1" placeholder="Write a channel message ..."></textarea>
 <div class="footer">
