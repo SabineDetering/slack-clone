@@ -33,6 +33,26 @@
         width: 100%;
         @include mix.flex($justify: space-between, $align: center);
 
+        .left-part {
+            @include mix.flex($align: center, $gap: 8px);
+
+            .icon-with-number {
+                position: relative;
+
+                img {
+                    width: 32px;
+                }
+                .number{
+                    position:absolute;
+                    bottom:0;
+                    right:-4px;
+                    padding:0 4px;
+                    background-color: mix.$primary-color;
+                    border-radius: 50%;
+                }
+            }
+        }
+
         .more-btn {
             visibility: hidden;
         }

@@ -38,5 +38,4 @@ export class ChannelListComponent implements OnInit {
     await this.Data.getThreadsFromChannelID(channel.channelID);
   }
 
-
 }

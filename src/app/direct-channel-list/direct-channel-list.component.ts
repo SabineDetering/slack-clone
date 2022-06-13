@@ -29,13 +29,13 @@ export class DirectChannelListComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.users = await firstValueFrom(this.Data.users$);
 
-    //subscribe directChannels and merge with users to get participant names
-    this.Data.directChannels$.subscribe(actuals => {
-      this.directChannels = actuals
+    //subscribe directChannels and merge with users to get participant names excluding logged in user
+    this.Data.directChannels$.subscribe(data => {
+      this.directChannels = data
         .map(dc => {
           dc = new DirectChannel(dc);
           dc.directChannelName = this.users
-            .filter(user => dc.directChannelMembers.includes(user.userID) && user.userID!=this.loggedInUserID)
+            .filter(user => dc.directChannelMembers.includes(user.userID) && user.userID != this.loggedInUserID)
             .map(user => user.userName)
             .sort()
             .join(', ');
@@ -54,6 +54,11 @@ export class DirectChannelListComponent implements OnInit {
   openAddDirectChannelDialog(event: Event) {
     event.stopPropagation();
     this.dialog.open(DialogAddDirectChannelComponent);
+  }
+
+  async setCurrentDirectChannel(directChannel: DirectChannel) {
+    this.Data.currentDirectChannel$.next(directChannel);
+    this.Data.getThreadsFromChannelID(directChannel.directChannelID);
   }
 
 }

@@ -6,7 +6,8 @@
     padding: mix.$padding-main 0 0 mix.$padding-main;
     width: 100%;
     cursor: pointer;
-    .channel-header-left{
+
+    .channel-header-left {
         @include mix.flex();
     }
 
@@ -31,6 +32,17 @@
         padding-left: mix.$padding-main;
         width: 100%;
         @include mix.flex($justify: space-between, $align: center);
+
+        .left-part {
+            @include mix.flex($align: center, $gap: 8px);
+
+            .icon {
+                display: block;
+                width: 32px;
+                min-width: 32px;
+                text-align: right;
+            }
+        }
 
         .more-btn {
             visibility: hidden;
