@@ -31,22 +31,16 @@ export class DirectChannelListComponent implements OnInit {
 
     //subscribe directChannels and merge with users to get participant names
     this.Data.directChannels$.subscribe(actuals => {
-      // this.directChannels = actuals;
-      this.directChannels = actuals.map(dc => {
-        dc = new DirectChannel(dc);
-        console.log('imported dc', dc);
-        let names = [];
-        for (let i = 0; i < dc.directChannelMembers.length; i++) {
-          const memberID = dc.directChannelMembers[i];
-          if (memberID != this.loggedInUserID) {//replace with user from authentication
-            let name = this.users.filter(user => user.userID == memberID).map(user => user.userName)[0];
-            names.push(name);
-          }
-        }
-        dc.directChannelName = names.sort().join(', ');
-        return dc;
-      })
-      console.log('YEAHHHHHH', this.directChannels);
+      this.directChannels = actuals
+        .map(dc => {
+          dc = new DirectChannel(dc);
+          dc.directChannelName = this.users
+            .filter(user => dc.directChannelMembers.includes(user.userID))
+            .map(user => user.userName)
+            .sort()
+            .join(', ');
+          return dc;
+        })
     })
 
 

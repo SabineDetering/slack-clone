@@ -6,6 +6,9 @@
     padding: mix.$padding-main 0 0 mix.$padding-main;
     width: 100%;
     cursor: pointer;
+    .channel-header-left{
+        @include mix.flex();
+    }
 
     .add-btn {
         visibility: hidden;

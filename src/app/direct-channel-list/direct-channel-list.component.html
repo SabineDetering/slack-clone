@@ -1,7 +1,11 @@
-<div class="dirct-channel-container">
-  <div class="direct-channel-header" (click)="toggleDirectChannels($event)">
-    <mat-icon>{{ directChannelsOpen ? "arrow_drop_down" : "arrow_right" }}</mat-icon>
-    <h3>Direct Messages</h3>
+<div class="channel-container">
+  <div class="channel-header" (click)="toggleDirectChannels($event)">
+    <div class="channel-header-left">
+      <mat-icon
+        >{{ directChannelsOpen ? "arrow_drop_down" : "arrow_right" }}
+      </mat-icon>
+      <h3>Direct Messages</h3>
+    </div>
     <button
       mat-icon-button
       title="Add new chat"
@@ -13,12 +17,18 @@
   </div>
 
   <mat-nav-list *ngIf="directChannelsOpen" class="direct-channel-list">
-    <ng-container *ngFor="let directChannel of directChannels | orderBy: 'directChannelName'"
+    <ng-container
+      *ngFor="
+        let directChannel of directChannels | orderBy: 'directChannelName'
+      "
       ><div
         *ngIf="directChannel.directChannelMembers.includes(loggedInUserID)"
         class="direct-channel-list-item"
       >
-        <a list-item [routerLink]="['/direct-channel/' + directChannel.directChannelID]">
+        <a
+          list-item
+          [routerLink]="['/direct-channel/' + directChannel.directChannelID]"
+        >
           {{ directChannel.directChannelName }}
         </a>
         <button mat-icon-button title="More" class="more-btn">

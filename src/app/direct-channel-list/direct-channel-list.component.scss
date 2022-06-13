@@ -1,11 +1,15 @@
 @use '../../styles/mixins' as mix; //also imports _variables.scss
 
 
-.direct-channel-header {
+.channel-header {
     @include mix.flex(space-between, center);
     padding: mix.$padding-main mix.$padding-main 0 mix.$padding-main;
     width: 100%;
     cursor: pointer;
+
+    .channel-header-left {
+        @include mix.flex();
+    }
 
     .add-btn {
         visibility: hidden;

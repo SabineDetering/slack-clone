@@ -1,7 +1,11 @@
 <div class="channel-container">
   <div class="channel-header" (click)="toggleChannels($event)">
-    <mat-icon>{{ channelsOpen ? "arrow_drop_down" : "arrow_right" }}</mat-icon>
-    <h3>Channel</h3>
+    <div class="channel-header-left">
+      <mat-icon>{{
+        channelsOpen ? "arrow_drop_down" : "arrow_right"
+      }}</mat-icon>
+      <h3>Channel</h3>
+    </div>
     <button
       mat-icon-button
       title="Add new channel"
@@ -13,17 +17,18 @@
   </div>
 
   <mat-nav-list *ngIf="channelsOpen" class="channel-list">
-    <div class="channel-list-item"
+    <div
+      class="channel-list-item"
       *ngFor="let channel of Data.channels$ | async | orderBy: 'channelName'"
     >
-      <a list-item [routerLink]="['/channel/' + channel.channelID]" (click)="setCurrentChannel(channel)">
+      <a
+        list-item
+        [routerLink]="['/channel/' + channel.channelID]"
+        (click)="setCurrentChannel(channel)"
+      >
         # {{ channel.channelName }}
       </a>
-      <button
-        mat-icon-button
-        title="More"
-        class="more-btn"
-      >
+      <button mat-icon-button title="More" class="more-btn">
         <mat-icon> more_vert</mat-icon>
       </button>
     </div>

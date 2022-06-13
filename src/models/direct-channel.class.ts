@@ -1,19 +1,18 @@
 export class DirectChannel {
     directChannelID: string;
-    directChannelName: string = '';
     directChannelMembers: string[];
+    directChannelName: string = '';//property is filled dynamically dependent on logged in user
 
     constructor(obj?: any) {
         this.directChannelID = obj ? obj.directChannelID : '';
         this.directChannelMembers = obj ? obj.directChannelMembers : [];
-        this.directChannelName = obj ? obj.directChannelName : '';
     }
+
 
     toJSON() {
         return {
             directChannelID: this.directChannelID,
-            directChannelMembers: this.directChannelMembers,
-            directChannelName: this.directChannelName
+            directChannelMembers: this.directChannelMembers
         }
     }
 
