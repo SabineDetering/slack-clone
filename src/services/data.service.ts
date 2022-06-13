@@ -23,13 +23,15 @@ export class DataService {
   private directChannelCollection: AngularFirestoreCollection<DirectChannel>;
   public directChannels$: Observable<DirectChannel[]>;
 
-  public threads$: Observable<Thread[]>;  // all threads in a channel
+  public threads$: Observable<Thread[]>; // all threads in a channel
   private messageCollection: AngularFirestoreCollection<Message>;
 
-  public currentChannel$: BehaviorSubject<any> = new BehaviorSubject(new Channel());
-  public currentDirectChannel$: BehaviorSubject<DirectChannel> = new BehaviorSubject(new DirectChannel());
+  public currentChannel$: BehaviorSubject<any> = new BehaviorSubject(
+    new Channel()
+  );
+  public currentDirectChannel$: BehaviorSubject<DirectChannel> =
+    new BehaviorSubject(new DirectChannel());
 
- 
   constructor(private readonly firestore: AngularFirestore) {
     this.channelCollection = this.firestore.collection<Channel>('channels');
     this.channels$ = this.channelCollection.valueChanges({
@@ -39,15 +41,17 @@ export class DataService {
     this.userCollection = this.firestore.collection<User>('users');
     this.users$ = this.userCollection.valueChanges({ idField: 'userID' });
 
-    this.directChannelCollection = this.firestore.collection<DirectChannel>('direct-channels');
-    this.directChannels$ = this.directChannelCollection.valueChanges({ idField: 'directChannelID' });
-   
-    // this.threadCollection = this.firestore.collection<Thread>('threads');
+    this.directChannelCollection =
+      this.firestore.collection<DirectChannel>('direct-channels');
+    this.directChannels$ = this.directChannelCollection.valueChanges({
+      idField: 'directChannelID',
+    });
   }
 
-
-  getThreadsFromChannelID(channelID: string) {
-    this.threads$ = this.firestore
+  getThreadsFromChannelID(channelID: string): void {
+    console.log('getThreadsFromChannelID');
+    
+   this.threads$ = this.firestore
       .collection<Thread>('threads', (ref) =>
         ref.where('channelID', '==', channelID)
       )

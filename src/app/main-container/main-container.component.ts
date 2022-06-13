@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';;
 import { Channel } from 'src/models/channel.class';
+import { Thread } from 'src/models/thread.class';
 import { DataService } from 'src/services/data.service';
 
 @Component({
@@ -10,15 +11,19 @@ import { DataService } from 'src/services/data.service';
 export class MainContainerComponent implements OnInit {
 
   currentChannel: Channel;
+  threads: Thread[] = [];
 
   constructor(public Data: DataService) { 
     this.Data.currentChannel$.subscribe(channel => {
       this.currentChannel = channel;
-   console.log(this.currentChannel)})
-
+    });
    }
 
   ngOnInit(): void {
+    // this.Data.threads$.subscribe(threads => { 
+    //   console.log( this.Data.threads$);
+      
+    //     });
   }
 
 }

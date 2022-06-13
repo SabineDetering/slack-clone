@@ -35,6 +35,7 @@ export class ChannelListComponent implements OnInit {
 
   setCurrentChannel(channel:Channel) {
     this.Data.currentChannel$.next(channel);
+    this.Data.getThreadsFromChannelID(channel.channelID);
   }
 
 

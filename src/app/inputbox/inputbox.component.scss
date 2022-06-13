@@ -39,6 +39,19 @@ textarea {
     padding: mix.$padding-medium;
 }
 
+button{
+    background: none;
+    height: 24px;
+    border: none;
+    border-radius: 4px;
+    padding-left: 12px;
+    padding-right: 12px;
+
+    &:hover{
+        background: lightgrey;
+    }
+}
+
 mat-icon {
     font-size: 20px;
     opacity: 0.8;
