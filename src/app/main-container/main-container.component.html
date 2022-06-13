@@ -7,10 +7,11 @@
 </div>
 
 <div class="threadContainer">
-   <app-message *ngFor="let thread of Data.currentThreads$ | async ;index as i"></app-message>
+    <app-message [currenThread]="thread" *ngFor="let thread of Data.currentThreads$ | async ;index as i"></app-message>
+    <div class="bottomRow">
+        <p>3 Antworten (platzhalter)</p>
+        <button>Open Thread</button>
+    </div>
 </div>
 
 <app-inputbox></app-inputbox>
-
-
-
