@@ -35,15 +35,13 @@ export class DirectChannelListComponent implements OnInit {
         .map(dc => {
           dc = new DirectChannel(dc);
           dc.directChannelName = this.users
-            .filter(user => dc.directChannelMembers.includes(user.userID))
+            .filter(user => dc.directChannelMembers.includes(user.userID) && user.userID!=this.loggedInUserID)
             .map(user => user.userName)
             .sort()
             .join(', ');
           return dc;
         })
     })
-
-
   }
 
 
