@@ -26,7 +26,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 
 import { ChannelListComponent } from './channel-list/channel-list.component';
-import { ThreadsComponent } from './threads/threads.component';
+import { ThreadContainerComponent } from './thread-container/thread-container.component';
 import { DirectChannelListComponent } from './direct-channel-list/direct-channel-list.component';
 import { DialogAddChannelComponent } from './dialog-add-channel/dialog-add-channel.component';
 import { LoginComponent } from './login/login.component';
@@ -40,7 +40,7 @@ import { OrderByPipe } from 'src/pipes/order-by-pipe.pipe';
   declarations: [
     AppComponent,
     ChannelListComponent,
-    ThreadsComponent,
+    ThreadContainerComponent,
     DirectChannelListComponent,
     DialogAddChannelComponent,
     LoginComponent,

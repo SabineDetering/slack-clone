@@ -1,0 +1,21 @@
+@use '../../styles/_mixins.scss' as mix;
+
+
+:host{
+width: 30%;
+}
+
+.head{
+ @include mix.flex(flex-start,flex-start, column);  
+ padding: mix.$padding-medium 5%;
+ width: 100%;
+ border-bottom: 1px solid #e0e0e0;
+
+ .threadTitle{
+     font-weight: bold;
+     font-size: 20px;
+ }
+ .threadDescription{
+
+ }
+}
