@@ -20,4 +20,12 @@ export class ThreadContainerComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getThreadDescription(){
+    if(this.currentChannel instanceof Channel){
+      return this.currentChannel.channelName
+    } else{
+      return this.currentChannel.directChannelMembers
+    }
+  }
+
 }
