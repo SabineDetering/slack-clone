@@ -6,5 +6,5 @@
 </div>
 <textarea #inputfield rows="1" placeholder="Write a channel message ..."></textarea>
 <div class="footer">
-    <mat-icon (click)="saveNewThreadMsg(inputfield.value)" aria-hidden="false" aria-label="send-icon">send</mat-icon>
+    <mat-icon (click)="saveUserInput('channel', inputfield.value)" aria-hidden="false" aria-label="send-icon">send</mat-icon>
 </div>
