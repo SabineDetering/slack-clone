@@ -31,8 +31,8 @@ export class DirectChannelListComponent implements OnInit {
 
     //subscribe directChannels and merge with users to get participant names
     this.Data.directChannels$.subscribe(actuals => {
-      this.directChannels = actuals;
-      this.directChannels.forEach(dc => {
+      // this.directChannels = actuals;
+      this.directChannels = actuals.map(dc => {
         dc = new DirectChannel(dc);
         console.log('imported dc', dc);
         let names = [];
@@ -44,8 +44,12 @@ export class DirectChannelListComponent implements OnInit {
           }
         }
         dc.directChannelName = names.sort().join(', ');
+        return dc;
       })
+      console.log('YEAHHHHHH', this.directChannels);
     })
+
+
   }
 
 
