@@ -55,18 +55,23 @@ export class DataService {
   }
 
   getThreadsFromChannelID(channelID: string): void {
-      this.firestore
-        .collection<Thread>('threads', (ref) =>
-          ref.where('channelID', '==', channelID)
-        )
-        .valueChanges({ idField: 'threadID' })
-        .subscribe((threads) => {
-          this.currentThreads$.next(threads);
-        });
+    this.firestore
+      .collection<Thread>('threads', (ref) =>
+        ref.where('channelID', '==', channelID)
+      )
+      .valueChanges({ idField: 'threadID' })
+      .subscribe((threads) => {
+        this.currentThreads$.next(threads);
+      });
   }
 
-  saveChannel(channel: any) {
-    this.channelCollection.doc().set(channel);
+  addChannel(channel: any) {
+    this.channelCollection.add(channel);
+  }
+
+
+  saveEditedChannel(channel: any) {
+    this.channelCollection.doc(channel.channelID).set(channel);
   }
 
   saveDirectChannel(directChannel: any) {

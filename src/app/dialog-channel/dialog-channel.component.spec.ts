@@ -5,11 +5,11 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { environment } from 'src/environments/environment';
 
-import { DialogAddChannelComponent } from './dialog-add-channel.component';
+import { DialogChannelComponent } from './dialog-channel.component';
 
-describe('DialogAddChannelComponent', () => {
-  let component: DialogAddChannelComponent;
-  let fixture: ComponentFixture<DialogAddChannelComponent>;
+describe('DialogChannelComponent', () => {
+  let component: DialogChannelComponent;
+  let fixture: ComponentFixture<DialogChannelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -19,7 +19,7 @@ describe('DialogAddChannelComponent', () => {
         AngularFireModule.initializeApp(environment.firebase),
         MatSnackBarModule
       ],
-      declarations: [DialogAddChannelComponent],
+      declarations: [DialogChannelComponent],
       providers: [
         { provide: MatDialogRef, useValue: {} },
       ]
@@ -28,7 +28,7 @@ describe('DialogAddChannelComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DialogAddChannelComponent);
+    fixture = TestBed.createComponent(DialogChannelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

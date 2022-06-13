@@ -10,7 +10,7 @@
       mat-icon-button
       title="Add new channel"
       class="add-btn"
-      (click)="openAddChannelDialog($event)"
+      (click)="openChannelDialog();$event.stopPropagation()"
     >
       <mat-icon>add</mat-icon>
     </button>
@@ -28,9 +28,17 @@
         <span class="icon"># </span>
         <span>{{ channel.channelName }}</span>
       </div>
-      <button mat-icon-button title="More" class="more-btn">
+      <button
+        mat-icon-button
+        title="More"
+        class="more-btn"
+        [matMenuTriggerFor]="menu"
+      >
         <mat-icon> more_vert</mat-icon>
       </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="openChannelDialog(channel)">Edit</button>
+      </mat-menu>
     </a>
   </mat-nav-list>
 </div>

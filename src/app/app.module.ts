@@ -24,17 +24,19 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { ChannelListComponent } from './channel-list/channel-list.component';
 import { ThreadContainerComponent } from './thread-container/thread-container.component';
 import { DirectChannelListComponent } from './direct-channel-list/direct-channel-list.component';
-import { DialogAddChannelComponent } from './dialog-add-channel/dialog-add-channel.component';
+import { DialogChannelComponent } from './dialog-channel/dialog-channel.component';
 import { LoginComponent } from './login/login.component';
 import { MainContainerComponent } from './main-container/main-container.component';
 import { InputboxComponent } from './inputbox/inputbox.component';
 import { DialogAddDirectChannelComponent } from './dialog-add-direct-channel/dialog-add-direct-channel.component';
 import { OrderByPipe } from 'src/pipes/order-by-pipe.pipe';
 import { MessageComponent } from './message/message.component';
+import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -42,13 +44,14 @@ import { MessageComponent } from './message/message.component';
     ChannelListComponent,
     ThreadContainerComponent,
     DirectChannelListComponent,
-    DialogAddChannelComponent,
+    DialogChannelComponent,
     LoginComponent,
     MainContainerComponent,
     InputboxComponent,
     DialogAddDirectChannelComponent,
     OrderByPipe,
-    MessageComponent
+    MessageComponent,
+    DialogConfirmationComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +74,8 @@ import { MessageComponent } from './message/message.component';
     MatSnackBarModule,
     MatExpansionModule,
     MatListModule,
-    MatSelectModule
+    MatSelectModule,
+    MatMenuModule
 
   ],
   providers: [

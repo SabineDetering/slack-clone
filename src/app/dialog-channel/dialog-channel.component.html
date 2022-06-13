@@ -20,6 +20,7 @@
       <input
         [(ngModel)]="channel.channelName"
         name="channelName"
+        placeholder="channel name"
         #channelName="ngModel"
         matInput
         minlength="3"
@@ -59,7 +60,7 @@
     mat-button
     mat-dialog-close
     [disabled]="!addChannelForm.valid"
-    (click)="saveChannel()"
+    (click)="channel.channelID ? saveEditedChannel() : addChannel()"
   >
     Save
   </button>
