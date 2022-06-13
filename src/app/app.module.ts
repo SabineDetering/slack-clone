@@ -31,10 +31,10 @@ import { DirectChannelListComponent } from './direct-channel-list/direct-channel
 import { DialogAddChannelComponent } from './dialog-add-channel/dialog-add-channel.component';
 import { LoginComponent } from './login/login.component';
 import { MainContainerComponent } from './main-container/main-container.component';
-import { ThreadComponent } from './thread/thread.component';
 import { InputboxComponent } from './inputbox/inputbox.component';
 import { DialogAddDirectChannelComponent } from './dialog-add-direct-channel/dialog-add-direct-channel.component';
 import { OrderByPipe } from 'src/pipes/order-by-pipe.pipe';
+import { MessageComponent } from './message/message.component';
 
 @NgModule({
   declarations: [
@@ -45,10 +45,10 @@ import { OrderByPipe } from 'src/pipes/order-by-pipe.pipe';
     DialogAddChannelComponent,
     LoginComponent,
     MainContainerComponent,
-    ThreadComponent,
     InputboxComponent,
     DialogAddDirectChannelComponent,
-    OrderByPipe
+    OrderByPipe,
+    MessageComponent
   ],
   imports: [
     BrowserModule,

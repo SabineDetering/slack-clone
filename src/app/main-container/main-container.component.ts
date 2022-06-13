@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';;
 import { Channel } from 'src/models/channel.class';
 import { DataService } from 'src/services/data.service';
 
