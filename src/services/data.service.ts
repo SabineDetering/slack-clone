@@ -3,12 +3,13 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { Channel } from 'src/models/channel.class';
 import { DirectChannel } from 'src/models/direct-channel.class';
 import { Thread } from 'src/models/thread.class';
 import { Message } from 'src/models/message.class';
 import { User } from 'src/models/user.class';
+import { ThisReceiver } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,7 @@ export class DataService {
   private directChannelCollection: AngularFirestoreCollection<DirectChannel>;
   public directChannels$: Observable<DirectChannel[]>;
 
-  public threads$: Observable<Thread[]>; // all threads in a channel
+  public currentThreads$: BehaviorSubject<Thread[]> = new BehaviorSubject([]);
   private threadsCollection: AngularFirestoreCollection<Thread>;
 
   private messageCollection: AngularFirestoreCollection<Message>;
@@ -33,6 +34,7 @@ export class DataService {
   );
   public currentDirectChannel$: BehaviorSubject<DirectChannel> =
     new BehaviorSubject(new DirectChannel());
+
 
   constructor(private readonly firestore: AngularFirestore) {
     this.channelCollection = this.firestore.collection<Channel>('channels');
@@ -52,11 +54,14 @@ export class DataService {
   }
 
   getThreadsFromChannelID(channelID: string): void {
-    this.threads$ = this.firestore
-      .collection<Thread>('threads', (ref) =>
-        ref.where('channelID', '==', channelID)
-      )
-      .valueChanges({ idField: 'threadID' });
+      this.firestore
+        .collection<Thread>('threads', (ref) =>
+          ref.where('channelID', '==', channelID)
+        )
+        .valueChanges({ idField: 'threadID' })
+        .subscribe((threads) => {
+          this.currentThreads$.next(threads);
+        });
   }
 
   saveChannel(channel: any) {
@@ -67,16 +72,13 @@ export class DataService {
     this.directChannelCollection.doc().set(directChannel);
   }
 
-  saveMessage(message: Message) {
+  saveMessage(message: any) {
+    this.messageCollection = this.firestore.collection<Message>('messages');
     this.messageCollection.doc().set(message);
   }
 
   saveThread(thread: any) {
-    console.log('saveThread', thread);
-    
     this.threadsCollection = this.firestore.collection<Thread>('threads');
     this.threadsCollection.doc().set(thread);
   }
-
-
 }

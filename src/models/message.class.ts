@@ -4,7 +4,7 @@ export class Message {
     authorID: string;
     timestamp: any;
     messageText: string;
-    images: [];
+    images?: [];
 
     constructor(obj?: any) {
         this.threadID = obj ? obj.threadID : '';
@@ -19,7 +19,7 @@ export class Message {
             threadID: this.threadID,
             authorID: this.authorID,
             timestamp: this.timestamp, 
-            messageTxt:   this.messageText,
+            messageText: this.messageText,
             images: this.images,
                 }
     }

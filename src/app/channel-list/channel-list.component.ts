@@ -33,9 +33,9 @@ export class ChannelListComponent implements OnInit {
     this.dialog.open(DialogAddChannelComponent);
   }
 
-  setCurrentChannel(channel:Channel) {
+  async setCurrentChannel(channel:Channel) {
     this.Data.currentChannel$.next(channel);
-    this.Data.getThreadsFromChannelID(channel.channelID);
+    await this.Data.getThreadsFromChannelID(channel.channelID);
   }
 
 

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { Channel } from 'src/models/channel.class';
 import { Message } from 'src/models/message.class';
 import { Thread } from 'src/models/thread.class';
@@ -11,62 +11,61 @@ import { DataService } from 'src/services/data.service';
 })
 export class InputboxComponent implements OnInit {
 
-  private message = new Message();
+  private newMessage = new Message();
   private newThread = new Thread();
   private currentChannel: Channel;
-  
+  public userInput: string = ''; // ngModel Input
+  private currentTime = new Date().getTime();
 
-
-  constructor(private Data: DataService) {
-
-    console.log('currChannel',this.currentChannel);
-  }
+  constructor(private Data: DataService) {}
 
   ngOnInit(): void {}
 
-  async saveUserInput(typeOfMessage: string, inputText: string) {  // type can be "channel" or "directChannel" (=directMessage)
-    if (inputText.length > 0) {
-     await this.createNewThread(typeOfMessage, inputText);
-      // this.saveMessage(inputText);
-     
-      // create a new Thread to Database
-      // this.newThread.type = typeOfMessage;
-      // this.newThread.channelID = this.currentChannel.channelID;
-      // this.message.messageText = inputText;
-      // this.message.timestamp = new Date().getTime();
-      // this.Data.saveMessage(this.message);
+  async saveUserInput(typeOfMessage: string) {
+    if (this.userInput.length > 0) {
+      await this.createNewThread(typeOfMessage);
+      this.saveMessage();
+      this.clearInputfield();
     } else {
       alert('no input');
     }
   }
 
-  async createNewThread(typeOfMessage: string, inputText: string) {
+  clearInputfield(){
+    this.userInput = '';
+  }
+
+  async createNewThread(typeOfMessage: string) {
     this.currentChannel = await this.Data.currentChannel$.getValue();
+    let uniqueThreadID = this.currentChannel.channelID + this.currentTime;
+
+    this.newThread.threadID = uniqueThreadID; // set custom ThreadID to use it for this thread and saveMessage()
     this.newThread.type = typeOfMessage;
     this.newThread.channelID = this.currentChannel.channelID;
-    this.newThread.firstMessage = inputText;
+    this.newThread.firstMessage = this.userInput;
     this.Data.saveThread(this.newThread.toJSON());
   }
 
   // TODO --> user and image saving to storage
-  saveMessage(inputText: string, image?: string) {
-    // this.message.threadID = this.newThread.threadID;
-    // this.message.authorID = this.Data.currentUser.userID;  // need to be set when authenitcation is creatd
-    this.message.timestamp = new Date().getTime();
-    this.message.messageText = inputText;
+  saveMessage(image?: string) {
+    this.newMessage.threadID = this.newThread.threadID;
+    // this.newMessage.authorID = this.Data.currentUser.userID;  // need to be set when authenitcation is creatd
     // this.message.images = image;
-    this.Data.saveMessage(this.message);
+    this.newMessage.timestamp = this.currentTime;
+    this.newMessage.messageText = this.userInput;
+    this.Data.saveMessage(this.newMessage.toJSON());
   }
 
-  makeBold(){
+  //  WYSWYG TextEditor
+  makeBold() {
     document.execCommand('bold');
   }
 
-  makeItalic(){
+  makeItalic() {
     document.execCommand('italic');
   }
 
-  toCodeFormat(){
+  toCodeFormat() {
     document.execCommand('italic');
   }
 }

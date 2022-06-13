@@ -7,7 +7,7 @@
 </div>
 
 <div class="threadContainer">
-   <app-message *ngFor="let thread of Data.threads$ | async ;index as i"></app-message>
+   <app-message *ngFor="let thread of Data.currentThreads$ | async ;index as i"></app-message>
 </div>
 
 <app-inputbox></app-inputbox>
