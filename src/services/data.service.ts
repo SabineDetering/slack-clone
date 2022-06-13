@@ -54,6 +54,7 @@ export class DataService {
     });
   }
 
+
   getThreadsFromChannelID(channelID: string): void {
     this.firestore
       .collection<Thread>('threads', (ref) =>
@@ -65,6 +66,7 @@ export class DataService {
       });
   }
 
+
   addChannel(channel: any) {
     this.channelCollection.add(channel);
   }
@@ -74,14 +76,22 @@ export class DataService {
     this.channelCollection.doc(channel.channelID).set(channel);
   }
 
+
+  deleteChannel(channelID: string) {
+    this.channelCollection.doc(channelID).delete();
+  }
+
+  
   saveDirectChannel(directChannel: any) {
     this.directChannelCollection.doc().set(directChannel);
   }
+
 
   saveMessage(message: any) {
     this.messageCollection = this.firestore.collection<Message>('messages');
     this.messageCollection.doc().set(message);
   }
+
 
   saveThread(thread: any) {
     this.threadsCollection = this.firestore.collection<Thread>('threads');
