@@ -4,7 +4,7 @@
     <button (click)="toCodeFormat()"><mat-icon aria-hidden="false" aria-label="send-icon">code</mat-icon></button>
     
 </div>
-<textarea [(ngModel)]="userInput" (keyup.enter)="saveUserInput('channel')" rows="1" placeholder="Write a channel message ..."></textarea>
+<textarea [(ngModel)]="userInput" (keyup.enter)="saveUserInput()" rows="1" placeholder="Write a channel message ..."></textarea>
 <div class="footer">
-    <mat-icon (click)="saveUserInput('channel')"  aria-hidden="false" aria-label="send-icon">send</mat-icon>
+    <mat-icon (click)="saveUserInput()"  aria-hidden="false" aria-label="send-icon">send</mat-icon>
 </div>

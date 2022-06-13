@@ -13,6 +13,7 @@ export class InputboxComponent implements OnInit {
 
   private newMessage = new Message();
   private newThread = new Thread();
+
   private currentChannel: Channel;
   public userInput: string = ''; // ngModel Input
   private currentTime = new Date().getTime();
@@ -21,9 +22,9 @@ export class InputboxComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  async saveUserInput(typeOfMessage: string) {
+  async saveUserInput() {
     if (this.userInput.length > 0) {
-      await this.createNewThread(typeOfMessage);
+      await this.createNewThread();
       this.saveMessage();
       this.clearInputfield();
     } else {
@@ -35,15 +36,14 @@ export class InputboxComponent implements OnInit {
     this.userInput = '';
   }
 
-  async createNewThread(typeOfMessage: string) {
+  async createNewThread() {
     this.currentChannel = await this.Data.currentChannel$.getValue();
     let uniqueThreadID = this.currentChannel.channelID + this.currentTime;
-
+    
     this.newThread.threadID = uniqueThreadID; // set custom ThreadID to use it for this thread and saveMessage()
-    this.newThread.type = typeOfMessage;
     this.newThread.channelID = this.currentChannel.channelID;
-    this.newThread.firstMessage = this.userInput;
     this.Data.saveThread(this.newThread.toJSON());
+    // this.newThread.firstMessage = this.userInput;
   }
 
   // TODO --> user and image saving to storage

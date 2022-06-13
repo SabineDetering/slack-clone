@@ -32,6 +32,7 @@ export class DataService {
   public currentChannel$: BehaviorSubject<any> = new BehaviorSubject(
     new Channel()
   );
+
   public currentDirectChannel$: BehaviorSubject<DirectChannel> =
     new BehaviorSubject(new DirectChannel());
 
@@ -79,6 +80,6 @@ export class DataService {
 
   saveThread(thread: any) {
     this.threadsCollection = this.firestore.collection<Thread>('threads');
-    this.threadsCollection.doc().set(thread);
+    this.threadsCollection.doc(thread.threadID).set(thread);  // set ID for firebase
   }
 }
