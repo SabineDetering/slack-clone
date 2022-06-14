@@ -10,14 +10,14 @@ import { DataService } from 'src/services/data.service';
 })
 export class MessageComponent implements OnInit {
 
-  @Input()currenThread: Thread;
+  @Input()currentMessage: Message;
   message: Message = new Message();
 
   constructor(public Data: DataService) {
   }
     
   ngOnInit(): void {
-    console.log('currentThread',this.currenThread);
+    console.log('currentThread',this.currentMessage);
   }
 
 

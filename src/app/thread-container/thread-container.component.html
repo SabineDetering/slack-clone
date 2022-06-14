@@ -1,5 +1,10 @@
 <div class="head">
- <span class="threadTitle">Thread</span>
- <span class="threadDescription">{{ getThreadDescription() }}</span>  
- <!-- {{ currentChannel.directChannelMembers ? currentChannel.directChannelMembers : currentChannel.channelName }} -->
+  <span class="threadTitle">Thread</span>
+  <span class="threadDescription">{{ getThreadDescription() }}</span>
+  <!-- {{ currentChannel.directChannelMembers ? currentChannel.directChannelMembers : currentChannel.channelName }} -->
+</div>
+<div class="messagesContainer">
+ <div class="message"  *ngFor="let message of Data.currentMessages$ | async ; index as i">
+     <app-message [currentMessage]="message" ></app-message>
+ </div>
 </div>
