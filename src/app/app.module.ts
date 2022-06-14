@@ -37,6 +37,7 @@ import { DialogAddDirectChannelComponent } from './dialog-add-direct-channel/dia
 import { OrderByPipe } from 'src/pipes/order-by-pipe.pipe';
 import { MessageComponent } from './message/message.component';
 import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
+import { MessageActionsComponent } from './message-actions/message-actions.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confir
     DialogAddDirectChannelComponent,
     OrderByPipe,
     MessageComponent,
-    DialogConfirmationComponent
+    DialogConfirmationComponent,
+    MessageActionsComponent
   ],
   imports: [
     BrowserModule,
