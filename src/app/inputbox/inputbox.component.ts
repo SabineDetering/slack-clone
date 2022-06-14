@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { DocumentReference } from '@angular/fire/compat/firestore';
 import { Channel } from 'src/models/channel.class';
 import { Message } from 'src/models/message.class';
 import { Thread } from 'src/models/thread.class';
@@ -50,6 +49,7 @@ export class InputboxComponent implements OnInit {
   async createNewThread() {
     this.currentChannel = await this.Data.currentChannel$.getValue();
     let uniqueThreadID = this.currentChannel.channelID + this.currentTime;
+    console.log(uniqueThreadID)
     
     this.newThread.threadID = uniqueThreadID; // set custom ThreadID to use it for this thread and saveMessage()
     this.newThread.channelID = this.currentChannel.channelID;
@@ -66,11 +66,14 @@ export class InputboxComponent implements OnInit {
     this.newMessage.timestamp = this.currentTime;
     this.newMessage.messageText = this.userInput;
     const firstMessageId = await this.Data.addMessage(this.newMessage.toJSON());
-    return firstMessageId;
+    return firstMessageId as string;
     // setFirstMessageId in thread
   }
 
-  setFirstMessageInThread(uniqueThreadID: string, firstMessageId: DocumentReference<Message>){
+  setFirstMessageInThread(uniqueThreadID: string, firstMessageId: string){
+    this.newThread.firstMessage = firstMessageId;
+    console.log(this.newThread)
+    this.Data.saveThread(this.newThread.toJSON());
     // will set the first message ID in the new added thread
   }
 

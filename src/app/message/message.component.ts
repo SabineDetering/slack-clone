@@ -6,19 +6,27 @@ import { DataService } from 'src/services/data.service';
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
-  styleUrls: ['./message.component.scss']
+  styleUrls: ['./message.component.scss'],
 })
 export class MessageComponent implements OnInit {
+  @Input() firstMessageId: string = '';
+  @Input() currentMessage: Message;
+  message: Message;
+  messageTime: string;
 
-  @Input()currentMessage: Message;
-  message: Message = new Message();
+  constructor(public Data: DataService) {}
 
-  constructor(public Data: DataService) {
+  async ngOnInit(): Promise<void> {
+    if (this.firstMessageId != '') {
+      this.message = await this.Data.getMessageFromMessageId(
+        this.firstMessageId
+      );
+      this.getMessageTime()
+    }
   }
-    
-  ngOnInit(): void {
-    console.log('currentThread',this.currentMessage);
+
+  getMessageTime(){
+    const date = new Date(this.message.timestamp);
+    this.messageTime = date.getHours() + ':' + date.getMinutes() + ' Uhr';
   }
-
-
 }

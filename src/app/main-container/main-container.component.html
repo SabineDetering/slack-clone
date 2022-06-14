@@ -8,7 +8,7 @@
 
 <div class="threadContainer">
     <div class="thread"  *ngFor="let thread of Data.currentThreads$ | async ;index as i">
-        <app-message [currentMessage]="getFirstThreadMessage()" ></app-message>
+        <app-message [firstMessageId]="thread.firstMessage" ></app-message>
         <div class="bottomRow">
             <p>3 Antworten (platzhalter)</p>
             <button (click)="openThread(thread)">Open Thread</button>

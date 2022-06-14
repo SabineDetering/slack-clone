@@ -78,6 +78,12 @@ export class DataService {
       });
   }
 
+  async getMessageFromMessageId(messageId: string) {
+    return await firstValueFrom(
+      this.messageCollection.doc(messageId).valueChanges()
+    ) as Message;
+  }
+
   addChannel(channel: any) {
     this.channelCollection.add(channel);
   }

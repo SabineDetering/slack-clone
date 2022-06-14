@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Channel } from 'src/models/channel.class';
-import { Message } from 'src/models/message.class';
 import { Thread } from 'src/models/thread.class';
 import { DataService } from 'src/services/data.service';
 
@@ -25,9 +24,6 @@ export class MainContainerComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  getFirstThreadMessage(){
-    return new Message()  // has to be changed
-  }
 
   openThread(thread: Thread){
     this.Data.getMessagesFromThreadID(thread.threadID);
