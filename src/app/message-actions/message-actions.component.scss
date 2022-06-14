@@ -2,20 +2,21 @@
 
 :host{
 @include mix.flex(center, center);    
-padding: mix.$padding-medium;
+padding: 2px 8px;
 position: absolute;
 top: 10px;
 right: 20px;
-/* width: 150px; */
-height: 40px;
 background-color: #fff;
 border-radius: 8px;
 border: 1px solid #e0e0e0;
 }
 
 .icon-container{
- @include mix.flex(center, center);    
+ @include mix.flex(center, center);
  padding: 4px;
+ border-radius: 2px;
+ cursor: pointer;
+
  &:hover{
   background-color: rgba(106, 104, 104, 0.1);
  } 
@@ -23,7 +24,7 @@ border: 1px solid #e0e0e0;
 }
 
 mat-icon{
- cursor: pointer;
-
-
+ height: 24px;
+ width: auto;
+ opacity: 0.8;
 }
