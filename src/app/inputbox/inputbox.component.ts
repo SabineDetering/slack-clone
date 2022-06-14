@@ -72,7 +72,6 @@ export class InputboxComponent implements OnInit {
 
   setFirstMessageInThread(uniqueThreadID: string, firstMessageId: string){
     this.newThread.firstMessage = firstMessageId;
-    console.log(this.newThread)
     this.Data.saveThread(this.newThread.toJSON());
     // will set the first message ID in the new added thread
   }
