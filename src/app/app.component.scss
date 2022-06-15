@@ -36,8 +36,13 @@ mat-sidenav-content {
 }
 
 
-.outlet {
+.outlet-main {
     flex: 1;
+}
+
+
+.outlet-thread {
+    width: 25vw;
 }
 
 app-threads {

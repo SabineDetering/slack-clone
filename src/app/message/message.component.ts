@@ -22,11 +22,13 @@ export class MessageComponent implements OnInit {
       this.message = await this.Data.getMessageFromMessageId(
         this.firstMessageId
       );
-      this.getMessageTime()
+    } else {
+      this.message = this.currentMessage;
     }
+    this.getMessageTime();
   }
 
-  getMessageTime(){
+  getMessageTime() {
     const date = new Date(this.message.timestamp);
     this.messageTime = date.getHours() + ':' + date.getMinutes() + ' Uhr';
   }

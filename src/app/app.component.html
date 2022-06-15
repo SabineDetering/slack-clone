@@ -35,9 +35,12 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <div class="outlet">
+    <div class="outlet-main">
       <router-outlet> </router-outlet>
     </div>
-    <app-thread-container>threads</app-thread-container>
+    <div class="outlet-thread">
+      <router-outlet name="thread"> </router-outlet>
+    </div>
+    <app-thread-container></app-thread-container>
   </mat-sidenav-content>
 </mat-sidenav-container>

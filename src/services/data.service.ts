@@ -33,6 +33,9 @@ export class DataService {
   public currentChannel$: BehaviorSubject<any> = new BehaviorSubject(
     new Channel()
   );
+  public currentThread$: BehaviorSubject<any> = new BehaviorSubject(
+    new Thread()
+  );
 
   public currentDirectChannel$: BehaviorSubject<DirectChannel> =
     new BehaviorSubject(new DirectChannel());
@@ -68,12 +71,14 @@ export class DataService {
   }
 
   getMessagesFromThreadID(threadID: string): void {
+    console.log(threadID)
     this.firestore
       .collection<Message>('messages', (ref) =>
-        ref.where('ThreadID', '==', threadID)
+        ref.where('threadID', '==', threadID)
       )
       .valueChanges({ idField: 'messageID' })
       .subscribe((messages) => {
+        console.log(messages)
         this.currentMessages$.next(messages);
       });
   }

@@ -1,3 +1,13 @@
 <div class="icon-container">
- <mat-icon aria-hidden="false" aria-label="answer-icon" (click)="answerInThread()">question_answer</mat-icon>
+ <a
+ [routerLink]="[{outlets: { primary: ['/channel/' + currentChannel.channelID], thread: [router.url + '/thread/' + currentThreadId]}}]"
+    (click)="setCurrentMessages(currentThreadId)"
+  >
+    <mat-icon
+      aria-hidden="false"
+      aria-label="answer-icon"
+      (click)="answerInThread()"
+      >question_answer</mat-icon
+    >
+  </a>
 </div>
