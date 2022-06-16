@@ -9,7 +9,7 @@ import { DataService } from 'src/services/data.service';
   styleUrls: ['./message.component.scss'],
 })
 export class MessageComponent implements OnInit {
-  @Input() firstMessageId: string = '';
+  @Input() firstMessageID: string = '';
   @Input() currentMessage: Message;
   @Input() thread: Thread;
   message: Message;
@@ -18,9 +18,9 @@ export class MessageComponent implements OnInit {
   constructor(public Data: DataService) {}
 
   async ngOnInit(): Promise<void> {
-    if (this.firstMessageId != '') {
+    if (this.firstMessageID != '') {
       this.message = await this.Data.getMessageFromMessageId(
-        this.firstMessageId
+        this.firstMessageID
       );
     } else {
       this.message = this.currentMessage;

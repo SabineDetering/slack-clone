@@ -3,13 +3,13 @@ export class Thread {
     // type: string;
     channelID: string;
     threadID: string;
-    firstMessage?: string;
+    firstMessageID?: string;
 
     constructor(obj?: any) {
         // this.type = obj ? obj.type : '';
         this.channelID = obj ? obj.channelID : '';
         this.threadID = obj ? obj.threadID : '';
-        this.firstMessage = obj ? obj.firstMessage : '';
+        this.firstMessageID = obj ? obj.firstMessageID : '';
     }
 
     toJSON(){
@@ -17,7 +17,7 @@ export class Thread {
             // type: this.type,
             channelID: this.channelID,
             threadID: this.threadID, 
-            firstMessage:   this.firstMessage,
+            firstMessageID:   this.firstMessageID,
         }
     }
 

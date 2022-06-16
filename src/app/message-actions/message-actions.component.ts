@@ -16,7 +16,6 @@ export class MessageActionsComponent implements OnInit {
   constructor(public router: Router, private Data: DataService) {}
 
   ngOnInit(): void {
-    console.log(this.router.url);
     this.Data.currentChannel$.subscribe(channel => this.currentChannel = channel)
 
   }

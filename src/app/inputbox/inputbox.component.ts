@@ -17,8 +17,8 @@ export class InputboxComponent implements OnInit {
   private currentChannel: Channel;
   private currentThread: Thread;
   public userInput: string = ''; // ngModel Input
-  private currentTime = new Date().getTime();
   @Input('currentMessageId') currentMessageId!: string;
+  @Input('messageType') messageType!: string;
 
   constructor(private Data: DataService) {
     this.Data.currentThread$.subscribe(thread => this.currentThread = thread)
@@ -29,6 +29,7 @@ export class InputboxComponent implements OnInit {
   async saveUserInput() {
     if (this.userInput.length > 0) {
       if(this.currentMessageId){
+        console.log('saveEditedMessage')
         this.saveEditedMessage();
       }else {
         this.addNewMessage()
@@ -40,11 +41,14 @@ export class InputboxComponent implements OnInit {
   // TODO --> user and image saving to storage
 
   addNewMessage(){
-    if(this.currentThread){
+    console.log(this.messageType)
+    if(this.messageType == 'answerMessage'){
       console.log('current thread =', this.currentThread)
+      console.log('addMessage')
       this.addMessage(this.currentThread.threadID);
     } else{
       console.log('no current thread')
+      console.log('addMessageAndThread')
       this.addMessageAndThread();
     }
   }
@@ -52,6 +56,7 @@ export class InputboxComponent implements OnInit {
   async addMessageAndThread(){
     const uniqueThreadID = await this.createNewThread();
     const firstMessageId = await this.addMessage(uniqueThreadID);
+    console.log(uniqueThreadID)
     console.log(firstMessageId)
     this.setFirstMessageInThread(uniqueThreadID, firstMessageId);
   }
@@ -59,8 +64,9 @@ export class InputboxComponent implements OnInit {
 
   async createNewThread() {
     this.currentChannel = await this.Data.currentChannel$.getValue();
-    let uniqueThreadID = this.currentChannel.channelID + this.currentTime;
-    console.log(uniqueThreadID)
+    const currentTime = new Date().getTime();
+
+    let uniqueThreadID = this.currentChannel.channelID + currentTime;
     
     this.newThread.threadID = uniqueThreadID; // set custom ThreadID to use it for this thread and saveMessage()
     this.newThread.channelID = this.currentChannel.channelID;
@@ -71,10 +77,12 @@ export class InputboxComponent implements OnInit {
 
 
   async addMessage(threadID: string, image?: string){
+    const currentTime = new Date().getTime();
+
     this.newMessage.threadID = threadID;
     // this.newMessage.authorID = this.Data.currentUser.userID;  // need to be set when authenitcation is creatd
     // this.message.images = image;
-    this.newMessage.timestamp = this.currentTime;
+    this.newMessage.timestamp = currentTime;
     this.newMessage.messageText = this.userInput;
     const firstMessageId = await this.Data.addMessage(this.newMessage.toJSON());
     this.clearInputfield();
@@ -83,7 +91,7 @@ export class InputboxComponent implements OnInit {
   }
 
   setFirstMessageInThread(uniqueThreadID: string, firstMessageId: string){
-    this.newThread.firstMessage = firstMessageId;
+    this.newThread.firstMessageID = firstMessageId;
     this.Data.saveThread(this.newThread.toJSON());
     // will set the first message ID in the new added thread
   }
