@@ -3,7 +3,6 @@
 
 :host {
     @include mix.flex(center, flex-start, row, 12px);
-    width: 90%;
     padding: mix.$padding-medium;
     border-radius: 12px;
     position: relative;

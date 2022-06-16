@@ -11,7 +11,7 @@ import { DataService } from 'src/services/data.service';
 export class MessageComponent implements OnInit {
   @Input() firstMessageId: string = '';
   @Input() currentMessage: Message;
-  @Input() currentThreadId: string;
+  @Input() thread: Thread;
   message: Message;
   messageTime: string;
 

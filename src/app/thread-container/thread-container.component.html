@@ -4,7 +4,11 @@
   <!-- {{ currentChannel.directChannelMembers ? currentChannel.directChannelMembers : currentChannel.channelName }} -->
 </div>
 <div class="messagesContainer">
- <div class="message"  *ngFor="let message of Data.currentMessages$ | async ; index as i">
-     <app-message [currentMessage]="message" ></app-message>
- </div>
+  <div
+    class="message"
+    *ngFor="let message of Data.currentMessages$ | async; index as i"
+  >
+    <app-message [currentMessage]="message"></app-message>
+  </div>
 </div>
+<app-inputbox ></app-inputbox>

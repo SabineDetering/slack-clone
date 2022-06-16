@@ -26,7 +26,7 @@ export class MainContainerComponent implements OnInit {
 
 
   openThread(thread: Thread){
-    this.Data.currentChannel$.next(thread);
+    this.Data.currentThread$.next(thread);
     this.Data.getMessagesFromThreadID(thread.threadID);
   }
 }

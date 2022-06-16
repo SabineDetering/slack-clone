@@ -15,11 +15,14 @@ export class InputboxComponent implements OnInit {
   private newThread = new Thread();
 
   private currentChannel: Channel;
+  private currentThread: Thread;
   public userInput: string = ''; // ngModel Input
   private currentTime = new Date().getTime();
   @Input('currentMessageId') currentMessageId!: string;
 
-  constructor(private Data: DataService) {}
+  constructor(private Data: DataService) {
+    this.Data.currentThread$.subscribe(thread => this.currentThread = thread)
+  }
 
   ngOnInit(): void {}
 
@@ -28,7 +31,7 @@ export class InputboxComponent implements OnInit {
       if(this.currentMessageId){
         this.saveEditedMessage();
       }else {
-        this.addMessageAndThread()
+        this.addNewMessage()
       }
     } else {
       alert('no input');
@@ -36,13 +39,21 @@ export class InputboxComponent implements OnInit {
   }
   // TODO --> user and image saving to storage
 
+  addNewMessage(){
+    if(this.currentThread){
+      console.log('current thread =', this.currentThread)
+      this.addMessage(this.currentThread.threadID);
+    } else{
+      console.log('no current thread')
+      this.addMessageAndThread();
+    }
+  }
 
   async addMessageAndThread(){
     const uniqueThreadID = await this.createNewThread();
-    const firstMessageId = await this.addMessage();
+    const firstMessageId = await this.addMessage(uniqueThreadID);
     console.log(firstMessageId)
     this.setFirstMessageInThread(uniqueThreadID, firstMessageId);
-    this.clearInputfield();
   }
 
 
@@ -59,13 +70,14 @@ export class InputboxComponent implements OnInit {
   }
 
 
-  async addMessage(image?: string){
-    this.newMessage.threadID = this.newThread.threadID;
+  async addMessage(threadID: string, image?: string){
+    this.newMessage.threadID = threadID;
     // this.newMessage.authorID = this.Data.currentUser.userID;  // need to be set when authenitcation is creatd
     // this.message.images = image;
     this.newMessage.timestamp = this.currentTime;
     this.newMessage.messageText = this.userInput;
     const firstMessageId = await this.Data.addMessage(this.newMessage.toJSON());
+    this.clearInputfield();
     return firstMessageId as string;
     // setFirstMessageId in thread
   }

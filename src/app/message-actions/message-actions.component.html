@@ -1,7 +1,7 @@
 <div class="icon-container">
+  <!-- [routerLink]="[{outlets: {thread: ['/thread/' + currentThreadId]}}]" -->
  <a
- [routerLink]="[{outlets: { primary: ['/channel/' + currentChannel.channelID], thread: [router.url + '/thread/' + currentThreadId]}}]"
-    (click)="setCurrentMessages(currentThreadId)"
+    (click)="setCurrentMessages()"
   >
     <mat-icon
       aria-hidden="false"

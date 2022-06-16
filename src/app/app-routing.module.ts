@@ -8,8 +8,8 @@ const routes: Routes = [
   { path: '', component: MainContainerComponent },  // change later to Login
   { path: 'channel/:channelID', component: MainContainerComponent },
   { path: 'direct-channel/:directChannelID', component: MainContainerComponent },
-  { path: 'channel/:channelID/thread/:threadID', component: ThreadContainerComponent, outlet: 'thread' },
-  { path: 'direct-channel/:directChannelID/thread/:threadID', component: ThreadContainerComponent, outlet: 'thread' }
+  { path: 'thread/:threadID', component: ThreadContainerComponent, outlet: 'thread' },
+  { path: 'thread/:threadID', component: ThreadContainerComponent, outlet: 'thread' }
 ];
 
 @NgModule({

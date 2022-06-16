@@ -1,21 +1,27 @@
-@use '../../styles/_mixins.scss' as mix;
+@use "../../styles/_mixins.scss" as mix;
 
-
-:host{
-width: 30%;
+:host {
+  @include mix.flex(flex-start, center, column);
+  width: 30%;
+  position: relative;
+  height: calc(100vh - 64px);
 }
 
-.head{
- @include mix.flex(flex-start,flex-start, column);  
- padding: mix.$padding-medium 5%;
- width: 100%;
- border-bottom: 1px solid #e0e0e0;
+.head {
+  @include mix.flex(flex-start, flex-start, column);
+  padding: mix.$padding-medium 5%;
+  width: 100%;
+  min-height: 60px;
+  border-bottom: 1px solid #e0e0e0;
 
- .threadTitle{
-     font-weight: bold;
-     font-size: 20px;
- }
- .threadDescription{
+  .threadTitle {
+    font-weight: bold;
+    font-size: 20px;
+  }
+}
 
- }
+
+.messagesContainer{
+    flex: 1;
+    width: 90%;
 }

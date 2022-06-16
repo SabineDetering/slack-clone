@@ -33,9 +33,10 @@ export class DataService {
   public currentChannel$: BehaviorSubject<any> = new BehaviorSubject(
     new Channel()
   );
-  public currentThread$: BehaviorSubject<any> = new BehaviorSubject(
+  public currentThread$: BehaviorSubject<any> = new BehaviorSubject(null);
+/*   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(
     new Thread()
-  );
+  ); */
 
   public currentDirectChannel$: BehaviorSubject<DirectChannel> =
     new BehaviorSubject(new DirectChannel());

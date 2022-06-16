@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Channel } from 'src/models/channel.class';
+import { Thread } from 'src/models/thread.class';
 import { DataService } from 'src/services/data.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { DataService } from 'src/services/data.service';
   styleUrls: ['./message-actions.component.scss'],
 })
 export class MessageActionsComponent implements OnInit {
-  @Input() currentThreadId: string;
+  @Input() thread: Thread;
   currentChannel: Channel;
 
   constructor(public router: Router, private Data: DataService) {}
@@ -21,10 +22,11 @@ export class MessageActionsComponent implements OnInit {
   }
 
   answerInThread() {
-    console.log('answer in thread', this.currentThreadId);
+    console.log('answer in thread', this.thread.threadID);
   }
 
-  setCurrentMessages(currentThreadId: string) {
-    this.Data.getMessagesFromThreadID(currentThreadId);
+  setCurrentMessages() {
+    this.Data.currentThread$.next(this.thread);
+    this.Data.getMessagesFromThreadID(this.thread.threadID);
   }
 }

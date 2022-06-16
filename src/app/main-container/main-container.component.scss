@@ -17,6 +17,7 @@ app-inputbox{
     @include mix.flex(flex-start,flex-start, column);  
     padding: mix.$padding-medium 5%;
     width: 100%;
+    min-height: 60px;
     border-bottom: 1px solid #e0e0e0;
 
     .channelName{
