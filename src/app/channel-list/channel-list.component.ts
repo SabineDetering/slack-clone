@@ -13,7 +13,7 @@ import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confi
 export class ChannelListComponent implements OnInit {
 
   channelsOpen = true;
-  @Input() mobile: boolean;
+  @Input() mobile!: boolean;
 
   constructor(
     public dialog: MatDialog,
@@ -41,7 +41,7 @@ export class ChannelListComponent implements OnInit {
   }
 
 
-  openDeleteConfirmation(channel) {
+  openDeleteConfirmation(channel:Channel) {
     const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
       data: {
         title: 'Delete Channel',

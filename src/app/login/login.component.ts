@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthProvider } from 'ngx-auth-firebaseui';
+import { AuthProvider, NgxAuthFirebaseUIModule } from 'ngx-auth-firebaseui';
 
 @Component({
   selector: 'app-login',
@@ -7,7 +7,7 @@ import { AuthProvider } from 'ngx-auth-firebaseui';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  
+
   providers = AuthProvider;
 
   constructor() { }
@@ -15,11 +15,12 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  printUser(event) {
+  printUser(event:Event) {
     console.log(event);
+    // let currentUser=event.user.
   }
 
-  printError(event) {
+  printError(event:Event) {
     console.error(event);
   }
 }

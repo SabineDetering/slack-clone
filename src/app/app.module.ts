@@ -94,7 +94,7 @@ import { MessageActionsComponent } from './message-actions/message-actions.compo
         // Plus protected routes are still protected even though user is connected.
         guardProtectedRoutesUntilEmailIsVerified: false,
         enableEmailVerification: false, // default: true
-        useRawUserCredential: true, // If set to true outputs the UserCredential object instead of firebase.User after login and signup - Default: false
+        useRawUserCredential: false, // If set to true outputs the UserCredential object instead of firebase.User after login and signup - Default: false
       }),
 
     MatIconModule,

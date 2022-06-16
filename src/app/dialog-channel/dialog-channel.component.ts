@@ -13,7 +13,7 @@ import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confi
 export class DialogChannelComponent implements OnInit {
 
 
-  public channel: Channel;
+  public channel!: Channel;
 
   constructor(
     public dialogRef: MatDialogRef<DialogChannelComponent>,
