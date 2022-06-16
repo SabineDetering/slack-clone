@@ -29,7 +29,6 @@ export class InputboxComponent implements OnInit {
   async saveUserInput() {
     if (this.userInput.length > 0) {
       if(this.currentMessageId){
-        console.log('saveEditedMessage')
         this.saveEditedMessage();
       }else {
         this.addNewMessage()
@@ -43,12 +42,8 @@ export class InputboxComponent implements OnInit {
   addNewMessage(){
     console.log(this.messageType)
     if(this.messageType == 'answerMessage'){
-      console.log('current thread =', this.currentThread)
-      console.log('addMessage')
       this.addMessage(this.currentThread.threadID);
     } else{
-      console.log('no current thread')
-      console.log('addMessageAndThread')
       this.addMessageAndThread();
     }
   }
@@ -56,8 +51,6 @@ export class InputboxComponent implements OnInit {
   async addMessageAndThread(){
     const uniqueThreadID = await this.createNewThread();
     const firstMessageId = await this.addMessage(uniqueThreadID);
-    console.log(uniqueThreadID)
-    console.log(firstMessageId)
     this.setFirstMessageInThread(uniqueThreadID, firstMessageId);
   }
 
@@ -66,7 +59,7 @@ export class InputboxComponent implements OnInit {
     this.currentChannel = await this.Data.currentChannel$.getValue();
     const currentTime = new Date().getTime();
 
-    let uniqueThreadID = this.currentChannel.channelID + currentTime;
+    let uniqueThreadID = this.currentChannel.channelID + currentTime + Math.round((Math.random() * 10000)).toString();
     
     this.newThread.threadID = uniqueThreadID; // set custom ThreadID to use it for this thread and saveMessage()
     this.newThread.channelID = this.currentChannel.channelID;
