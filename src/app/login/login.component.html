@@ -1,1 +1,4 @@
-<p>login works!</p>
+<!-- You can now use the library component in app.component.html  -->
+
+<ngx-auth-firebaseui   [providers]="[ providers.Google, providers.Github]" (onSuccess)="printUser($event)" (onError)="printError($event)">
+</ngx-auth-firebaseui>

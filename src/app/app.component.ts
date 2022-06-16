@@ -1,5 +1,5 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { Message } from 'src/models/message.class';
 import { DataService } from 'src/services/data.service';
 
@@ -16,7 +16,7 @@ export class AppComponent {
 
   constructor(
     changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher,
+    @Inject(MediaMatcher) media: MediaMatcher,
     public Data: DataService) {
 
     //check if screen width is too small for showing sidenav

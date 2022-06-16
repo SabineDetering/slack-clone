@@ -5,7 +5,8 @@ import { MainContainerComponent } from './main-container/main-container.componen
 import { ThreadContainerComponent } from './thread-container/thread-container.component';
 
 const routes: Routes = [
-  { path: '', component: MainContainerComponent },  // change later to Login
+  { path: '', component: LoginComponent },  
+  { path: 'login', component: LoginComponent }, 
   { path: 'channel/:channelID', component: MainContainerComponent },
   { path: 'direct-channel/:directChannelID', component: MainContainerComponent },
   { path: 'thread/:threadID', component: ThreadContainerComponent, outlet: 'thread' },

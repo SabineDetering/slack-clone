@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,6 +12,7 @@ import { provideDatabase, getDatabase } from '@angular/fire/database';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import { NgxAuthFirebaseUIModule } from 'ngx-auth-firebaseui';
 
 
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -25,6 +27,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
+import { LayoutModule } from '@angular/cdk/layout';
 
 import { ChannelListComponent } from './channel-list/channel-list.component';
 import { ThreadContainerComponent } from './thread-container/thread-container.component';
@@ -57,6 +60,7 @@ import { MessageActionsComponent } from './message-actions/message-actions.compo
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
@@ -65,6 +69,33 @@ import { MessageActionsComponent } from './message-actions/message-actions.compo
     AngularFireModule.initializeApp(environment.firebase),
     NoopAnimationsModule,
     FormsModule,
+    NgxAuthFirebaseUIModule.forRoot(
+      {
+        apiKey: 'AIzaSyAUjkrn3_ViAa5mOqk02FMNczM-RgnQPjc',
+        authDomain: 'slack-clone-asv.firebaseapp.com',
+        databaseURL: 'your-firebase-databaseURL',
+        projectId: 'slack-clone-asv',
+        storageBucket: 'slack-clone-asv.appspot.com',
+        messagingSenderId: '1021747445945'
+      },
+      () => 'slack_clone_factory',
+      {
+        enableFirestoreSync: true, // enable/disable autosync users with firestore
+        toastMessageOnAuthSuccess: false, // whether to open/show a snackbar message on auth success - default : true
+        toastMessageOnAuthError: true, // whether to open/show a snackbar message on auth error - default : true
+        authGuardFallbackURL: '/loggedout', // url for unauthenticated users - to use in combination with canActivate feature on a route
+        authGuardLoggedInURL: '/loggedin', // url for authenticated users - to use in combination with canActivate feature on a route
+        passwordMaxLength: 30, // `min/max` input parameters in components should be within this range.
+        passwordMinLength: 6, // Password length min/max in forms independently of each componenet min/max.
+        // Same as password but for the name
+        nameMaxLength: 50,
+        nameMinLength: 2,
+        // If set, sign-in/up form is not available until email has been verified.
+        // Plus protected routes are still protected even though user is connected.
+        guardProtectedRoutesUntilEmailIsVerified: false,
+        enableEmailVerification: false, // default: true
+        useRawUserCredential: true, // If set to true outputs the UserCredential object instead of firebase.User after login and signup - Default: false
+      }),
 
     MatIconModule,
     MatToolbarModule,
@@ -77,7 +108,8 @@ import { MessageActionsComponent } from './message-actions/message-actions.compo
     MatExpansionModule,
     MatListModule,
     MatSelectModule,
-    MatMenuModule
+    MatMenuModule,
+    LayoutModule
 
   ],
   providers: [
