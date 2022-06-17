@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
+import { CurrentChannel } from 'src/models/current-channel.class';
 import { DirectChannel } from 'src/models/direct-channel.class';
 import { User } from 'src/models/user.class';
 import { AuthService } from 'src/services/auth.service';
@@ -39,7 +40,7 @@ export class DirectChannelListComponent implements OnInit {
           dc = new DirectChannel(dc);
           dc.directChannelName = this.users
             .filter(user => dc.directChannelMembers.includes(user.uid) && user.uid != this.Auth.currentUserId)
-            .map(user => user.displayName)
+            .map(user => user.displayName ? user.displayName : 'Guest')
             .sort()
             .join(', ');
           return dc;
@@ -60,7 +61,14 @@ export class DirectChannelListComponent implements OnInit {
   }
 
   async setCurrentDirectChannel(directChannel: DirectChannel) {
-    this.Data.currentDirectChannel$.next(directChannel);
+    this.Data.currentChannel$.next(
+      new CurrentChannel({
+        type: 'directChannel',
+        id: directChannel.directChannelID,
+        name: directChannel.directChannelName,
+        description: ''
+      })
+    );
     this.Data.getThreadsFromChannelID(directChannel.directChannelID);
   }
 

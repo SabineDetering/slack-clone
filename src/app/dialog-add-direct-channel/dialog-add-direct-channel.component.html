@@ -13,13 +13,15 @@
   <form #addDMForm="ngForm">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Participants</mat-label>
-      <mat-select multiple [(ngModel)]="dm.directChannelMembers" name="userID" required>
+      <mat-select
+        multiple
+        [(ngModel)]="dm.directChannelMembers"
+        name="userID"
+        required
+      >
         <ng-container *ngFor="let user of Data.users$ | async">
-          <mat-option
-            *ngIf="user.uid != Auth.currentUserId"
-            [value]="user.uid"
-          >
-            {{ user.displayName }}
+          <mat-option *ngIf="user.uid != Auth.currentUserId" [value]="user.uid">
+            {{ user.displayName ? user.displayName : "Guest" }}
           </mat-option>
         </ng-container>
       </mat-select>

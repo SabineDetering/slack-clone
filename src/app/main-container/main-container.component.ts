@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Channel } from 'src/models/channel.class';
+import { CurrentChannel } from 'src/models/current-channel.class';
 import { Thread } from 'src/models/thread.class';
 import { DataService } from 'src/services/data.service';
 
@@ -9,7 +10,8 @@ import { DataService } from 'src/services/data.service';
   styleUrls: ['./main-container.component.scss'],
 })
 export class MainContainerComponent implements OnInit {
-  currentChannel: Channel;
+  // currentChannel: Channel;
+  currentChannel: CurrentChannel;
   threads: Thread[] = [];
 
   constructor(public Data: DataService) {

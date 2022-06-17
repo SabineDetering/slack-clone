@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Channel } from 'src/models/channel.class';
+import { CurrentChannel } from 'src/models/current-channel.class';
 import { DataService } from 'src/services/data.service';
 import { DialogChannelComponent } from '../dialog-channel/dialog-channel.component';
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
@@ -36,12 +37,12 @@ export class ChannelListComponent implements OnInit {
   }
 
 
-  openChannelDialog(channel?:Channel) {
-    this.dialog.open(DialogChannelComponent,{data:channel});
+  openChannelDialog(channel?: Channel) {
+    this.dialog.open(DialogChannelComponent, { data: channel });
   }
 
 
-  openDeleteConfirmation(channel:Channel) {
+  openDeleteConfirmation(channel: Channel) {
     const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
       data: {
         title: 'Delete Channel',
@@ -54,15 +55,22 @@ export class ChannelListComponent implements OnInit {
       if (result == 'confirm') {
         this.Data.deleteChannel(channel.channelID);
         this.openSnackBar('Channel has been deleted.');
-      } 
+      }
     })
-    
+
   }
 
 
-  async setCurrentChannel(channel:Channel) {
-    this.Data.currentChannel$.next(channel);
-    await this.Data.getThreadsFromChannelID(channel.channelID);
+  setCurrentChannel(channel: Channel) {
+    this.Data.currentChannel$.next(
+      new CurrentChannel({
+        type: 'channel',
+        id: channel.channelID,
+        name: channel.channelName,
+        description: channel.channelDescription
+      })
+      );
+    this.Data.getThreadsFromChannelID(channel.channelID);
   }
 
 }

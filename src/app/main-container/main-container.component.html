@@ -1,6 +1,6 @@
-<div class="head">
-    <span class="channelName">{{ currentChannel.channelName }}</span>
-    <span class="channelDescription">{{ currentChannel.channelDescription }}</span>
+<div class="head" *ngIf="currentChannel">
+    <span class="channelName">{{ currentChannel.name }}</span>
+    <span class="channelDescription">{{ currentChannel.description }}</span>
 </div>
 <div>
 

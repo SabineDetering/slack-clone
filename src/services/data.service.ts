@@ -9,6 +9,7 @@ import { DirectChannel } from 'src/models/direct-channel.class';
 import { Thread } from 'src/models/thread.class';
 import { Message } from 'src/models/message.class';
 import { User } from 'src/models/user.class';
+import { CurrentChannel } from 'src/models/current-channel.class';
 
 @Injectable({
   providedIn: 'root',
@@ -29,16 +30,18 @@ export class DataService {
   public currentMessages$: BehaviorSubject<Message[]> = new BehaviorSubject([]);
   private messageCollection: AngularFirestoreCollection<Message>;
 
-  public currentChannel$: BehaviorSubject<any> = new BehaviorSubject(
-    new Channel()
-  );
+  public currentChannel$: BehaviorSubject<CurrentChannel> = new BehaviorSubject(null);
+
+  // public currentChannel$: BehaviorSubject<any> = new BehaviorSubject(
+  //   new Channel()
+  // );
   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(null);
 /*   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(
     new Thread()
   ); */
 
-  public currentDirectChannel$: BehaviorSubject<DirectChannel> =
-    new BehaviorSubject(new DirectChannel());
+  // public currentDirectChannel$: BehaviorSubject<DirectChannel> =
+  //   new BehaviorSubject(new DirectChannel());
 
   constructor(private readonly firestore: AngularFirestore) {
     this.channelCollection = this.firestore.collection<Channel>('channels');

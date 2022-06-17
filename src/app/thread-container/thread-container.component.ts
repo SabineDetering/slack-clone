@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Channel } from 'src/models/channel.class';
+import { CurrentChannel } from 'src/models/current-channel.class';
 import { DirectChannel } from 'src/models/direct-channel.class';
 import { DataService } from 'src/services/data.service';
 
@@ -10,7 +11,8 @@ import { DataService } from 'src/services/data.service';
 })
 export class ThreadContainerComponent implements OnInit {
 
-  currentChannel: Channel | DirectChannel;
+  // currentChannel: Channel | DirectChannel;
+  currentChannel:CurrentChannel;
 
   constructor(public Data: DataService) { 
     this.Data.currentChannel$.subscribe(channel => {
@@ -20,13 +22,13 @@ export class ThreadContainerComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getThreadDescription(){
-    if(this.currentChannel instanceof Channel){
-      return this.currentChannel.channelName
-    } else{
-      return this.currentChannel.directChannelMembers
-    }
-  }
+  // getThreadDescription(){
+  //   if(this.currentChannel instanceof Channel){
+  //     return this.currentChannel.channelName
+  //   } else{
+  //     return this.currentChannel.directChannelMembers
+  //   }
+  // }
 
 
   closeThreadContainer(){

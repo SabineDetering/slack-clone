@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Channel } from 'src/models/channel.class';
+import { CurrentChannel } from 'src/models/current-channel.class';
 import { Thread } from 'src/models/thread.class';
 import { DataService } from 'src/services/data.service';
 
@@ -12,7 +13,8 @@ import { DataService } from 'src/services/data.service';
 export class MessageActionsComponent implements OnInit {
   @Input() thread!: Thread;
   @Input() actionsType!: string;
-  currentChannel!: Channel;
+  // currentChannel!: Channel;
+  currentChannel: CurrentChannel;
 
   constructor(public router: Router, private Data: DataService) {}
 
