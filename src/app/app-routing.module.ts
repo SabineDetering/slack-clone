@@ -7,10 +7,14 @@ import { ThreadContainerComponent } from './thread-container/thread-container.co
 const routes: Routes = [
   { path: '', component: LoginComponent },  
   { path: 'login', component: LoginComponent }, 
-  { path: 'channel/:channelID', component: MainContainerComponent },
+  {
+    path: 'channel/:channelID', component: MainContainerComponent,
+    children: [
+      { path: 'thread/:threadID', component: ThreadContainerComponent, outlet: 'thread' },
+    ]
+  },
   { path: 'direct-channel/:directChannelID', component: MainContainerComponent },
-  { path: 'thread/:threadID', component: ThreadContainerComponent, outlet: 'thread' },
-  { path: 'thread/:threadID', component: ThreadContainerComponent, outlet: 'thread' }
+
 ];
 
 @NgModule({
