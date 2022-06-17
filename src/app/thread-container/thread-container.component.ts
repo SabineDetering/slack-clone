@@ -28,4 +28,8 @@ export class ThreadContainerComponent implements OnInit {
     }
   }
 
+
+  closeThreadContainer(){
+    this.Data.currentMessages$.next([]);
+  }
 }
