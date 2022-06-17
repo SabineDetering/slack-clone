@@ -9,7 +9,6 @@ import { DirectChannel } from 'src/models/direct-channel.class';
 import { Thread } from 'src/models/thread.class';
 import { Message } from 'src/models/message.class';
 import { User } from 'src/models/user.class';
-import { ThisReceiver } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root',
@@ -109,7 +108,7 @@ export class DataService {
   saveDirectChannel(directChannel: any) {
     this.directChannelCollection.doc().set(directChannel);
   }
-
+/* 
   saveMessage(message: any) {
     this.messageCollection = this.firestore.collection<Message>('messages');
     this.messageCollection.doc().set(message);
@@ -118,13 +117,22 @@ export class DataService {
   saveThread(thread: any) {
     this.threadsCollection = this.firestore.collection<Thread>('threads');
     this.threadsCollection.doc(thread.threadID).set(thread); // set ID for firebase
+  } */
+
+  saveDocWithCustomID(collection: string, obj: any, id: string){
+    return new Promise((resolve, reject) => {
+    const collectionRef = this.firestore.collection(collection);
+    collectionRef.doc(id).set(obj)
+    resolve('document added to DB');
+    (err: any) => reject(err)
+    })
   }
 
-  async addMessage(message: any) {
+/*   async addMessage(message: any) {
     let messageId;
     await this.messageCollection
       .add(message)
       .then((docRef) => (messageId = docRef.id));
     return messageId;
-  }
+  } */
 }

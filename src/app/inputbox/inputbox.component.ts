@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { Channel } from 'src/models/channel.class';
 import { Message } from 'src/models/message.class';
 import { Thread } from 'src/models/thread.class';
@@ -27,6 +28,8 @@ export class InputboxComponent implements OnInit {
   ngOnInit(): void {}
 
   async saveUserInput() {
+    this.currentChannel = await this.Data.currentChannel$.getValue();
+
     if (this.userInput.length > 0) {
       if(this.currentMessageId){
         this.saveEditedMessage();
@@ -50,43 +53,40 @@ export class InputboxComponent implements OnInit {
 
   async addMessageAndThread(){
     const uniqueThreadID = await this.createNewThread();
-    const firstMessageId = await this.addMessage(uniqueThreadID);
-    this.setFirstMessageInThread(uniqueThreadID, firstMessageId);
+    await this.addMessage(uniqueThreadID);
+    this.setFirstMessageInThread();
   }
 
 
   async createNewThread() {
-    this.currentChannel = await this.Data.currentChannel$.getValue();
     const currentTime = new Date().getTime();
-
     let uniqueThreadID = this.currentChannel.channelID + currentTime + Math.round((Math.random() * 10000)).toString();
     
     this.newThread.threadID = uniqueThreadID; // set custom ThreadID to use it for this thread and saveMessage()
     this.newThread.channelID = this.currentChannel.channelID;
-    this.Data.saveThread(this.newThread.toJSON());
-    
+    await this.Data.saveDocWithCustomID('threads', this.newThread.toJSON(), uniqueThreadID);
+
     return uniqueThreadID;
   }
 
 
   async addMessage(threadID: string, image?: string){
     const currentTime = new Date().getTime();
+    let uniqueMessageID = this.currentChannel.channelID + '-' + currentTime + Math.round((Math.random() * 10000)).toString();
 
     this.newMessage.threadID = threadID;
+    this.newMessage.messageID = uniqueMessageID;
     // this.newMessage.authorID = this.Data.currentUser.userID;  // need to be set when authenitcation is creatd
     // this.message.images = image;
     this.newMessage.timestamp = currentTime;
     this.newMessage.messageText = this.userInput;
-    const firstMessageId = await this.Data.addMessage(this.newMessage.toJSON());
+    await this.Data.saveDocWithCustomID('messages', this.newMessage.toJSON(), uniqueMessageID);
     this.clearInputfield();
-    return firstMessageId as string;
-    // setFirstMessageId in thread
   }
 
-  setFirstMessageInThread(uniqueThreadID: string, firstMessageId: string){
-    this.newThread.firstMessageID = firstMessageId;
-    this.Data.saveThread(this.newThread.toJSON());
-    // will set the first message ID in the new added thread
+  setFirstMessageInThread(){
+    this.newThread.firstMessageID = this.newMessage.messageID;
+    this.Data.saveDocWithCustomID('threads', this.newThread.toJSON(), this.newThread.threadID);
   }
 
   saveEditedMessage(image?: string){}
