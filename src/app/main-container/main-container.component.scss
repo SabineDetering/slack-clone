@@ -40,4 +40,8 @@ app-inputbox{
 
 .thread{
     width: 90%;
+
+    &:hover{
+        background-color: rgba(106, 104, 104, 0.043);
+    }
 }

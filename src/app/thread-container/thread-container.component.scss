@@ -20,8 +20,14 @@
   }
 }
 
+.messagesContainer {
+  flex: 1;
+  width: 90%;
+  overflow-y: auto;
+}
 
-.messagesContainer{
-    flex: 1;
-    width: 90%;
+.message {
+  &:hover {
+    background-color: rgba(106, 104, 104, 0.043);
+  }
 }
