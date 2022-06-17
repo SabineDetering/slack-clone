@@ -10,8 +10,9 @@ import { DataService } from 'src/services/data.service';
   styleUrls: ['./message-actions.component.scss'],
 })
 export class MessageActionsComponent implements OnInit {
-  @Input() thread: Thread;
-  currentChannel: Channel;
+  @Input() thread!: Thread;
+  @Input() actionsType!: string;
+  currentChannel!: Channel;
 
   constructor(public router: Router, private Data: DataService) {}
 

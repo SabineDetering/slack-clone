@@ -5,7 +5,6 @@
     @include mix.flex(center, flex-start, row, 12px);
     padding: mix.$padding-medium;
     border-radius: 12px;
-    position: relative;
 }
 
 .author {

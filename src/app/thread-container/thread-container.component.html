@@ -8,6 +8,8 @@
     class="message"
     *ngFor="let message of Data.currentMessages$ | async; index as i"
   >
+    <app-message-actions [actionsType]="'messageactions'"></app-message-actions>
+
     <app-message [currentMessage]="message"></app-message>
   </div>
 </div>

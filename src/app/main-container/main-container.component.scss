@@ -39,9 +39,14 @@ app-inputbox{
 }
 
 .thread{
+    position: relative;
     width: 90%;
 
     &:hover{
         background-color: rgba(106, 104, 104, 0.043);
+    }
+
+    &:hover app-message-actions{
+        display: unset !important;
     }
 }

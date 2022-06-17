@@ -1,7 +1,7 @@
 <div class="icon-container">
   <!--[routerLink]="['thread/'+currentThreadId]"  -->
   <!-- [routerLink]="[{outlets: {thread: ['/thread/' + currentThreadId]}}]" -->
-  <a
+  <a *ngIf="actionsType == 'threadActions'"
   (click)="setCurrentMessages()"
   >
     <mat-icon

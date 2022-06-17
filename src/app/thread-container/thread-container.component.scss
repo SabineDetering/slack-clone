@@ -27,7 +27,13 @@
 }
 
 .message {
+  position: relative;
+
   &:hover {
     background-color: rgba(106, 104, 104, 0.043);
   }
+
+  &:hover app-message-actions{
+    display: unset !important;
+}
 }
