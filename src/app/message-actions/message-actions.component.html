@@ -4,11 +4,13 @@
   <a *ngIf="actionsType == 'threadActions'"
   (click)="setCurrentMessages()"
   >
+  <div class="icon">
     <mat-icon
       aria-hidden="false"
       aria-label="answer-icon"
       (click)="answerInThread()"
       >question_answer</mat-icon
     >
+  </div>
   </a>
 </div>

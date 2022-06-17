@@ -8,11 +8,19 @@
 }
 
 .head {
-  @include mix.flex(flex-start, flex-start, column);
+  @include mix.flex(space-between, center, row, 5vw);
   padding: mix.$padding-medium 5%;
   width: 100%;
   min-height: 60px;
   border-bottom: 1px solid #e0e0e0;
+
+  .title-container{
+  @include mix.flex(flex-start, flex-start, column);
+  }
+
+  .icon{
+    border-radius: 5px;
+  }
 
   .threadTitle {
     font-weight: bold;
@@ -30,7 +38,7 @@
   position: relative;
 
   &:hover {
-    background-color: rgba(106, 104, 104, 0.043);
+    background-color: rgba(106, 104, 104, 0.1);
   }
 
   &:hover app-message-actions{

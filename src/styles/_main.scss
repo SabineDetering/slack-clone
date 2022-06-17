@@ -34,4 +34,17 @@ body {
   width:100%;
 }
 
+.icon{
+  @include mix.flex(center, center);
+  width: 35px;
+  height: 35px;
+  border-radius: 2px;
+  padding: 2px;
+  cursor: pointer;
+
+  &:hover{
+    background-color: rgba(106, 104, 104, 0.1);
+  }
+}
+
  @include mix.scrollbar(mix.$primary-color, mix.$primary-hover, mix.$primary-hover);
