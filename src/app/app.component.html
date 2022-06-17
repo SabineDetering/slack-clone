@@ -2,14 +2,9 @@
   <button mat-icon-button (click)="sidenav.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>Slacky</span>
+  <a [routerLink]="['login']"> Slacky</a>
   <span class="example-spacer"></span>
-  <button mat-icon-button>
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button mat-icon-button>
-    <mat-icon>share</mat-icon>
-  </button>
+  
 </mat-toolbar>
 
 <!-- mobile view: sidenav closed by default, open in mode 'over' with backdrop, closes on click on sidenav (or menu button) -->
@@ -38,7 +33,7 @@
     <div class="outlet-main">
       <router-outlet> </router-outlet>
     </div>
-<!--     <div class="outlet-thread">
+    <!-- <div class="outlet-thread">
       <router-outlet name="thread"> </router-outlet>
     </div> -->
     <app-thread-container *ngIf="currentMessages.length > 0"></app-thread-container>
