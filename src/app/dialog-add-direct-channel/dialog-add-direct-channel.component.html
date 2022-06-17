@@ -16,10 +16,10 @@
       <mat-select multiple [(ngModel)]="dm.directChannelMembers" name="userID" required>
         <ng-container *ngFor="let user of Data.users$ | async">
           <mat-option
-            *ngIf="user.userID != loggedInUserID"
-            [value]="user.userID"
+            *ngIf="user.uid != Auth.currentUserId"
+            [value]="user.uid"
           >
-            {{ user.userName }}
+            {{ user.displayName }}
           </mat-option>
         </ng-container>
       </mat-select>

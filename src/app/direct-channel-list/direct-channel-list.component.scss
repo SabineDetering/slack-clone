@@ -36,7 +36,7 @@
         .left-part {
             @include mix.flex($align: center, $gap: 8px);
 
-            .icon-with-number {
+            .avatar-with-number {
                 position: relative;
 
                 img {

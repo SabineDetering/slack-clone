@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
 import { DirectChannel } from 'src/models/direct-channel.class';
 import { User } from 'src/models/user.class';
+import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 import { DialogAddDirectChannelComponent } from '../dialog-add-direct-channel/dialog-add-direct-channel.component';
 
@@ -14,7 +15,7 @@ import { DialogAddDirectChannelComponent } from '../dialog-add-direct-channel/di
 export class DirectChannelListComponent implements OnInit {
 
   directChannelsOpen = true;
-  loggedInUserID: string = 'nqZXy3cBYvWQKprRI2Nq'; //replace with user from authentication
+  // loggedInUserID: string = 'nqZXy3cBYvWQKprRI2Nq'; //replace with user from authentication
   @Input() mobile: boolean;
   users: User[];
   directChannels: DirectChannel[];
@@ -22,11 +23,13 @@ export class DirectChannelListComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    public Data: DataService
+    public Data: DataService,
+    public Auth:AuthService
   ) { }
 
 
   async ngOnInit(): Promise<void> {
+   
     this.users = await firstValueFrom(this.Data.users$);
 
     //subscribe directChannels and merge with users to get participant names excluding logged in user
@@ -35,8 +38,8 @@ export class DirectChannelListComponent implements OnInit {
         .map(dc => {
           dc = new DirectChannel(dc);
           dc.directChannelName = this.users
-            .filter(user => dc.directChannelMembers.includes(user.userID) && user.userID != this.loggedInUserID)
-            .map(user => user.userName)
+            .filter(user => dc.directChannelMembers.includes(user.uid) && user.uid != this.Auth.currentUserId)
+            .map(user => user.displayName)
             .sort()
             .join(', ');
           return dc;

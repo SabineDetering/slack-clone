@@ -73,7 +73,7 @@ import { MessageActionsComponent } from './message-actions/message-actions.compo
       {
         apiKey: 'AIzaSyAUjkrn3_ViAa5mOqk02FMNczM-RgnQPjc',
         authDomain: 'slack-clone-asv.firebaseapp.com',
-        databaseURL: 'your-firebase-databaseURL',
+        databaseURL: 'https://slack-clone-asv-default-rtdb.europe-west1.firebasedatabase.app',
         projectId: 'slack-clone-asv',
         storageBucket: 'slack-clone-asv.appspot.com',
         messagingSenderId: '1021747445945'

@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { firstValueFrom } from 'rxjs';
 import { DirectChannel } from 'src/models/direct-channel.class';
 import { User } from 'src/models/user.class';
+import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 
 @Component({
@@ -15,11 +16,12 @@ export class DialogAddDirectChannelComponent implements OnInit {
 
   dm = new DirectChannel();
   users: User[];
-  loggedInUserID: string = 'nqZXy3cBYvWQKprRI2Nq'; //replace with user from authentication
+  // loggedInUserID: string = 'nqZXy3cBYvWQKprRI2Nq'; //replace with user from authentication
 
   constructor(
     private dialogRef: MatDialogRef<DialogAddDirectChannelComponent>,
     public Data: DataService,
+    public Auth:AuthService,
     private _snackBar: MatSnackBar
   ) {
   }
@@ -34,7 +36,7 @@ export class DialogAddDirectChannelComponent implements OnInit {
 
 
   saveDirectChannel() {
-    this.dm.directChannelMembers.push(this.loggedInUserID);//replace by authentication
+    this.dm.directChannelMembers.push(this.Auth.currentUserId);//replace by authentication
     console.log(this.dm);
     this.Data.saveDirectChannel(this.dm.toJSON());
     this.dialogRef.close('saved');

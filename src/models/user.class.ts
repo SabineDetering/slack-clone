@@ -1,20 +1,23 @@
 export class User {
-    userID: string;
-    userName: string;
-    userEmail: string;
+    uid: string;
+    displayName: string;
+    email: string;
+    photoURL: string;
 
 
     constructor(obj?: any) {
-        this.userID = obj ? obj.userID : '';
-        this.userName = obj ? obj.userName : '';
-        this.userEmail = obj ? obj.userEmail : '';
+        this.uid = obj ? obj.uid : '';
+        this.displayName = obj ? obj.displayName : '';
+        this.email = obj ? obj.email : '';
+        this.photoURL = obj ? obj.photoURL : null;
     }
 
     toJSON() {
         return {
-            userID: this.userID,
-            userName: this.userName,
-            userEmail: this.userEmail
+            uid: this.uid,
+            displayName: this.displayName,
+            email: this.email,
+            photoURL: this.photoURL
         }
     }
 

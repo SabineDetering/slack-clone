@@ -36,8 +36,7 @@
         .left-part {
             @include mix.flex($align: center, $gap: 8px);
 
-            .icon {
-                display: block;
+            .hash {
                 width: 32px;
                 min-width: 32px;
                 text-align: right;

@@ -17,7 +17,6 @@ export class LoginComponent implements OnInit {
 
   printUser(event:Event) {
     console.log(event);
-    // let currentUser=event.user.
   }
 
   printError(event:Event) {

@@ -24,13 +24,13 @@
     >
       <a
         list-item
-        *ngIf="directChannel.directChannelMembers.includes(loggedInUserID)"
+        *ngIf="directChannel.directChannelMembers.includes(Auth.currentUserId)"
         class="direct-channel-list-item"
         [routerLink]="['/direct-channel/' + directChannel.directChannelID]"        
       (click)="setCurrentDirectChannel(directChannel)"
       >
         <div class="left-part">
-          <div class="icon-with-number">
+          <div class="avatar-with-number">
             <!-- would be nice to show avatar of first participant -->
             <img src="assets/img/user-femaleAvatar.png" />
             <div class="number">

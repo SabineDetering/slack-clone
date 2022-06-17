@@ -25,7 +25,7 @@
       *ngFor="let channel of Data.channels$ | async | orderBy: 'channelName'"
     >
       <div class="left-part">
-        <span class="icon"># </span>
+        <span class="hash"># </span>
         <span>{{ channel.channelName }}</span>
       </div>
       <button
