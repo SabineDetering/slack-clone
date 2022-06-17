@@ -1,0 +1,10 @@
+@use '../../styles/mixins' as mix; //also imports _variables.scss
+
+:host{
+    @include mix.flex($justify:center);
+}
+
+.container{
+    width: 600px;
+    max-width:100%;
+}

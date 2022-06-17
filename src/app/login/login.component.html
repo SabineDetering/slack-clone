@@ -1,9 +1,11 @@
-<ngx-auth-firebaseui
-  [providers]="[]"
-  [tabindex]="2"
-  [resetPasswordEnabled]="true"
-  [guestEnabled]="true"
-  (onSuccess)="printUser($event)"
-  (onError)="printError($event)"
->
-</ngx-auth-firebaseui>
+<div class="container">
+  <ngx-auth-firebaseui
+    [providers]="[]"
+    [tabindex]="2"
+    [resetPasswordEnabled]="true"
+    [guestEnabled]="true"
+    (onSuccess)="printUser($event)"
+    (onError)="printError($event)"
+  >
+  </ngx-auth-firebaseui>
+</div>
