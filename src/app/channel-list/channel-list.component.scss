@@ -35,11 +35,19 @@
 
         .left-part {
             @include mix.flex($align: center, $gap: 8px);
+            width: 100%;
 
             .hash {
                 width: 32px;
                 min-width: 32px;
                 text-align: right;
+            }
+
+            .name {
+                max-width:calc( 25vw - 36px - 40px - 2*16px);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
 

@@ -26,18 +26,18 @@
         list-item
         *ngIf="directChannel.directChannelMembers.includes(Auth.currentUserId)"
         class="direct-channel-list-item"
-        [routerLink]="['/direct-channel/' + directChannel.directChannelID]"        
-      (click)="setCurrentDirectChannel(directChannel)"
+        [routerLink]="['/direct-channel/' + directChannel.directChannelID]"
+        (click)="setCurrentDirectChannel(directChannel)"
       >
         <div class="left-part">
           <div class="avatar-with-number">
             <!-- would be nice to show avatar of first participant -->
             <img src="assets/img/user-femaleAvatar.png" />
             <div class="number">
-              {{ directChannel.directChannelMembers.length-1 }}
+              {{ directChannel.directChannelMembers.length - 1 }}
             </div>
           </div>
-          {{ directChannel.directChannelName }}
+          <span class="name" [title]="directChannel.directChannelName"> {{ directChannel.directChannelName }}</span>
         </div>
         <button mat-icon-button title="More" class="more-btn">
           <mat-icon> more_vert</mat-icon>
