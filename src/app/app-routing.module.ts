@@ -3,17 +3,22 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { MainContainerComponent } from './main-container/main-container.component';
 import { ThreadContainerComponent } from './thread-container/thread-container.component';
+import { LoggedInGuard } from 'ngx-auth-firebaseui';
+import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
+import { PrivacyNoticeComponent } from './privacy-notice/privacy-notice.component';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },  
-  { path: 'login', component: LoginComponent }, 
+  { path: '', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
   {
-    path: 'channel/:channelID', component: MainContainerComponent,
+    path: 'channel/:channelID', component: MainContainerComponent, canActivate: [LoggedInGuard],
     children: [
       { path: 'thread/:threadID', component: ThreadContainerComponent, outlet: 'thread' },
     ]
   },
-  { path: 'direct-channel/:directChannelID', component: MainContainerComponent },
+  { path: 'direct-channel/:directChannelID', component: MainContainerComponent, canActivate: [LoggedInGuard] },
+  { path: 'legal-notice', component: LegalNoticeComponent },
+  { path: 'privacy-notice', component: PrivacyNoticeComponent },
 
 ];
 
