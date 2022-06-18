@@ -2,7 +2,7 @@ export class CurrentChannel {
     type: string;
     id: string;
     name: string;
-    description: string;
+    description?: string;
 
 
 constructor(obj ?: any) {

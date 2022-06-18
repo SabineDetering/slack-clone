@@ -15,15 +15,23 @@ export class AuthService {
     });
   }
 
+
   get authenticated(): boolean {
     return this.authState !== null;
   }
+
 
   get currentUser(): any {
     return this.authenticated ? this.authState.auth : null;
   }
 
+
   get currentUserId(): string {
     return this.authenticated ? this.authState.uid : '';
+  }
+
+
+  async updateProfilePic(url: string) {
+    (await this.af.currentUser).updateProfile({ photoURL: url })
   }
 }

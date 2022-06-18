@@ -65,8 +65,7 @@ export class DirectChannelListComponent implements OnInit {
       new CurrentChannel({
         type: 'directChannel',
         id: directChannel.directChannelID,
-        name: directChannel.directChannelName,
-        description: ''
+        name: directChannel.directChannelName
       })
     );
     this.Data.getThreadsFromChannelID(directChannel.directChannelID);

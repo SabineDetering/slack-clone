@@ -16,7 +16,6 @@ export class DialogAddDirectChannelComponent implements OnInit {
 
   dm = new DirectChannel();
   users: User[];
-  // loggedInUserID: string = 'nqZXy3cBYvWQKprRI2Nq'; //replace with user from authentication
 
   constructor(
     private dialogRef: MatDialogRef<DialogAddDirectChannelComponent>,

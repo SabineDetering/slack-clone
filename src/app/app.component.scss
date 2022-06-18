@@ -1,8 +1,18 @@
 @use '../styles/mixins' as mix; //also imports _variables.scss
 
-mat-toolbar a{
-    text-decoration: none;
-    color:white;
+mat-toolbar {
+    @include mix.flex($justify: space-between, $align: center);
+
+    .left-part {
+        @include mix.flex( $align: center);
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+    }
+
 }
 
 mat-sidenav {
@@ -13,14 +23,14 @@ mat-sidenav {
     color: white;
 
     .sidenav-wrapper {
-        height:100%;
+        height: 100%;
         @include mix.flex($dir: column, $justify: space-between);
     }
 
     .legal-list {
         @include mix.flex($dir: column);
         font-size: 14px;
-        padding-bottom:mix.$padding-main;
+        padding-bottom: mix.$padding-main;
 
         a {
             padding: mix.$padding-small mix.$padding-main;
