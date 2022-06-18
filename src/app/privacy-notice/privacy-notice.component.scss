@@ -1,0 +1,27 @@
+@use "../../styles/mixins" as mix; //also imports _variables.scss
+
+.privacy {
+    padding: mix.$padding-main;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+
+    h3 {
+        padding: mix.$padding-main 0 mix.$padding-small;
+    }
+
+    p,
+    h4 {
+        padding-top: mix.$padding-small;
+    }
+
+    .highlight {
+        border: 2px solid mix.$primary-color;
+        margin-top: mix.$padding-main;
+        padding: mix.$padding-main;
+    }
+
+    li {
+        padding-left: mix.$padding-main;
+        padding-right: mix.$padding-main;
+    }
+}
