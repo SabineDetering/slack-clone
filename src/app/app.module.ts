@@ -41,6 +41,8 @@ import { OrderByPipe } from 'src/pipes/order-by-pipe.pipe';
 import { MessageComponent } from './message/message.component';
 import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
 import { MessageActionsComponent } from './message-actions/message-actions.component';
+import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
+import { PrivacyNoticeComponent } from './privacy-notice/privacy-notice.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,9 @@ import { MessageActionsComponent } from './message-actions/message-actions.compo
     OrderByPipe,
     MessageComponent,
     DialogConfirmationComponent,
-    MessageActionsComponent
+    MessageActionsComponent,
+    LegalNoticeComponent,
+    PrivacyNoticeComponent
   ],
   imports: [
     BrowserModule,
@@ -83,7 +87,7 @@ import { MessageActionsComponent } from './message-actions/message-actions.compo
         enableFirestoreSync: true, // enable/disable autosync users with firestore
         toastMessageOnAuthSuccess: false, // whether to open/show a snackbar message on auth success - default : true
         toastMessageOnAuthError: true, // whether to open/show a snackbar message on auth error - default : true
-        authGuardFallbackURL: '/loggedout', // url for unauthenticated users - to use in combination with canActivate feature on a route
+        authGuardFallbackURL: '/login', // url for unauthenticated users - to use in combination with canActivate feature on a route
         authGuardLoggedInURL: '/loggedin', // url for authenticated users - to use in combination with canActivate feature on a route
         passwordMaxLength: 30, // `min/max` input parameters in components should be within this range.
         passwordMinLength: 6, // Password length min/max in forms independently of each componenet min/max.
