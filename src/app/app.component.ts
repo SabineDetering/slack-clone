@@ -4,6 +4,9 @@ import { Message } from 'src/models/message.class';
 import { DataService } from 'src/services/data.service';
 import { LinkMenuItem } from 'ngx-auth-firebaseui';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-change-avatar.component';
+import { AuthService } from 'src/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +25,10 @@ export class AppComponent {
     changeDetectorRef: ChangeDetectorRef,
     @Inject(MediaMatcher) media: MediaMatcher,
     public Data: DataService,
-    public router: Router) {
+    public router: Router,
+    public dialog: MatDialog,
+    public Auth:AuthService
+  ) {
 
     //check if screen width is too small for showing sidenav
     this.mobileQuery = media.matchMedia('(max-width: 870px)');
@@ -30,9 +36,15 @@ export class AppComponent {
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
 
     this.userLinks = [
-      { text: 'change profile picture (no function)' }
+      { text: 'change profile picture (no function)', callback: this.openAvatarDialog }
     ]
 
     this.Data.currentMessages$.subscribe(msg => this.currentMessages = msg)
   }
+
+
+  openAvatarDialog() {
+    const dialogRef = this.dialog.open(DialogChangeAvatarComponent);//this seems to refer to userLinks
+  }
+
 }

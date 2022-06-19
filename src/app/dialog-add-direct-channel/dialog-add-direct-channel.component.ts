@@ -35,7 +35,7 @@ export class DialogAddDirectChannelComponent implements OnInit {
 
 
   saveDirectChannel() {
-    this.dm.directChannelMembers.push(this.Auth.currentUserId);//replace by authentication
+    this.dm.directChannelMembers.push(this.Auth.currentUserId);
     console.log(this.dm);
     this.Data.saveDirectChannel(this.dm.toJSON());
     this.dialogRef.close('saved');

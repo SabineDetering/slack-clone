@@ -13,6 +13,7 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { NgxAuthFirebaseUIModule } from 'ngx-auth-firebaseui';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
 
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -43,6 +44,7 @@ import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confir
 import { MessageActionsComponent } from './message-actions/message-actions.component';
 import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { PrivacyNoticeComponent } from './privacy-notice/privacy-notice.component';
+import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-change-avatar.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,8 @@ import { PrivacyNoticeComponent } from './privacy-notice/privacy-notice.componen
     DialogConfirmationComponent,
     MessageActionsComponent,
     LegalNoticeComponent,
-    PrivacyNoticeComponent
+    PrivacyNoticeComponent,
+    DialogChangeAvatarComponent
   ],
   imports: [
     BrowserModule,
@@ -73,6 +76,7 @@ import { PrivacyNoticeComponent } from './privacy-notice/privacy-notice.componen
     AngularFireModule.initializeApp(environment.firebase),
     NoopAnimationsModule,
     FormsModule,
+    AngularFireStorageModule,
     NgxAuthFirebaseUIModule.forRoot(
       {
         apiKey: 'AIzaSyAUjkrn3_ViAa5mOqk02FMNczM-RgnQPjc',

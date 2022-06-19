@@ -16,7 +16,6 @@ import { DialogAddDirectChannelComponent } from '../dialog-add-direct-channel/di
 export class DirectChannelListComponent implements OnInit {
 
   directChannelsOpen = true;
-  // loggedInUserID: string = 'nqZXy3cBYvWQKprRI2Nq'; //replace with user from authentication
   @Input() mobile: boolean;
   users: User[];
   directChannels: DirectChannel[];
@@ -59,6 +58,7 @@ export class DirectChannelListComponent implements OnInit {
     event.stopPropagation();
     this.dialog.open(DialogAddDirectChannelComponent);
   }
+
 
   async setCurrentDirectChannel(directChannel: DirectChannel) {
     this.Data.currentChannel$.next(

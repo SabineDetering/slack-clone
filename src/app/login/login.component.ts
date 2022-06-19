@@ -21,8 +21,6 @@ export class LoginComponent implements OnInit {
 
   printUser(event:Event) {
     console.log(event);
-    this.Auth.updateProfilePic('assets/img/user-maleAvatar.png');//change only in auth database, not in firestore
-
     // this.router.navigate(['/channel/78Zf74HHoirDyWMc3ihh']);
     // this.Data.currentChannel$.next(new CurrentChannel({type:'channel',name:'news',id:'78Zf74HHoirDyWMc3ihh'}));
   }
