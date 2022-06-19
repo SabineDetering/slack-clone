@@ -92,6 +92,14 @@ export class DataService {
     ) as Message;
   }
 
+  async getUserdataFromUserID(userID: string) {  // userId is identical with Doc-Id
+    let result =  await firstValueFrom(
+      this.userCollection.doc(userID).valueChanges()
+    ) 
+    return result?.displayName
+
+  }
+
   addChannel(channel: any) {
     this.channelCollection.add(channel);
   }

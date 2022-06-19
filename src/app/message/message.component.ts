@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { Message } from 'src/models/message.class';
 import { Thread } from 'src/models/thread.class';
-import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 
 @Component({
@@ -13,12 +12,13 @@ export class MessageComponent implements OnInit {
   @Input() firstMessageID: string = '';
   @Input() currentMessage: Message;
   @Input() thread: Thread;
-  message: Message;
+  public message: Message;
   messageTime: string;
+  messageAuthorName: string;
 
   constructor(
     public Data: DataService, 
-    public Auth: AuthService) {}
+) {}
 
   async ngOnInit(): Promise<void> {
     if (this.firstMessageID != '') {
@@ -29,10 +29,21 @@ export class MessageComponent implements OnInit {
       this.message = this.currentMessage;
     }
     this.getMessageTime();
+    this.getMessageAuthorName();
   }
 
   getMessageTime() {
     const date = new Date(this.message.timestamp);
     this.messageTime = date.getHours() + ':' + (date.getMinutes()< 10 ? '0' : '') + date.getMinutes()  + ' Uhr';
   }
+
+  // always get up to date Displayname from authors ID
+  getMessageAuthorName(){ 
+    if(this.message){
+      this.Data.getUserdataFromUserID(this.message.authorID).then(data => {
+      this.messageAuthorName = data || 'unknown User'
+    })
+    }
+  }
+
 }

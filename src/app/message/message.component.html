@@ -2,7 +2,8 @@
 
 <div class="mainContainer" *ngIf="message">
     <div>
-        <span class="author">Vilia Zeisig (Platzhalter)</span>
+        <!-- <span class="author">Vilia Zeisig (Platzhalter)</span> -->
+        <span class="author">{{ messageAuthorName }}</span>
         <span class="timestamp">{{ messageTime }}</span>
     </div>
     <p>{{ message.messageText }}</p>
