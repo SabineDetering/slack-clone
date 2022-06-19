@@ -96,8 +96,7 @@ export class DataService {
     let result =  await firstValueFrom(
       this.userCollection.doc(userID).valueChanges()
     ) 
-    return result?.displayName
-
+    return result;
   }
 
   addChannel(channel: any) {

@@ -40,8 +40,8 @@ export class MessageComponent implements OnInit {
   // always get up to date Displayname from authors ID
   getMessageAuthorName(){ 
     if(this.message){
-      this.Data.getUserdataFromUserID(this.message.authorID).then(data => {
-      this.messageAuthorName = data || 'unknown User'
+      this.Data.getUserdataFromUserID(this.message.authorID).then(user => {
+      this.messageAuthorName = user.displayName || 'unknown User'
     })
     }
   }
