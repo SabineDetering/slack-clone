@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Channel } from 'src/models/channel.class';
 import { CurrentChannel } from 'src/models/current-channel.class';
@@ -21,6 +21,8 @@ export class InputboxComponent implements OnInit {
   public userInput: string = ''; // ngModel Input
   @Input('currentMessageId') currentMessageId!: string;
   @Input('messageType') messageType!: string;
+  @ViewChild('textarea') textarea: ElementRef;
+  @ViewChild('placeholder') placeholder: ElementRef;
 
   constructor(
     private Data: DataService, 
@@ -31,7 +33,7 @@ export class InputboxComponent implements OnInit {
   ngOnInit(): void {}
 
   async saveUserInput() {
-    // consider remove this line --> not needed?
+    this.userInput = this.textarea.nativeElement.innerText
     this.currentChannel = await this.Data.currentChannel$.getValue();
 
     if (this.userInput.length > 0) {
@@ -100,7 +102,7 @@ export class InputboxComponent implements OnInit {
 
 
   clearInputfield(){
-    this.userInput = '';
+    this.textarea.nativeElement.innerHTML = '';
   }
 
 
@@ -116,4 +118,15 @@ export class InputboxComponent implements OnInit {
   toCodeFormat() {
     document.execCommand('italic');
   }
+  
+  getSelectedText(){
+    const selection = window.getSelection();  
+    console.log(selection)
+  }
+
+
+  removePlaceholder(){
+    this.textarea.nativeElement.innerHTML = '';
+  }
+
 }

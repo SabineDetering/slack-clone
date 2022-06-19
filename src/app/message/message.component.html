@@ -4,7 +4,7 @@
     <div>
         <!-- <span class="author">Vilia Zeisig (Platzhalter)</span> -->
         <span class="author">{{ messageAuthorName }}</span>
-        <span class="timestamp">{{ messageTime }}</span>
+        <span class="timestamp">{{ date | date:'medium' }}</span>
     </div>
     <p>{{ message.messageText }}</p>
     <!-- consider emojis here-->

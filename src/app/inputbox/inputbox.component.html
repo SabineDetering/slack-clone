@@ -4,7 +4,8 @@
     <button (click)="toCodeFormat()"><mat-icon aria-hidden="false" aria-label="send-icon">code</mat-icon></button>
     
 </div>
-<textarea [(ngModel)]="userInput" (keyup.enter)="saveUserInput()" rows="2" placeholder="Write a channel message ..."></textarea>
+<!-- <textarea [(ngModel)]="userInput" (keyup.enter)="saveUserInput()" rows="1" placeholder="Write a channel message ..."></textarea> -->
+<div class="textarea" contenteditable="true" (keyup.enter)="saveUserInput()" (mouseup)="getSelectedText()" #textarea><span class="placeholder" (click)="removePlaceholder()" #placeholder>Write a channel message ...</span></div>
 <div class="footer">
     <mat-icon (click)="saveUserInput()"  aria-hidden="false" aria-label="send-icon">send</mat-icon>
 </div>

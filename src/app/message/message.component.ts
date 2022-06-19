@@ -13,6 +13,7 @@ export class MessageComponent implements OnInit {
   @Input() currentMessage: Message;
   @Input() thread: Thread;
   public message: Message;
+  date: Date;
   messageTime: string;
   messageAuthorName: string;
 
@@ -33,8 +34,8 @@ export class MessageComponent implements OnInit {
   }
 
   getMessageTime() {
-    const date = new Date(this.message.timestamp);
-    this.messageTime = date.getHours() + ':' + (date.getMinutes()< 10 ? '0' : '') + date.getMinutes()  + ' Uhr';
+    this.date = new Date(this.message.timestamp);
+    /* this.messageTime = date.getHours() + ':' + (date.getMinutes()< 10 ? '0' : '') + date.getMinutes()  + ' Uhr'; */
   }
 
   // always get up to date Displayname from authors ID
