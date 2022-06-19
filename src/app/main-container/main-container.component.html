@@ -18,4 +18,4 @@
     </div>
 </div>
 
-<app-inputbox [messageType]="'firstMessage'"></app-inputbox>
+<app-inputbox *ngIf="currentChannel" [messageType]="'firstMessage'"></app-inputbox>

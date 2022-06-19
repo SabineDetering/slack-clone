@@ -50,3 +50,19 @@ app-inputbox{
         display: unset !important;
     }
 }
+.bottomRow{
+    @include mix.flex(flex-start,center, row, 16px);    
+        font-size: 12px;
+        padding-left: 52px;
+
+    button{
+        @include mix.flex(flex-start,center);    
+        font-size: 12px;
+        text-decoration: underline;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+
+    }
+
+}
