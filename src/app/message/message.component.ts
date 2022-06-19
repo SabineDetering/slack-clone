@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { Message } from 'src/models/message.class';
 import { Thread } from 'src/models/thread.class';
+import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 
 @Component({
@@ -15,7 +16,9 @@ export class MessageComponent implements OnInit {
   message: Message;
   messageTime: string;
 
-  constructor(public Data: DataService) {}
+  constructor(
+    public Data: DataService, 
+    public Auth: AuthService) {}
 
   async ngOnInit(): Promise<void> {
     if (this.firstMessageID != '') {
@@ -30,6 +33,6 @@ export class MessageComponent implements OnInit {
 
   getMessageTime() {
     const date = new Date(this.message.timestamp);
-    this.messageTime = date.getHours() + ':' + date.getMinutes() + ' Uhr';
+    this.messageTime = date.getHours() + ':' + (date.getMinutes()< 10 ? '0' : '') + date.getMinutes()  + ' Uhr';
   }
 }
