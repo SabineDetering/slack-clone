@@ -16,9 +16,12 @@ export class InputboxComponent implements OnInit {
 
   private newMessage = new Message();
   private newThread = new Thread();
-  public currentChannel: CurrentChannel;
-  private currentThread: Thread;
+  public currentChannel!: CurrentChannel;
+  private currentThread!: Thread;
   public userInput: string = ''; // ngModel Input
+  private selectedText: string = '';
+  private selectionStart!: number;
+  private selectionEnd!: number;
   @Input('currentMessageId') currentMessageId!: string;
   @Input('messageType') messageType!: string;
   @ViewChild('textarea') textarea: ElementRef;
@@ -49,7 +52,6 @@ export class InputboxComponent implements OnInit {
 
 
   addNewMessage(){
-    console.log(this.messageType)
     if(this.messageType == 'answerMessage'){ 
       this.addMessageToThread(this.currentThread.threadID);
     } else{
@@ -108,7 +110,19 @@ export class InputboxComponent implements OnInit {
 
   // TODO:  WYSWYG TextEditor
   makeBold() {
-    document.execCommand('bold');
+    let text = this.textarea.nativeElement.innerHTML
+    console.log(text)
+    this.selectedText = this.textarea.nativeElement.innerHTML.substring(this.selectionStart, this.selectionEnd)
+    console.log(this.selectedText)
+    const textBeforeSelection = this.textarea.nativeElement.innerHTML.substring(0, this.selectionStart)
+    console.log(textBeforeSelection)
+    const textAfterSelection = this.textarea.nativeElement.innerHTML.substring(this.selectionEnd, text.length-1)
+    console.log(textAfterSelection)
+    const replacement = this.selectedText.replace(this.selectedText, '<strong>' + this.selectedText + '</strong>')
+    const newText = textBeforeSelection + replacement + textAfterSelection
+    console.log(newText)
+    this.textarea.nativeElement.innerHTML = newText;
+    /* document.execCommand('bold'); */
   }
 
   makeItalic() {
@@ -120,8 +134,11 @@ export class InputboxComponent implements OnInit {
   }
   
   getSelectedText(){
-    const selection = window.getSelection();  
-    console.log(selection)
+    const selection = document.getSelection();  
+    this.selectionStart = selection.anchorOffset;
+    this.selectionEnd = selection.focusOffset;
+    console.log(this.textarea.nativeElement.innerHTML.substring(this.selectionStart, this.selectionEnd))
+
   }
 
 
