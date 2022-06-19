@@ -16,7 +16,7 @@
     background: rgba(106, 104, 104, 0.077);
 }
 
-textarea {
+/* textarea {
     width: 100%;
     padding: mix.$padding-medium;
     height: fit-content;
@@ -25,6 +25,23 @@ textarea {
     outline: none;
     border: none;
     background: none;
+} */
+
+.textarea {
+    width: 100%;
+    height: 100%;
+    padding: mix.$padding-medium mix.$padding-medium 0 mix.$padding-medium;
+    max-height: 50vh;
+    outline: none;
+}
+
+.placeholder{
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: rgba(128, 128, 128, 0.766);
+    font-size: 14px;
+    font-family: "Roboto", "Helvetica Neue", sans-serif;
 }
 
 ::placeholder{
