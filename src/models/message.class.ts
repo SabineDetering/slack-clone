@@ -5,7 +5,7 @@ export class Message {
     authorID: string;
     timestamp: any;
     messageText: string;
-    images?: [];
+    images?: string[] ;  // as urls
 
     constructor(obj?: any) {
         this.messageID = obj ? obj.messageID : '';

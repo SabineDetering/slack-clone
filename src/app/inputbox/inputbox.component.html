@@ -1,17 +1,21 @@
 <div class="toolbar">
     <button (click)="makeBold()">B</button>
     <button (click)="makeItalic()">I</button>
-    <button (click)="toCodeFormat()"><mat-icon aria-hidden="false" aria-label="send-icon">code</mat-icon></button>
-    
+    <button (click)="toCodeFormat()">
+        <mat-icon aria-hidden="false" aria-label="send-icon">code</mat-icon>
+    </button>
+
 </div>
 <!-- <textarea [(ngModel)]="userInput" (keyup.enter)="saveUserInput()" rows="1" placeholder="Write a channel message ..."></textarea> -->
-<div class="textarea" contenteditable="true" (keyup.enter)="saveUserInput()" (mouseup)="getSelectedText()" #textarea><span class="placeholder" (click)="removePlaceholder()" #placeholder>Write a channel message ...</span></div>
+<div class="textarea" contenteditable="true" (keyup.enter)="saveUserInput()" (mouseup)="getSelectedText()" #textarea>
+    <span class="placeholder" (click)="removePlaceholder()" #placeholder>Write a channel message ...</span></div>
 <div class="footer">
-  
-        <mat-icon class="icon icon-ImageUpload" (click)="openImageUpload()"  aria-hidden="false" aria-label="insert_photo">
-            insert_photo
-            <input type="file"> 
-        </mat-icon>
+    <span *ngIf="!!filePath" class="infoUploadedFile">Attachments: {{ filePath?.name }}</span>
+    <span *ngIf="!!uploadProgress" class="uploadProgress">Upload: {{ uploadProgress }}%</span>
+    <mat-icon class="icon icon-ImageUpload" aria-hidden="false" aria-label="insert_photo">
+        insert_photo
+        <input type="file" (change)="getImageFile($event)" accept="*.jpg.png">
+    </mat-icon>
 
-    <mat-icon class="icon" (click)="saveUserInput()"  aria-hidden="false" aria-label="send-icon">send</mat-icon>
+    <mat-icon class="icon" (click)="saveUserInput()" aria-hidden="false" aria-label="send-icon">send</mat-icon>
 </div>

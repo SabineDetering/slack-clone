@@ -35,7 +35,7 @@
     outline: none;
 }
 
-.placeholder{
+.placeholder {
     display: block;
     width: 100%;
     height: 100%;
@@ -44,19 +44,24 @@
     font-family: "Roboto", "Helvetica Neue", sans-serif;
 }
 
-::placeholder{
+::placeholder {
     color: rgba(128, 128, 128, 0.766);
     font-size: 14px;
     font-family: "Roboto", "Helvetica Neue", sans-serif;
 }
 
 .footer {
-    @include mix.flex(flex-end, center);
+    @include mix.flex(flex-end, center, row, 8px);
     width: 100%;
     padding: mix.$padding-medium;
+
+    span{
+        font-size: 12px;
+        opacity: 0.7;
+    }
 }
 
-button{
+button {
     background: none;
     height: 24px;
     border: none;
@@ -64,7 +69,7 @@ button{
     padding-left: 12px;
     padding-right: 12px;
 
-    &:hover{
+    &:hover {
         background: lightgrey;
     }
 }
@@ -72,7 +77,6 @@ button{
 mat-icon {
     font-size: 20px;
     opacity: 0.8;
-    margin-right: 8px;
     cursor: pointer;
     transition: all 150ms ease-in-out;
 
@@ -81,20 +85,17 @@ mat-icon {
     }
 }
 
+.icon-ImageUpload {
+    position: relative;
+    cursor: pointer;
 
-
-
-    .icon-ImageUpload{
-        position: relative;
+    input {
+        position: absolute;
+        left: 50%;
+        bottom: 0%;
+        transform: translate(-50%);
+        opacity: 0;
+        z-index: 10;
         cursor: pointer;
-
-        input{
-            position: absolute;
-            left: 50%;
-            bottom: 0%;
-            transform: translate(-50%);
-            opacity: 0;
-            z-index: 10;
-        }
     }
-
+}
