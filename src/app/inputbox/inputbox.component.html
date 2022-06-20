@@ -7,5 +7,11 @@
 <!-- <textarea [(ngModel)]="userInput" (keyup.enter)="saveUserInput()" rows="1" placeholder="Write a channel message ..."></textarea> -->
 <div class="textarea" contenteditable="true" (keyup.enter)="saveUserInput()" (mouseup)="getSelectedText()" #textarea><span class="placeholder" (click)="removePlaceholder()" #placeholder>Write a channel message ...</span></div>
 <div class="footer">
-    <mat-icon (click)="saveUserInput()"  aria-hidden="false" aria-label="send-icon">send</mat-icon>
+  
+        <mat-icon class="icon icon-ImageUpload" (click)="openImageUpload()"  aria-hidden="false" aria-label="insert_photo">
+            insert_photo
+            <input type="file"> 
+        </mat-icon>
+
+    <mat-icon class="icon" (click)="saveUserInput()"  aria-hidden="false" aria-label="send-icon">send</mat-icon>
 </div>

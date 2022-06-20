@@ -35,9 +35,13 @@ export class InputboxComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  async saveUserInput() {
+  openImageUpload(){
+
+  }
+
+  saveUserInput() {
     this.userInput = this.textarea.nativeElement.innerText
-    this.currentChannel = await this.Data.currentChannel$.getValue();
+    this.currentChannel = this.Data.currentChannel$.getValue();
 
     if (this.userInput.length > 0) {
       if(this.currentMessageId){

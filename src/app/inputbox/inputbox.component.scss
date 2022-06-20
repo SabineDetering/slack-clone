@@ -72,6 +72,7 @@ button{
 mat-icon {
     font-size: 20px;
     opacity: 0.8;
+    margin-right: 8px;
     cursor: pointer;
     transition: all 150ms ease-in-out;
 
@@ -79,3 +80,21 @@ mat-icon {
         opacity: 0.6;
     }
 }
+
+
+
+
+    .icon-ImageUpload{
+        position: relative;
+        cursor: pointer;
+
+        input{
+            position: absolute;
+            left: 50%;
+            bottom: 0%;
+            transform: translate(-50%);
+            opacity: 0;
+            z-index: 10;
+        }
+    }
+
