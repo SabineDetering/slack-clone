@@ -54,6 +54,7 @@ app-inputbox{
     @include mix.flex(flex-start,center, row, 16px);    
         font-size: 12px;
         padding-left: 52px;
+        margin-bottom: 8px;
 
     button{
         @include mix.flex(flex-start,center);    
