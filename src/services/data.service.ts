@@ -151,7 +151,4 @@ export class DataService {
     this.userCollection.doc(id).update({photoURL:url});
   }
 
-  getAvatarByUserID(id: string) {
-   return this.userCollection.doc(id).get();    
-  }
 }

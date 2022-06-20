@@ -64,15 +64,6 @@ export class DirectChannelListComponent implements OnInit {
   }
 
 
-  getChannelAvatar(directChannel: DirectChannel) {
-    let firstMemberID = directChannel.directChannelMembers[0];
-    this.Data.getUserdataFromUserID(firstMemberID).then(
-      user =>
-        user.photoURL || 'assets/img/user-femaleAvatar.png'
-    );
-  }
-
-
   async setCurrentDirectChannel(directChannel: DirectChannel) {
     this.Data.currentChannel$.next(
       new CurrentChannel({
