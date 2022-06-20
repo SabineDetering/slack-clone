@@ -59,10 +59,10 @@ export class InputboxComponent implements OnInit {
       this.uploadFileToStorage().subscribe((progress) => {
         this.uploadProgress = progress;
         console.log('newMessage', this.newMessage);
-        
+
         // if ((this.uploadProgress = 100)) {
-        //   console.log('progress', this.uploadProgress);
-          this.postTextMessage();
+        //   console.log('progress', this.uploadProgress)
+
         // }
       });
     } else {
@@ -96,15 +96,18 @@ export class InputboxComponent implements OnInit {
     uploadTask
       .snapshotChanges()
       .pipe(
-         finalize(async () => {
+        finalize(async () => {
           // finalize is a rxjs method
-          
-           this.fileDownloadURL = await firstValueFrom(storageRef.getDownloadURL())
-          
+
+          this.fileDownloadURL = await firstValueFrom(
+            storageRef.getDownloadURL()
+          );
+          this.postTextMessage();
+
           // .subscribe((downloadURL: string) => {
-            console.log('file download url: ', this.fileDownloadURL);
-            // this.fileDownloadURL = downloadURL;
-            this.newMessage.images.push(this.fileDownloadURL);
+          console.log('file download url: ', this.fileDownloadURL);
+          // this.fileDownloadURL = downloadURL;
+          this.newMessage.images.push(this.fileDownloadURL);
           // });
         })
       )
