@@ -17,6 +17,7 @@
   <button
     mat-button
     mat-dialog-close
+    [disabled]="!downloadURL"
     (click)="saveAvatar()"
   >
     Save

@@ -31,7 +31,7 @@ export class AuthService {
   }
 
 
-  async updateProfilePic(url: string) {
+  async updateAvatar(url: string) {
     (await this.af.currentUser).updateProfile({ photoURL: url })
   }
 }

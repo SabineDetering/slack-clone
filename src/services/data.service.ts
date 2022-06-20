@@ -145,4 +145,9 @@ export class DataService {
       .then((docRef) => (messageId = docRef.id));
     return messageId;
   } */
+
+
+  updateUserAvatar(id, url) {
+    this.userCollection.doc(id).update({photoURL:url});
+  }
 }

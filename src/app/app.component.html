@@ -5,8 +5,6 @@
     </button>
     <a [routerLink]="['login']"> Slacky</a>
   </div>
-  <!--  -->
-  <img style="width:32px;" [src]=" 'avatars/'+ Auth.currentUserId | getDownloadURL" alt="User avatar">
   <button (click)="openAvatarDialog()">Change avatar</button>
 
   <ngx-auth-firebaseui-avatar [canLogout]="true" [links]="userLinks" [canViewAccount]="true" [canDeleteAccount]="true" [canEditAccount]="true" (onSignOut)="router.navigate(['/login'])"></ngx-auth-firebaseui-avatar>
