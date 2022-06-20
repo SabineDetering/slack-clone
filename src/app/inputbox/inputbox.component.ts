@@ -24,14 +24,18 @@ import { finalize } from 'rxjs/operators';
 export class InputboxComponent implements OnInit {
   private newMessage = new Message();
   private newThread = new Thread();
+
   public currentChannel!: CurrentChannel;
   private currentThread!: Thread;
   public userInput: string = ''; // ngModel Input
+
   private selectedText: string = '';
   private selectionStart!: number;
   private selectionEnd!: number;
-  public filePath!: File;
+
+  public filePath: File = null;
   public uploadProgress: number = 0;
+  private fileDownloadURL: string = '';
 
   @Input('currentMessageId') currentMessageId!: string;
   @Input('messageType') messageType!: string;
@@ -50,34 +54,23 @@ export class InputboxComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  getImageFile(event: any) {
-    this.filePath = event.target.files[0]; // user selected from PC
-    let uploadProgress$ = this.uploadImageToStorage();
-    uploadProgress$.subscribe((progress) => {
-      this.uploadProgress = progress;  // progress on upload to storage in percent
-      console.log('uploadprogress', progress);
-    });
+  handleUserInput() {
+    if (this.filePath) {
+      this.uploadFileToStorage().subscribe((progress) => {
+        this.uploadProgress = progress;
+        console.log('newMessage', this.newMessage);
+        
+        // if ((this.uploadProgress = 100)) {
+        //   console.log('progress', this.uploadProgress);
+          this.postTextMessage();
+        // }
+      });
+    } else {
+      this.postTextMessage();
+    }
   }
 
-  uploadImageToStorage(): Observable<number> {
-    const storageRef = this.storage.ref(this.filePath.name);
-    const uploadTask = this.storage.upload(this.filePath.name, this.filePath);
-
-    uploadTask
-      .snapshotChanges()
-      .pipe(
-        finalize(() => {          // is a rxjs method
-          storageRef.getDownloadURL().subscribe((downloadURL: string) => {
-            console.log('file is available via URL:', downloadURL);
-            this.newMessage.images.push(downloadURL)
-          });
-        })
-      ).subscribe();
-    return uploadTask.percentageChanges(); // AngularFireUploadTask‘s percentageChanges() method
-  }
-
-
-  saveUserInput() {
+  postTextMessage() {
     this.userInput = this.textarea.nativeElement.innerText;
     this.currentChannel = this.Data.currentChannel$.getValue();
 
@@ -88,8 +81,35 @@ export class InputboxComponent implements OnInit {
         this.addNewMessage();
       }
     } else {
-      alert('no input');
+      alert('no text input');
     }
+  }
+
+  getUploadFile(event: any) {
+    this.filePath = event.target.files[0]; // user selected from PC
+  }
+
+  uploadFileToStorage(): Observable<number> {
+    const storageRef = this.storage.ref(this.filePath.name);
+    const uploadTask = this.storage.upload(this.filePath.name, this.filePath);
+
+    uploadTask
+      .snapshotChanges()
+      .pipe(
+         finalize(async () => {
+          // finalize is a rxjs method
+          
+           this.fileDownloadURL = await firstValueFrom(storageRef.getDownloadURL())
+          
+          // .subscribe((downloadURL: string) => {
+            console.log('file download url: ', this.fileDownloadURL);
+            // this.fileDownloadURL = downloadURL;
+            this.newMessage.images.push(this.fileDownloadURL);
+          // });
+        })
+      )
+      .subscribe();
+    return uploadTask.percentageChanges(); // AngularFireUploadTask‘s percentageChanges() method
   }
 
   addNewMessage() {
@@ -99,6 +119,9 @@ export class InputboxComponent implements OnInit {
       this.addMessageAndThread();
     }
   }
+
+  // TODO
+  saveEditedMessage(image?: string) {}
 
   async addMessageAndThread() {
     const uniqueThreadID = await this.createNewThread();
@@ -124,7 +147,7 @@ export class InputboxComponent implements OnInit {
     return uniqueThreadID;
   }
 
-  async addMessageToThread(threadID: string, image?: string) {
+  async addMessageToThread(threadID: string) {
     const currentTime = new Date().getTime();
     let uniqueMessageID =
       this.currentChannel.id +
@@ -135,17 +158,22 @@ export class InputboxComponent implements OnInit {
     this.newMessage.threadID = threadID;
     this.newMessage.messageID = uniqueMessageID;
     this.newMessage.authorID = this.Auth.currentUserId;
-    console.log('currUserId', this.newMessage.authorID);
-
-    // this.message.images = image;
     this.newMessage.timestamp = currentTime;
     this.newMessage.messageText = this.userInput;
+
+    if ((this.fileDownloadURL = '')) {
+      console.log('111 message new fileURL: ', this.fileDownloadURL);
+      this.newMessage.images.push('test');
+    }
+
+    console.log('222 message after push: ', this.newMessage);
+
     await this.Data.saveDocWithCustomID(
       'messages',
       this.newMessage.toJSON(),
       uniqueMessageID
     );
-    this.clearInputfield();
+    this.clearUserInput();
   }
 
   setFirstMessageInThread() {
@@ -157,13 +185,10 @@ export class InputboxComponent implements OnInit {
     );
   }
 
-  saveEditedMessage(image?: string) {}
-
-  clearInputfield() {
+  clearUserInput() {
     this.textarea.nativeElement.innerHTML = '';
     this.filePath = null;
   }
-
 
   // TODO:  WYSWYG TextEditor
   makeBold() {

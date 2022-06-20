@@ -129,7 +129,7 @@ export class DataService {
     this.threadsCollection.doc(thread.threadID).set(thread); // set ID for firebase
   } */
 
-  saveDocWithCustomID(collection: string, obj: any, id: string){
+  saveDocWithCustomID(collection: string, obj: any, id: string){    
     return new Promise((resolve, reject) => {
     const collectionRef = this.firestore.collection(collection);
     collectionRef.doc(id).set(obj)

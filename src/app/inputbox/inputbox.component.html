@@ -7,15 +7,15 @@
 
 </div>
 <!-- <textarea [(ngModel)]="userInput" (keyup.enter)="saveUserInput()" rows="1" placeholder="Write a channel message ..."></textarea> -->
-<div class="textarea" contenteditable="true" (keyup.enter)="saveUserInput()" (mouseup)="getSelectedText()" #textarea>
+<div class="textarea" contenteditable="true" (keyup.enter)="handleUserInput()" (mouseup)="getSelectedText()" #textarea>
     <span class="placeholder" (click)="removePlaceholder()" #placeholder>Write a channel message ...</span></div>
 <div class="footer">
     <span *ngIf="!!filePath" class="infoUploadedFile">Attachments: {{ filePath?.name }}</span>
-    <span *ngIf="!!uploadProgress" class="uploadProgress">Upload: {{ uploadProgress }}%</span>
+    <span *ngIf="!!filePath && !!uploadProgress" class="uploadProgress">Upload: {{ uploadProgress }}%</span>
     <mat-icon class="icon icon-ImageUpload" aria-hidden="false" aria-label="insert_photo">
         insert_photo
-        <input type="file" (change)="getImageFile($event)" accept="*.jpg.png">
+        <input type="file" (change)="getUploadFile($event)" accept="*.jpg.png">
     </mat-icon>
 
-    <mat-icon class="icon" (click)="saveUserInput()" aria-hidden="false" aria-label="send-icon">send</mat-icon>
+    <mat-icon class="icon" (click)="handleUserInput()" aria-hidden="false" aria-label="send-icon">send</mat-icon>
 </div>
