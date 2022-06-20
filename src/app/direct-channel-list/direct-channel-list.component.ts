@@ -24,12 +24,12 @@ export class DirectChannelListComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     public Data: DataService,
-    public Auth:AuthService
+    public Auth: AuthService
   ) { }
 
 
   async ngOnInit(): Promise<void> {
-   
+
     this.users = await firstValueFrom(this.Data.users$);
 
     //subscribe directChannels and merge with users to get participant names excluding logged in user
@@ -42,6 +42,10 @@ export class DirectChannelListComponent implements OnInit {
             .map(user => user.displayName ? user.displayName : 'Guest')
             .sort()
             .join(', ');
+          dc.directChannelAvatar = this.users
+            .filter(user => dc.directChannelMembers
+              .find(member => member != this.Auth.currentUserId) == user.uid)[0]
+            .photoURL;
           return dc;
         })
     })
@@ -57,6 +61,15 @@ export class DirectChannelListComponent implements OnInit {
   openAddDirectChannelDialog(event: Event) {
     event.stopPropagation();
     this.dialog.open(DialogAddDirectChannelComponent);
+  }
+
+
+  getChannelAvatar(directChannel: DirectChannel) {
+    let firstMemberID = directChannel.directChannelMembers[0];
+    this.Data.getUserdataFromUserID(firstMemberID).then(
+      user =>
+        user.photoURL || 'assets/img/user-femaleAvatar.png'
+    );
   }
 
 

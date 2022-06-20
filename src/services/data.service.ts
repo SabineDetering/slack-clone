@@ -147,7 +147,11 @@ export class DataService {
   } */
 
 
-  updateUserAvatar(id, url) {
+  updateUserAvatar(id:string, url:string) {
     this.userCollection.doc(id).update({photoURL:url});
+  }
+
+  getAvatarByUserID(id: string) {
+   return this.userCollection.doc(id).get();    
   }
 }

@@ -32,7 +32,7 @@
         <div class="left-part">
           <div class="avatar-with-number">
             <!-- would be nice to show avatar of first participant -->
-            <img src="assets/img/user-femaleAvatar.png" />
+            <img [src]="directChannel.directChannelAvatar" />
             <div class="number">
               {{ directChannel.directChannelMembers.length - 1 }}
             </div>
