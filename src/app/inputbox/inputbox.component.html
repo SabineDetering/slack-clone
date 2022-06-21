@@ -1,6 +1,12 @@
 <editor
-  [init]="{ plugins: 'lists link image table code help wordcount', base_url: '/tinymce',
-  suffix: '.min' }"
+  [init]="{
+    height: '20vh',
+    plugins: 'lists link image table code help wordcount',
+    base_url: '/tinymce',
+    suffix: '.min',
+    menubar: false,
+    statusbar: false
+  }"
 ></editor>
 
 <!-- <div class="toolbar">
@@ -15,12 +21,26 @@
 <!-- <div class="textarea" contenteditable="true" (keyup.enter)="handleUserInput()" (mouseup)="getSelectedText()" #textarea>
     <span class="placeholder" (click)="removePlaceholder()" #placeholder>Write a channel message ...</span></div> -->
 <div class="footer">
-    <span *ngIf="!!file" class="infoUploadedFile">Attachments: {{ file?.name }}</span>
-    <span *ngIf="!!file && !!uploadProgress" class="uploadProgress">Upload: {{ uploadProgress }}%</span>
-    <mat-icon class="icon icon-ImageUpload" aria-hidden="false" aria-label="insert_photo">
-        insert_photo
-        <input type="file" (change)="getUploadFile($event)" accept="*.jpg.png">
-    </mat-icon>
+  <span *ngIf="!!file" class="infoUploadedFile"
+    >Attachments: {{ file?.name }}</span
+  >
+  <span *ngIf="!!file && !!uploadProgress" class="uploadProgress"
+    >Upload: {{ uploadProgress }}%</span
+  >
+  <mat-icon
+    class="icon icon-ImageUpload"
+    aria-hidden="false"
+    aria-label="insert_photo"
+  >
+    insert_photo
+    <input type="file" (change)="getUploadFile($event)" accept="*.jpg.png" />
+  </mat-icon>
 
-    <mat-icon class="icon" (click)="handleUserInput()" aria-hidden="false" aria-label="send-icon">send</mat-icon>
+  <mat-icon
+    class="icon"
+    (click)="handleUserInput()"
+    aria-hidden="false"
+    aria-label="send-icon"
+    >send</mat-icon
+  >
 </div>
