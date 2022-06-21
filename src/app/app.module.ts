@@ -15,7 +15,6 @@ import { FormsModule } from '@angular/forms';
 import { NgxAuthFirebaseUIModule } from 'ngx-auth-firebaseui';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
-
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -29,6 +28,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { LayoutModule } from '@angular/cdk/layout';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 import { ChannelListComponent } from './channel-list/channel-list.component';
 import { ThreadContainerComponent } from './thread-container/thread-container.component';
@@ -63,7 +63,7 @@ import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-chang
     MessageActionsComponent,
     LegalNoticeComponent,
     PrivacyNoticeComponent,
-    DialogChangeAvatarComponent
+    DialogChangeAvatarComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,14 +77,16 @@ import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-chang
     NoopAnimationsModule,
     FormsModule,
     AngularFireStorageModule,
+    EditorModule,
     NgxAuthFirebaseUIModule.forRoot(
       {
         apiKey: 'AIzaSyAUjkrn3_ViAa5mOqk02FMNczM-RgnQPjc',
         authDomain: 'slack-clone-asv.firebaseapp.com',
-        databaseURL: 'https://slack-clone-asv-default-rtdb.europe-west1.firebasedatabase.app',
+        databaseURL:
+          'https://slack-clone-asv-default-rtdb.europe-west1.firebasedatabase.app',
         projectId: 'slack-clone-asv',
         storageBucket: 'slack-clone-asv.appspot.com',
-        messagingSenderId: '1021747445945'
+        messagingSenderId: '1021747445945',
       },
       () => 'slack_clone_factory',
       {
@@ -103,7 +105,8 @@ import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-chang
         guardProtectedRoutesUntilEmailIsVerified: false,
         enableEmailVerification: false, // default: true
         useRawUserCredential: false, // If set to true outputs the UserCredential object instead of firebase.User after login and signup - Default: false
-      }),
+      }
+    ),
 
     MatIconModule,
     MatToolbarModule,
@@ -117,11 +120,12 @@ import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-chang
     MatListModule,
     MatSelectModule,
     MatMenuModule,
-    LayoutModule
-
+    LayoutModule,
   ],
   providers: [
-    OrderByPipe],
-  bootstrap: [AppComponent]
+    OrderByPipe,
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

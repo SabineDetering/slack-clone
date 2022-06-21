@@ -23,9 +23,11 @@
     "@angular/platform-browser": "~13.3.0",
     "@angular/platform-browser-dynamic": "~13.3.0",
     "@angular/router": "~13.3.0",
+    "@tinymce/tinymce-angular": "^6.0.1",
     "material-icons-font": "^2.1.0",
     "ngx-auth-firebaseui": "^6.0.0",
     "rxjs": "~7.5.0",
+    "tinymce": "^6.0.3",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },

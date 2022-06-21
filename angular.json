@@ -33,12 +33,18 @@
                 "glob": "**/*",
                 "input": "node_modules/ngx-auth-firebaseui/assets/",
                 "output": "./assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/tinymce",
+                "output": "/tinymce/"
               }
             ],
-            "styles": ["./node_modules/material-icons-font/material-icons-font.css",
+            "styles": [
+              "./node_modules/material-icons-font/material-icons-font.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [  "node_modules/tinymce/tinymce.min.js"]
           },
           "configurations": {
             "production": {
@@ -108,9 +114,7 @@
                 "output": "./assets/"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": []
           }
         },
