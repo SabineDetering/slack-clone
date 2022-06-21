@@ -1,4 +1,5 @@
 <editor
+  [(ngModel)]="userInput"
   [init]="{
     height: '20vh',
     plugins: 'lists link image table code help wordcount',
@@ -29,17 +30,6 @@
   }"
 ></editor>
 
-<!-- <div class="toolbar">
-    <button (click)="makeBold()">B</button>
-    <button (click)="makeItalic()">I</button>
-    <button (click)="toCodeFormat()">
-        <mat-icon aria-hidden="false" aria-label="send-icon">code</mat-icon>
-    </button>
-
-</div> -->
-<!-- <textarea [(ngModel)]="userInput" (keyup.enter)="saveUserInput()" rows="1" placeholder="Write a channel message ..."></textarea> -->
-<!-- <div class="textarea" contenteditable="true" (keyup.enter)="handleUserInput()" (mouseup)="getSelectedText()" #textarea>
-    <span class="placeholder" (click)="removePlaceholder()" #placeholder>Write a channel message ...</span></div> -->
 <div class="footer">
   <span *ngIf="!!file" class="infoUploadedFile"
     >Attachments: {{ file?.name }}</span

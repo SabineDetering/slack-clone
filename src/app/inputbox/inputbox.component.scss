@@ -13,47 +13,6 @@ editor{
     width: 100%;
 }
 
-.toolbar {
-    @include mix.flex(flex-start, center, row, 12px);
-    width: 100%;
-    padding: mix.$padding-medium;
-    background: rgba(106, 104, 104, 0.077);
-}
-
-/* textarea {
-    width: 100%;
-    padding: mix.$padding-medium;
-    height: fit-content;
-    max-height: 50vh;
-    resize: none;
-    outline: none;
-    border: none;
-    background: none;
-} */
-
-.textarea {
-    width: 100%;
-    height: 100%;
-    padding: mix.$padding-medium mix.$padding-medium 0 mix.$padding-medium;
-    max-height: 50vh;
-    outline: none;
-}
-
-.placeholder {
-    display: block;
-    width: 100%;
-    height: 100%;
-    color: rgba(128, 128, 128, 0.766);
-    font-size: 14px;
-    font-family: "Roboto", "Helvetica Neue", sans-serif;
-}
-
-::placeholder {
-    color: rgba(128, 128, 128, 0.766);
-    font-size: 14px;
-    font-family: "Roboto", "Helvetica Neue", sans-serif;
-}
-
 .footer {
     @include mix.flex(flex-end, center, row, 8px);
     width: 100%;

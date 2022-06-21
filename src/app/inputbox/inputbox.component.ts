@@ -1,13 +1,9 @@
 import {
-  AfterViewInit,
   Component,
-  ElementRef,
   Input,
   OnInit,
-  ViewChild,
 } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
-import { Channel } from 'src/models/channel.class';
 import { CurrentChannel } from 'src/models/current-channel.class';
 import { Message } from 'src/models/message.class';
 import { Thread } from 'src/models/thread.class';
@@ -27,19 +23,13 @@ export class InputboxComponent implements OnInit {
 
   public currentChannel!: CurrentChannel;
   private currentThread!: Thread;
-  public userInput: string = ''; // ngModel Input
-
-  private selectedText: string = '';
-  private selectionStart!: number;
-  private selectionEnd!: number;
+  public userInput!: any; // ngModel Input
 
   public file: File = null;
   public uploadProgress: number = 0;
 
   @Input('currentMessageId') currentMessageId!: string;
   @Input('messageType') messageType!: string;
-  @ViewChild('textarea') textarea: ElementRef;
-  @ViewChild('placeholder') placeholder: ElementRef;
 
   constructor(
     private Data: DataService,
@@ -53,6 +43,8 @@ export class InputboxComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  logUserInput(){console.log(this.userInput)}
+
   handleUserInput() {
     if (this.file) {
       this.postMessageWithFile().subscribe((progress) => {
@@ -64,7 +56,6 @@ export class InputboxComponent implements OnInit {
   }
 
   postTextMessage() {
-    this.userInput = this.textarea.nativeElement.innerText;
     this.currentChannel = this.Data.currentChannel$.getValue();
     if (this.userInput.length > 0) {
       if (this.currentMessageId) {
@@ -149,6 +140,7 @@ export class InputboxComponent implements OnInit {
     this.newMessage.authorID = this.Auth.currentUserId;
     this.newMessage.timestamp = currentTime;
     this.newMessage.messageText = this.userInput;
+    /* this.newMessage.messageText = this.userInput; */
 
     await this.Data.saveDocWithCustomID(
       'messages',
@@ -168,60 +160,7 @@ export class InputboxComponent implements OnInit {
   }
 
   clearUserInput() {
-    this.textarea.nativeElement.innerHTML = '';
+    this.userInput = '';
     this.file = null;
-  }
-
-  // TODO:  WYSWYG TextEditor
-  makeBold() {
-    let text = this.textarea.nativeElement.innerHTML;
-    console.log(text);
-    this.selectedText = this.textarea.nativeElement.innerHTML.substring(
-      this.selectionStart,
-      this.selectionEnd
-    );
-    console.log(this.selectedText);
-    const textBeforeSelection = this.textarea.nativeElement.innerHTML.substring(
-      0,
-      this.selectionStart
-    );
-    console.log(textBeforeSelection);
-    const textAfterSelection = this.textarea.nativeElement.innerHTML.substring(
-      this.selectionEnd,
-      text.length - 1
-    );
-    console.log(textAfterSelection);
-    const replacement = this.selectedText.replace(
-      this.selectedText,
-      '<strong>' + this.selectedText + '</strong>'
-    );
-    const newText = textBeforeSelection + replacement + textAfterSelection;
-    console.log(newText);
-    this.textarea.nativeElement.innerHTML = newText;
-    /* document.execCommand('bold'); */
-  }
-
-  makeItalic() {
-    document.execCommand('italic');
-  }
-
-  toCodeFormat() {
-    document.execCommand('italic');
-  }
-
-  getSelectedText() {
-    const selection = document.getSelection();
-    this.selectionStart = selection.anchorOffset;
-    this.selectionEnd = selection.focusOffset;
-    console.log(
-      this.textarea.nativeElement.innerHTML.substring(
-        this.selectionStart,
-        this.selectionEnd
-      )
-    );
-  }
-
-  removePlaceholder() {
-    this.textarea.nativeElement.innerHTML = '';
   }
 }
