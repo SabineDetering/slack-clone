@@ -8,11 +8,6 @@
     border-right: 1px solid #e0e0e0;
 }
 
-app-inputbox{
-   /*  position: absolute;
-    bottom: 16px; */
-}
-
 .head{
     @include mix.flex(flex-start,flex-start, column);  
     padding: mix.$padding-medium 5%;
@@ -23,9 +18,6 @@ app-inputbox{
     .channelName{
         font-weight: bold;
         font-size: 20px;
-    }
-    .channelDescription{
-
     }
 }
 
