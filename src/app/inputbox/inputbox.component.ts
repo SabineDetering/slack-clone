@@ -33,7 +33,7 @@ export class InputboxComponent implements OnInit {
   private selectionStart!: number;
   private selectionEnd!: number;
 
-  public filePath: File = null;
+  public file: File = null;
   public uploadProgress: number = 0;
 
   @Input('currentMessageId') currentMessageId!: string;
@@ -54,7 +54,7 @@ export class InputboxComponent implements OnInit {
   ngOnInit(): void {}
 
   handleUserInput() {
-    if (this.filePath) {
+    if (this.file) {
       this.postMessageWithFile().subscribe((progress) => {
         this.uploadProgress = progress;
       });
@@ -78,12 +78,13 @@ export class InputboxComponent implements OnInit {
   }
 
   getUploadFile(event: any) {
-    this.filePath = event.target.files[0]; // user selected from PC
+    this.file = event.target.files[0]; // user selected from PC
   }
 
   postMessageWithFile(): Observable<number> {
-    const storageRef = this.storage.ref(this.filePath.name);
-    const uploadTask = this.storage.upload(this.filePath.name, this.filePath);
+    const filePathInStorage = 'chatimages/' + (this.Auth.currentUserId + '_' + this.file.name);
+    const storageRef = this.storage.ref(filePathInStorage);
+    const uploadTask = this.storage.upload(filePathInStorage, this.file);
 
     uploadTask
       .snapshotChanges()
@@ -168,7 +169,7 @@ export class InputboxComponent implements OnInit {
 
   clearUserInput() {
     this.textarea.nativeElement.innerHTML = '';
-    this.filePath = null;
+    this.file = null;
   }
 
   // TODO:  WYSWYG TextEditor

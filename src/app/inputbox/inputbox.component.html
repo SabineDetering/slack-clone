@@ -10,8 +10,8 @@
 <div class="textarea" contenteditable="true" (keyup.enter)="handleUserInput()" (mouseup)="getSelectedText()" #textarea>
     <span class="placeholder" (click)="removePlaceholder()" #placeholder>Write a channel message ...</span></div>
 <div class="footer">
-    <span *ngIf="!!filePath" class="infoUploadedFile">Attachments: {{ filePath?.name }}</span>
-    <span *ngIf="!!filePath && !!uploadProgress" class="uploadProgress">Upload: {{ uploadProgress }}%</span>
+    <span *ngIf="!!file" class="infoUploadedFile">Attachments: {{ file?.name }}</span>
+    <span *ngIf="!!file && !!uploadProgress" class="uploadProgress">Upload: {{ uploadProgress }}%</span>
     <mat-icon class="icon icon-ImageUpload" aria-hidden="false" aria-label="insert_photo">
         insert_photo
         <input type="file" (change)="getUploadFile($event)" accept="*.jpg.png">
