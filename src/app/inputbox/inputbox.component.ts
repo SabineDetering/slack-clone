@@ -35,7 +35,6 @@ export class InputboxComponent implements OnInit {
 
   public filePath: File = null;
   public uploadProgress: number = 0;
-  private fileDownloadURL: string = '';
 
   @Input('currentMessageId') currentMessageId!: string;
   @Input('messageType') messageType!: string;
@@ -56,14 +55,8 @@ export class InputboxComponent implements OnInit {
 
   handleUserInput() {
     if (this.filePath) {
-      this.uploadFileToStorage().subscribe((progress) => {
+      this.postMessageWithFile().subscribe((progress) => {
         this.uploadProgress = progress;
-        console.log('newMessage', this.newMessage);
-
-        // if ((this.uploadProgress = 100)) {
-        //   console.log('progress', this.uploadProgress)
-
-        // }
       });
     } else {
       this.postTextMessage();
@@ -73,7 +66,6 @@ export class InputboxComponent implements OnInit {
   postTextMessage() {
     this.userInput = this.textarea.nativeElement.innerText;
     this.currentChannel = this.Data.currentChannel$.getValue();
-
     if (this.userInput.length > 0) {
       if (this.currentMessageId) {
         this.saveEditedMessage();
@@ -89,7 +81,7 @@ export class InputboxComponent implements OnInit {
     this.filePath = event.target.files[0]; // user selected from PC
   }
 
-  uploadFileToStorage(): Observable<number> {
+  postMessageWithFile(): Observable<number> {
     const storageRef = this.storage.ref(this.filePath.name);
     const uploadTask = this.storage.upload(this.filePath.name, this.filePath);
 
@@ -97,22 +89,15 @@ export class InputboxComponent implements OnInit {
       .snapshotChanges()
       .pipe(
         finalize(async () => {
-          // finalize is a rxjs method
-
-          this.fileDownloadURL = await firstValueFrom(
+          let fileDownloadURL = await firstValueFrom(
             storageRef.getDownloadURL()
           );
+          this.newMessage.images.push(fileDownloadURL);
           this.postTextMessage();
-
-          // .subscribe((downloadURL: string) => {
-          console.log('file download url: ', this.fileDownloadURL);
-          // this.fileDownloadURL = downloadURL;
-          this.newMessage.images.push(this.fileDownloadURL);
-          // });
         })
       )
       .subscribe();
-    return uploadTask.percentageChanges(); // AngularFireUploadTask‘s percentageChanges() method
+    return uploadTask.percentageChanges(); 
   }
 
   addNewMessage() {
@@ -163,13 +148,6 @@ export class InputboxComponent implements OnInit {
     this.newMessage.authorID = this.Auth.currentUserId;
     this.newMessage.timestamp = currentTime;
     this.newMessage.messageText = this.userInput;
-
-    if ((this.fileDownloadURL = '')) {
-      console.log('111 message new fileURL: ', this.fileDownloadURL);
-      this.newMessage.images.push('test');
-    }
-
-    console.log('222 message after push: ', this.newMessage);
 
     await this.Data.saveDocWithCustomID(
       'messages',
