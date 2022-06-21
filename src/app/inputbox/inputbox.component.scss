@@ -1,12 +1,16 @@
 @use "../../styles/mixins" as mix; //also imports _variables.scss
 
 :host {
-    @include mix.flex(flex-start, center, column, 8px);
+    @include mix.flex(flex-start, center, column);
     width: 90%;
     margin-bottom: 8px;
     border-radius: 8px;
     border: 1px solid #e0e0e0;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+editor{
+    width: 100%;
 }
 
 .toolbar {
