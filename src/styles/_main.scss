@@ -47,4 +47,18 @@ body {
   }
 }
 
+code{
+  color: #e01e5a;
+  background-color: #eee;
+  border: 1px solid #ddd;
+  padding: 2px;
+}
+
+pre{
+  background-color: #eee;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  padding: 5px;
+}
+
  @include mix.scrollbar(mix.$primary-color, mix.$primary-hover, mix.$primary-hover);

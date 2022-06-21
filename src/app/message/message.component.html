@@ -6,7 +6,7 @@
         <span class="author">{{ messageAuthorName }}</span>
         <span class="timestamp">{{ date | date:'medium' }}</span>
     </div>
-    <p>{{ message.messageText }}</p>
+    <p [innerHTML]="message.messageText"></p>
     <img #thumbnail class="img-thumbnail" (click)="fullsizeOpen=true; fullsize.src = image;" *ngFor="let image of message.images; index as i" src="{{image}}">
     <!-- consider emojis here-->
 </div>
