@@ -16,6 +16,7 @@ export class MessageComponent implements OnInit {
   date: Date;
   messageTime: string;
   messageAuthorName: string;
+  fullsizeOpen: boolean = false;
 
   constructor(
     public Data: DataService, 

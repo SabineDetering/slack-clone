@@ -3,8 +3,13 @@
 
 :host {
     @include mix.flex(center, flex-start, row, 12px);
+    position: relative;
     padding: mix.$padding-medium;
     border-radius: 12px;
+}
+
+.d-none {
+    display: none;
 }
 
 .author {
@@ -21,17 +26,58 @@
     @include mix.flex(flex-start, flex-start, column);
     width: 100%;
 }
+
+.img-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.img-thumbnail {
+    width: unset;
+    max-width: 50%;
+    height: unset;
+    max-height: 100px;
+    cursor: pointer;
+}
+
+.img-fullsize {
+    width: unset;
+    max-width: 100%;
+
+}
+
+.fullsize-container {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 100%;
+    transform: translate(-50%,0);
+    border-radius: 8px;
+    padding: 22px;
+    background: white;
+    z-index:10;
+
+    .closeFullsize{
+        position: absolute;
+        right: 0px; 
+        top: 0px;
+        background-color:rgba(255, 255, 255, 0.844);
+        border-radius: 2px;
+        padding: 0px 4px;
+        cursor: pointer;
+
+        &:hover{
+            background-color:rgba(255, 255, 255, 0.369);
+        }
+    }
+}
+
 .bottomRow {
     @include mix.flex(flex-start, center, row, 8px);
     width: 100%;
     font-size: 12px;
     margin-top: 8px;
-}
-
-img {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
 }
 
 button {

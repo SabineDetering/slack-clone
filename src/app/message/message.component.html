@@ -1,4 +1,4 @@
-<img src="assets/img/user-femaleAvatar.png" alt="author">
+<img class="img-avatar" src="assets/img/user-femaleAvatar.png" alt="author">
 
 <div class="mainContainer" *ngIf="message">
     <div>
@@ -7,6 +7,12 @@
         <span class="timestamp">{{ date | date:'medium' }}</span>
     </div>
     <p>{{ message.messageText }}</p>
-    <img *ngFor="let image of message.images; index as i" src="{{image}}">
+    <img #thumbnail class="img-thumbnail" (click)="fullsizeOpen=true; fullsize.src = image;" *ngFor="let image of message.images; index as i" src="{{image}}">
     <!-- consider emojis here-->
 </div>
+
+<div #fullsizeContainer [class.d-none]="!fullsizeOpen" class="fullsize-container  d-none">
+    <img class="img-fullsize"  src="" alt="fullsize"  #fullsize>
+    <div class="closeFullsize" (click)="fullsizeOpen=false">x</div>
+</div>
+
