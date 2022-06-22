@@ -10,9 +10,9 @@ import { DataService } from 'src/services/data.service';
 })
 export class MessageComponent implements OnInit {
   @Input() firstMessageID: string = '';
-  @Input() currentMessage: Message;
+  @Input() message: Message;
   @Input() thread: Thread;
-  public message: Message;
+  /* public message: Message; */
   date: Date | undefined;
   messageAuthorName: string;
   fullsizeOpen: boolean = false;
@@ -27,7 +27,6 @@ export class MessageComponent implements OnInit {
       this.getMessageTime();
       this.getMessageAuthorName();
     } else if (this.firstMessageID == '') {
-      this.message = this.currentMessage;
       this.getMessageTime();
       this.getMessageAuthorName();
     } else{

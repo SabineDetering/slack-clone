@@ -13,6 +13,7 @@ import { DataService } from 'src/services/data.service';
 export class MessageActionsComponent implements OnInit {
   @Input() thread!: Thread;
   @Input() actionsType!: string;
+  @Input() messageID!: string;
   // currentChannel!: Channel;
   currentChannel: CurrentChannel;
 
@@ -30,15 +31,23 @@ export class MessageActionsComponent implements OnInit {
   }
 
   async deleteFirstThreadMessage() {
-    console.log(this.thread.firstMessageID);
     let message = await this.Data.getMessageFromMessageId(
       this.thread.firstMessageID
     );
-    console.log(message);
     message.messageText = 'This message has been deleted';
     this.Data.deleteMessage(this.thread.firstMessageID);
+    this.deleteFirstMessageInThread()
+  }
+  
+  deleteFirstMessageInThread(){
     this.thread.firstMessageID = 'deleted';
     this.Data.saveDocWithCustomID('threads', this.thread, this.thread.threadID);
-    /* this.Data.saveDocWithCustomID('messages', message, message.messageID) */
+  }
+
+  deleteMessage(){
+    this.Data.deleteMessage(this.messageID);
+    if(this.thread.firstMessageID == this.messageID){
+      this.deleteFirstMessageInThread()
+    }
   }
 }
