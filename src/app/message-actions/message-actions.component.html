@@ -12,14 +12,6 @@
   </button>
   <button
     class="icon"
-    *ngIf="actionsType == 'threadActions'"
-    (click)="deleteFirstThreadMessage()"
-  >
-    <mat-icon aria-hidden="false" aria-label="delete">delete</mat-icon>
-  </button>
-  <button
-    class="icon"
-    *ngIf="actionsType == 'messageActions'"
     (click)="deleteMessage()"
   >
     <mat-icon aria-hidden="false" aria-label="delete">delete</mat-icon>

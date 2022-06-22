@@ -55,6 +55,7 @@ export class DataService {
     this.users$ = this.userCollection.valueChanges({ idField: 'userID' });
 
     this.messageCollection = this.firestore.collection<Message>('messages');
+    this.threadsCollection = this.firestore.collection<Thread>('threads');
 
     this.directChannelCollection =
       this.firestore.collection<DirectChannel>('direct-channels');
@@ -64,7 +65,6 @@ export class DataService {
     });
   }
 
-  
   getThreadsFromChannelID(channelID: string): void {
     this.firestore
       .collection<Thread>('threads', (ref) =>
@@ -75,7 +75,6 @@ export class DataService {
         this.currentThreads$.next(threads);
       });
   }
-
 
   getMessagesFromThreadID(threadID: string): void {
     this.firestore
@@ -88,13 +87,11 @@ export class DataService {
       });
   }
 
-  
   async getMessageFromMessageId(messageId: string) {
     return (await firstValueFrom(
       this.messageCollection.doc(messageId).valueChanges()
     )) as Message;
   }
-
 
   async getUserdataFromUserID(userID: string) {
     // userId is identical with Doc-Id
@@ -134,10 +131,16 @@ export class DataService {
   }
 
   deleteMessage(messageID: string) {
-      this.messageCollection.doc(messageID).delete();
+    console.log('deleting message');
+    this.messageCollection.doc(messageID).delete();
   }
 
-  updateUserProperties(id: string, json:any) {
+  deleteThread(threadID: string) {
+    console.log('deleting thread');
+    this.threadsCollection.doc(threadID).delete();
+  }
+  
+  updateUserProperties(id: string, json: any) {
     this.userCollection.doc(id).update(json);
   }
 }

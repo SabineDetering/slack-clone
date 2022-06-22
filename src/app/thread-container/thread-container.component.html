@@ -13,9 +13,9 @@
     class="message"
     *ngFor="let message of Data.currentMessages$ | async; index as i"
   >
-    <app-message-actions [actionsType]="'messageActions'" [messageID]="message.messageID" [thread]="currentThread"></app-message-actions>
+    <app-message-actions [actionsType]="'messageActions'" [message]="message" [thread]="currentThread"></app-message-actions>
 
-    <app-message [message]="message"></app-message>
+    <app-message [message]="message" [thread]="currentThread"></app-message>
   </div>
 </div>
 <app-inputbox [messageType]="'answerMessage'"></app-inputbox>

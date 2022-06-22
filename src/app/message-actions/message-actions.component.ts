@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Channel } from 'src/models/channel.class';
 import { CurrentChannel } from 'src/models/current-channel.class';
+import { Message } from 'src/models/message.class';
 import { Thread } from 'src/models/thread.class';
 import { DataService } from 'src/services/data.service';
 
@@ -12,17 +13,22 @@ import { DataService } from 'src/services/data.service';
 })
 export class MessageActionsComponent implements OnInit {
   @Input() thread!: Thread;
+  @Input() message!: Message;
   @Input() actionsType!: string;
-  @Input() messageID!: string;
   // currentChannel!: Channel;
   currentChannel: CurrentChannel;
 
   constructor(public router: Router, private Data: DataService) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.Data.currentChannel$.subscribe(
       (channel) => (this.currentChannel = channel)
     );
+    if (!this.message) {
+      this.message = await this.Data.getMessageFromMessageId(
+        this.thread.firstMessageID
+      );
+    }
   }
 
   answerInThread() {
@@ -30,24 +36,29 @@ export class MessageActionsComponent implements OnInit {
     this.Data.getMessagesFromThreadID(this.thread.threadID);
   }
 
-  async deleteFirstThreadMessage() {
-    let message = await this.Data.getMessageFromMessageId(
-      this.thread.firstMessageID
-    );
-    message.messageText = 'This message has been deleted';
-    this.Data.deleteMessage(this.thread.firstMessageID);
-    this.deleteFirstMessageInThread()
+  deleteMessage() {
+    this.Data.deleteMessage(this.message.messageID);
+    if (this.thread.answerAmount == 0) {
+      this.deleteThread();
+    } else {
+      this.reduceAnswersInThread();
+      if (this.thread.firstMessageID == this.message.messageID) {
+        this.deleteFirstMessageInThread();
+      }
+    }
   }
-  
-  deleteFirstMessageInThread(){
+
+  reduceAnswersInThread() {
+    this.thread.answerAmount--;
+    this.Data.saveDocWithCustomID('threads', this.thread, this.thread.threadID);
+  }
+
+  deleteFirstMessageInThread() {
     this.thread.firstMessageID = 'deleted';
     this.Data.saveDocWithCustomID('threads', this.thread, this.thread.threadID);
   }
 
-  deleteMessage(){
-    this.Data.deleteMessage(this.messageID);
-    if(this.thread.firstMessageID == this.messageID){
-      this.deleteFirstMessageInThread()
-    }
+  deleteThread() {
+    this.Data.deleteThread(this.thread.threadID);
   }
 }
