@@ -3,7 +3,7 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
-import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, map, Observable } from 'rxjs';
 import { Channel } from 'src/models/channel.class';
 import { DirectChannel } from 'src/models/direct-channel.class';
 import { Thread } from 'src/models/thread.class';
@@ -64,6 +64,7 @@ export class DataService {
     });
   }
 
+  
   getThreadsFromChannelID(channelID: string): void {
     this.firestore
       .collection<Thread>('threads', (ref) =>
@@ -74,6 +75,7 @@ export class DataService {
         this.currentThreads$.next(threads);
       });
   }
+
 
   getMessagesFromThreadID(threadID: string): void {
     this.firestore
@@ -86,34 +88,13 @@ export class DataService {
       });
   }
 
-  async getMessageAmountFromThreadID(threadID: string) {
-    let messagesAmount = await firstValueFrom(
-      this.firestore
-        .collection<Message>('messages', (ref) =>
-          ref.where('threadID', '==', threadID)
-        )
-        .valueChanges({ idField: 'messageID' })
-    );
-
-    console.log(messagesAmount);
-    return messagesAmount.length;
-    // let messagesAmount = 0;
-    // this.firestore
-    //   .collection<Message>('messages', (ref) =>
-    //     ref.where('threadID', '==', threadID)
-    //   )
-    //   .valueChanges({ idField: 'messageID' })
-    //   .subscribe((messages) => {
-    //     messagesAmount = messages.length;
-    //   });
-    // return messagesAmount;
-  }
-
+  
   async getMessageFromMessageId(messageId: string) {
     return (await firstValueFrom(
       this.messageCollection.doc(messageId).valueChanges()
     )) as Message;
   }
+
 
   async getUserdataFromUserID(userID: string) {
     // userId is identical with Doc-Id

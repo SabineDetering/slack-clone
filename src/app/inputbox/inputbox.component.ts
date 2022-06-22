@@ -14,6 +14,9 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./inputbox.component.scss'],
 })
 export class InputboxComponent implements OnInit {
+  @Input('currentMessageId') currentMessageId!: string;
+  @Input('messageType') messageType!: string;
+
   private newMessage = new Message();
   private newThread = new Thread();
 
@@ -22,8 +25,8 @@ export class InputboxComponent implements OnInit {
   public userInput!: any; // ngModel Input
 
   public files: File[] = [];
-  public uploadProgress: number = 0;
 
+  // configuration tinymce Texteditor
   public setup = (editor) => {
     editor.ui.registry.addButton('inline-code', {
       text: '<>',
@@ -34,17 +37,12 @@ export class InputboxComponent implements OnInit {
     });
   };
 
-  @Input('currentMessageId') currentMessageId!: string;
-  @Input('messageType') messageType!: string;
-
   constructor(
     private Data: DataService,
     public Auth: AuthService,
     private storage: AngularFireStorage
   ) {
-    this.Data.currentThread$.subscribe(
-      (thread) => (this.currentThread = thread)
-    );
+    this.getCurrentThread();
   }
 
   ngOnInit(): void {}
@@ -53,19 +51,21 @@ export class InputboxComponent implements OnInit {
     console.log(this.userInput);
   }
 
-  handleUserInput() {
-    console.log('handle userInput');
+  getCurrentThread() {
+    this.Data.currentThread$.subscribe(
+      (thread) => (this.currentThread = thread)
+    );
+  }
+
+  handleUserInput(): void {
     if (this.files.length > 0) {
-      this.postMessageWithFile()
-      // .subscribe((progress) => {
-      //   console.log('progress after all:', progress);
-      // });
+      this.postMessageWithFile();
     } else {
       this.postMessage();
     }
   }
 
-  postMessage() {
+  postMessage(): void {
     this.currentChannel = this.Data.currentChannel$.getValue();
     if (this.userInput.length > 0) {
       if (this.currentMessageId) {
@@ -78,20 +78,16 @@ export class InputboxComponent implements OnInit {
     }
   }
 
-  getUploadFile(event: any) {
+  getUploadFile(event: any): void {
     this.files = [];
     for (let i = 0; i < event.target.files.length; i++) {
       const file = event.target.files[i];
       this.files.push(file);
     }
-    console.log('uploaded files:', this.files);
   }
 
   postMessageWithFile(): any {
-    console.log('array müsste leer sein:', this.files, this.newMessage.images);
-    
-    // console.log('111 postMessageWithFile()', uploadTask);
-    let task = this.files.map((file) => {
+    this.files.map((file) => {
       const filePathInStorage =
         'chatimages/' + (this.Auth.currentUserId + '_' + file.name);
       const storageRef = this.storage.ref(filePathInStorage);
@@ -101,24 +97,19 @@ export class InputboxComponent implements OnInit {
         .snapshotChanges()
         .pipe(
           finalize(async () => {
-          
             let fileDownloadURL = await firstValueFrom(
               storageRef.getDownloadURL()
             );
             this.newMessage.images.push(fileDownloadURL);
             if (this.files.length == this.newMessage.images.length) {
-        
-              
               this.postMessage();
             } else {
-              console.log('noch nicht fertig');
+              console.log('FileUpload still in progress ...');
             }
           })
         )
-        .subscribe();
-        // return uploadTask.percentageChanges();
+        .subscribe();  // need to trigger observable emitting
     });
-
     // return uploadTask.percentageChanges();
   }
 
@@ -154,7 +145,6 @@ export class InputboxComponent implements OnInit {
       this.newThread.toJSON(),
       uniqueThreadID
     );
-
     return uniqueThreadID;
   }
 
@@ -165,26 +155,27 @@ export class InputboxComponent implements OnInit {
       '-' +
       currentTime +
       Math.round(Math.random() * 10000).toString();
-
     this.newMessage.threadID = threadID;
     this.newMessage.messageID = uniqueMessageID;
     this.newMessage.authorID = this.Auth.currentUserId;
     this.newMessage.timestamp = currentTime;
     this.newMessage.messageText = this.userInput;
-    /* this.newMessage.messageText = this.userInput; */
 
     await this.Data.saveDocWithCustomID(
       'messages',
       this.newMessage.toJSON(),
       uniqueMessageID
     );
-
     this.clearUserInput();
   }
 
-  updateAnswerAmountInThread(){
+  updateAnswerAmountInThread() {
     this.currentThread.answerAmount++;
-    this.Data.saveDocWithCustomID('threads', this.currentThread, this.currentThread.threadID)
+    this.Data.saveDocWithCustomID(
+      'threads',
+      this.currentThread,
+      this.currentThread.threadID
+    );
   }
 
   setFirstMessageInThread() {

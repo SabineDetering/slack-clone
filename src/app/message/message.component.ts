@@ -18,9 +18,7 @@ export class MessageComponent implements OnInit {
   messageAuthorName: string;
   fullsizeOpen: boolean = false;
 
-  constructor(
-    public Data: DataService, 
-) {}
+  constructor(public Data: DataService) {}
 
   async ngOnInit(): Promise<void> {
     if (this.firstMessageID != '') {
@@ -36,16 +34,14 @@ export class MessageComponent implements OnInit {
 
   getMessageTime() {
     this.date = new Date(this.message.timestamp);
-    /* this.messageTime = date.getHours() + ':' + (date.getMinutes()< 10 ? '0' : '') + date.getMinutes()  + ' Uhr'; */
   }
 
   // always get up to date Displayname from authors ID
-  getMessageAuthorName(){ 
-    if(this.message){
-      this.Data.getUserdataFromUserID(this.message.authorID).then(user => {
-      this.messageAuthorName = user.displayName || 'Guest'
-    })
+  getMessageAuthorName() {
+    if (this.message) {
+      this.Data.getUserdataFromUserID(this.message.authorID).then((user) => {
+        this.messageAuthorName = user.displayName || 'Guest';
+      });
     }
   }
-
 }

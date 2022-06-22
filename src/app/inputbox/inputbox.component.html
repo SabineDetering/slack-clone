@@ -46,7 +46,7 @@
 
   <ng-container *ngFor="let file of files; index as i">
     <span *ngIf="!!file" class="infoUploadedFile">Attachments: {{ file?.name }}</span>
-    <span *ngIf="!!file && !!uploadProgress" class="uploadProgress">Upload: {{ uploadProgress }}%</span>
+    <!-- <span *ngIf="!!file && !!uploadProgress" class="uploadProgress">Upload: {{ uploadProgress }}%</span> -->
   </ng-container>
 
   <mat-icon class="icon icon-ImageUpload" aria-hidden="false" aria-label="insert_photo">
