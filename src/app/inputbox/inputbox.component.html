@@ -2,13 +2,13 @@
   [(ngModel)]="userInput"
   [init]="{
     height: '20vh',
-    plugins: 'lists link image table code help wordcount',
+    plugins: 'lists link image table code help wordcount emoticons',
     base_url: '/tinymce',
     suffix: '.min',
     menubar: false,
     statusbar: false,
     toolbar:
-      'undo redo | styles | bold italic underline | blockquote | code pre | aligning | lists | link image',
+      'undo redo | styles | emoticons | bold italic underline | blockquote | aligning lists | link image',
     toolbar_groups: {
       aligning: {
         icon: 'align-left',
@@ -42,7 +42,6 @@
     },
     style_formats_merge: true
   }"
-  #editor
 ></editor>
 
 <div class="footer">
