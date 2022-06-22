@@ -3,7 +3,7 @@
 <div class="mainContainer" *ngIf="message">
     <div>
         <span class="author">{{ messageAuthorName }}</span>
-        <span class="timestamp">{{ date | date:'medium' }}</span>
+        <span class="timestamp">{{ (date | date:'medium') || 'unknown date'}}</span>
     </div>
     <p [innerHTML]="message.messageText"></p>
     <img #thumbnail class="img-thumbnail" (click)="fullsizeOpen=true; fullsize.src = image;" *ngFor="let image of message.images; index as i" src="{{image}}">

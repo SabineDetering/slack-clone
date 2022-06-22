@@ -13,23 +13,28 @@ export class MessageComponent implements OnInit {
   @Input() currentMessage: Message;
   @Input() thread: Thread;
   public message: Message;
-  date: Date;
-  messageTime: string;
+  date: Date | undefined;
   messageAuthorName: string;
   fullsizeOpen: boolean = false;
 
   constructor(public Data: DataService) {}
 
   async ngOnInit(): Promise<void> {
-    if (this.firstMessageID != '') {
+    if (this.firstMessageID != '' && this.firstMessageID != 'deleted') {
       this.message = await this.Data.getMessageFromMessageId(
         this.firstMessageID
       );
-    } else {
+      this.getMessageTime();
+      this.getMessageAuthorName();
+    } else if (this.firstMessageID == '') {
       this.message = this.currentMessage;
+      this.getMessageTime();
+      this.getMessageAuthorName();
+    } else{
+      this.message = new Message()  // generating empty message for displaying mainContainer when message deleted 
+      this.message.messageText = 'This message has been deleted';
+      this.messageAuthorName = 'unknown author';
     }
-    this.getMessageTime();
-    this.getMessageAuthorName();
   }
 
   getMessageTime() {

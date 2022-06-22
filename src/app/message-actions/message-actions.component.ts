@@ -19,16 +19,26 @@ export class MessageActionsComponent implements OnInit {
   constructor(public router: Router, private Data: DataService) {}
 
   ngOnInit(): void {
-    this.Data.currentChannel$.subscribe(channel => this.currentChannel = channel)
-
+    this.Data.currentChannel$.subscribe(
+      (channel) => (this.currentChannel = channel)
+    );
   }
 
   answerInThread() {
-    console.log('answer in thread', this.thread.threadID);
-  }
-
-  setCurrentMessages() {
     this.Data.currentThread$.next(this.thread);
     this.Data.getMessagesFromThreadID(this.thread.threadID);
+  }
+
+  async deleteFirstThreadMessage() {
+    console.log(this.thread.firstMessageID);
+    let message = await this.Data.getMessageFromMessageId(
+      this.thread.firstMessageID
+    );
+    console.log(message);
+    message.messageText = 'This message has been deleted';
+    this.Data.deleteMessage(this.thread.firstMessageID);
+    this.thread.firstMessageID = 'deleted';
+    this.Data.saveDocWithCustomID('threads', this.thread, this.thread.threadID);
+    /* this.Data.saveDocWithCustomID('messages', message, message.messageID) */
   }
 }

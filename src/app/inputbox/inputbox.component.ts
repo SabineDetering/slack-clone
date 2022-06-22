@@ -66,7 +66,7 @@ export class InputboxComponent implements OnInit {
     statusbar: false,
     setup: this.editorSetup,
     toolbar:
-      'undo redo | emoticons | bold italic underline | inline-code code-block blockquote | link image | aligning lists',
+      'undo redo | emoticons | bold italic underline | inline-code code-block blockquote | link | aligning lists',
     toolbar_groups: {
       aligning: {
         icon: 'align-left',

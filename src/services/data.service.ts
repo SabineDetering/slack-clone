@@ -133,6 +133,10 @@ export class DataService {
     });
   }
 
+  deleteMessage(messageID: string) {
+      this.messageCollection.doc(messageID).delete();
+  }
+
   updateUserProperties(id: string, json:any) {
     this.userCollection.doc(id).update(json);
   }

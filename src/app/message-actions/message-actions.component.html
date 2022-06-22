@@ -1,16 +1,20 @@
 <div class="icon-container">
   <!--[routerLink]="['thread/'+currentThreadId]"  -->
   <!-- [routerLink]="[{outlets: {thread: ['/thread/' + currentThreadId]}}]" -->
-  <a *ngIf="actionsType == 'threadActions'"
-  (click)="setCurrentMessages()"
+  <button
+    class="icon"
+    *ngIf="actionsType == 'threadActions'"
+    (click)="answerInThread()"
   >
-  <div class="icon">
-    <mat-icon
-      aria-hidden="false"
-      aria-label="answer-icon"
-      (click)="answerInThread()"
+    <mat-icon aria-hidden="false" aria-label="answer-icon"
       >question_answer</mat-icon
     >
-  </div>
-  </a>
+  </button>
+  <button
+    class="icon"
+    *ngIf="actionsType == 'threadActions'"
+    (click)="deleteFirstThreadMessage()"
+  >
+    <mat-icon aria-hidden="false" aria-label="delete">delete</mat-icon>
+  </button>
 </div>
