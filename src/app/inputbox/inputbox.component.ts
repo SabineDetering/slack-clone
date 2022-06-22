@@ -25,7 +25,7 @@ export class InputboxComponent implements OnInit {
   private currentThread!: Thread;
   public userInput!: any; // ngModel Input
 
-  public file: File = null;
+  public files: File[] = [];
   public uploadProgress: number = 0;
 
   @Input('currentMessageId') currentMessageId!: string;
@@ -46,16 +46,16 @@ export class InputboxComponent implements OnInit {
   logUserInput(){console.log(this.userInput)}
 
   handleUserInput() {
-    if (this.file) {
+    if (this.files.length > 0) {
       this.postMessageWithFile().subscribe((progress) => {
         this.uploadProgress = progress;
       });
     } else {
-      this.postTextMessage();
+      this.postMessage();
     }
   }
 
-  postTextMessage() {
+  postMessage() {
     this.currentChannel = this.Data.currentChannel$.getValue();
     if (this.userInput.length > 0) {
       if (this.currentMessageId) {
@@ -69,13 +69,18 @@ export class InputboxComponent implements OnInit {
   }
 
   getUploadFile(event: any) {
-    this.file = event.target.files[0]; // user selected from PC
+    for (let i = 0; i < event.target.files.length; i++) {
+      const file = event.target.files[i];
+      this.files.push(file)
+    }
+    console.log('uploaded files:', this.files);
+    
   }
 
   postMessageWithFile(): Observable<number> {
-    const filePathInStorage = 'chatimages/' + (this.Auth.currentUserId + '_' + this.file.name);
+    const filePathInStorage = 'chatimages/' + (this.Auth.currentUserId + '_' + this.files[0].name);
     const storageRef = this.storage.ref(filePathInStorage);
-    const uploadTask = this.storage.upload(filePathInStorage, this.file);
+    const uploadTask = this.storage.upload(filePathInStorage, this.files[0]);
 
     uploadTask
       .snapshotChanges()
@@ -85,7 +90,7 @@ export class InputboxComponent implements OnInit {
             storageRef.getDownloadURL()
           );
           this.newMessage.images.push(fileDownloadURL);
-          this.postTextMessage();
+          this.postMessage();
         })
       )
       .subscribe();
@@ -161,6 +166,6 @@ export class InputboxComponent implements OnInit {
 
   clearUserInput() {
     this.userInput = '';
-    this.file = null;
+    this.files = [];
   }
 }

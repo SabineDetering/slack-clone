@@ -1,6 +1,4 @@
-<editor
-  [(ngModel)]="userInput"
-  [init]="{
+<editor [(ngModel)]="userInput" [init]="{
     height: '20vh',
     plugins: 'lists link image table code help wordcount emoticons',
     base_url: '/tinymce',
@@ -41,30 +39,19 @@
       }
     },
     style_formats_merge: true
-  }"
-></editor>
+  }"></editor>
 
 <div class="footer">
-  <span *ngIf="!!file" class="infoUploadedFile"
-    >Attachments: {{ file?.name }}</span
-  >
-  <span *ngIf="!!file && !!uploadProgress" class="uploadProgress"
-    >Upload: {{ uploadProgress }}%</span
-  >
-  <mat-icon
-    class="icon icon-ImageUpload"
-    aria-hidden="false"
-    aria-label="insert_photo"
-  >
+
+  <ng-container *ngFor="let file of files; index as i">
+    <span *ngIf="!!file" class="infoUploadedFile">Attachments: {{ file?.name }}</span>
+    <span *ngIf="!!file && !!uploadProgress" class="uploadProgress">Upload: {{ uploadProgress }}%</span>
+  </ng-container>
+
+  <mat-icon class="icon icon-ImageUpload" aria-hidden="false" aria-label="insert_photo">
     insert_photo
-    <input type="file" (change)="getUploadFile($event)" accept="*.jpg.png" />
+    <input type="file" multiple (change)="getUploadFile($event)" accept="*.jpg.png" />
   </mat-icon>
 
-  <mat-icon
-    class="icon"
-    (click)="handleUserInput()"
-    aria-hidden="false"
-    aria-label="send-icon"
-    >send</mat-icon
-  >
+  <mat-icon class="icon" (click)="handleUserInput()" aria-hidden="false" aria-label="send-icon">send</mat-icon>
 </div>
