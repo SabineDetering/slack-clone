@@ -151,7 +151,7 @@ export class DataService {
     return messageId;
   } */
 
-  updateUserAvatar(id: string, url: string) {
-    this.userCollection.doc(id).update({ photoURL: url });
+  updateUserProperties(id: string, json:any) {
+    this.userCollection.doc(id).update(json);
   }
 }

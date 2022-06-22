@@ -21,6 +21,8 @@ export class LoginComponent implements OnInit {
 
   printUser(event:Event) {
     console.log(event);
+    this.Auth.updateAvatar('assets/img/avatar-neutral.png');
+    this.Data.updateUserProperties(this.Auth.currentUserId, { photoURL: 'assets/img/avatar-neutral.png' }); 
     // this.router.navigate(['/channel/78Zf74HHoirDyWMc3ihh']);
     // this.Data.currentChannel$.next(new CurrentChannel({type:'channel',name:'news',id:'78Zf74HHoirDyWMc3ihh'}));
   }

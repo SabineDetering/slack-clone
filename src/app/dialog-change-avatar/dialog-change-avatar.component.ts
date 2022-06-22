@@ -39,14 +39,18 @@ export class DialogChangeAvatarComponent implements OnInit {
         console.log('URL', this.downloadURL);        
       })
     )
-      .subscribe();
+      .subscribe({
+        next: (data) => console.log("Next data: ", data),
+        error: (err) => console.error("Error : ", err),
+        complete: () => console.log("Complete")
+      });
 
   }
 
 
   saveAvatar() {
     this.Auth.updateAvatar(this.downloadURL);
-    this.Data.updateUserAvatar(this.Auth.currentUserId, this.downloadURL);    
+    this.Data.updateUserProperties(this.Auth.currentUserId, {photoURL:this.downloadURL});    
   }
 
 }
