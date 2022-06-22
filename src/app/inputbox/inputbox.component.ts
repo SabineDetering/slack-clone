@@ -26,17 +26,79 @@ export class InputboxComponent implements OnInit {
 
   public files: File[] = [];
 
-  // configuration tinymce Texteditor
-  public setup = (editor) => {
+  private editorSetup = (editor) => {
     editor.ui.registry.addButton('inline-code', {
-      text: '<>',
+      icon: 'sourcecode',
       onAction: (_) => {
+        let selectionNode = editor.selection.getNode();
         let selection = editor.selection.getContent() || ' ';
-        editor.insertContent(`<code style="color: #e01e5a;
-      background-color: #eee;
-      border: 1px solid #ddd">${selection}</code>`);
+        if (selectionNode.nodeName != 'CODE') {
+          editor.insertContent(
+            `<code style="color: #e01e5a; background-color: #eee; border: 1px solid #ddd">${selection}</code>`
+          );
+        } else {
+          editor.setContent(`${selection}`);
+        }
       },
     });
+    editor.ui.registry.addButton('code-block', {
+      text: '[...]',
+      onAction: (_) => {
+        let selectionNode = editor.selection.getNode();
+        let selection = editor.selection.getNode().innerHTML || ' ';
+        if (selectionNode.nodeName != 'PRE') {
+          editor.setContent(
+            `<pre style="background-color: #eee; border: 1px solid #ddd; padding: 5px">${selection}</pre>`
+          );
+        } else {
+          editor.setContent(`<p>${selection}</p>`);
+        }
+      },
+    });
+  };
+
+  public editorConfig = {
+    height: '20vh',
+    plugins: 'lists link image table code help wordcount emoticons',
+    base_url: '/tinymce',
+    suffix: '.min',
+    menubar: false,
+    statusbar: false,
+    setup: this.editorSetup,
+    toolbar:
+      'undo redo | emoticons | bold italic underline | inline-code code-block blockquote | link image | aligning lists',
+    toolbar_groups: {
+      aligning: {
+        icon: 'align-left',
+        tooltip: 'Aligning',
+        items: 'alignleft aligncenter alignright alignjustify',
+      },
+      lists: {
+        icon: 'unordered-list',
+        tooltip: 'Lists',
+        items: 'bullist numlist',
+      },
+    },
+    formats: {
+      code: {
+        inline: 'code',
+        styles: {
+          color: '#e01e5a',
+          backgroundColor: '#eee',
+          border: '1px solid #ddd',
+        },
+      },
+      pre: {
+        block: 'pre',
+        styles: {
+          backgroundColor: '#eee',
+          borderRadius: '5px',
+          border: '1px solid #ddd',
+          padding: '5px',
+        },
+      },
+    },
+    style_formats_merge: true,
   };
 
   constructor(
@@ -110,7 +172,7 @@ export class InputboxComponent implements OnInit {
             }
           })
         )
-        .subscribe();  // need to trigger observable emitting
+        .subscribe(); // need to trigger observable emitting
     });
     // return uploadTask.percentageChanges();
   }

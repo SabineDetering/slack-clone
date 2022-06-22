@@ -123,16 +123,6 @@ export class DataService {
   saveDirectChannel(directChannel: any) {
     this.directChannelCollection.doc().set(directChannel);
   }
-  /* 
-  saveMessage(message: any) {
-    this.messageCollection = this.firestore.collection<Message>('messages');
-    this.messageCollection.doc().set(message);
-  }
-
-  saveThread(thread: any) {
-    this.threadsCollection = this.firestore.collection<Thread>('threads');
-    this.threadsCollection.doc(thread.threadID).set(thread); // set ID for firebase
-  } */
 
   saveDocWithCustomID(collection: string, obj: any, id: string) {
     return new Promise((resolve, reject) => {
@@ -142,14 +132,6 @@ export class DataService {
       (err: any) => reject(err);
     });
   }
-
-  /*   async addMessage(message: any) {
-    let messageId;
-    await this.messageCollection
-      .add(message)
-      .then((docRef) => (messageId = docRef.id));
-    return messageId;
-  } */
 
   updateUserProperties(id: string, json:any) {
     this.userCollection.doc(id).update(json);
