@@ -18,39 +18,14 @@ export class MessageComponent implements OnInit {
 
   constructor(public Data: DataService) {}
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     if(this.isAnswerMessage()){
-      console.log('this is an answer message')
-      this.getMessageTime();
-      this.getMessageAuthorName();
+      this.setAnswerMessage()
     } else if(this.isFirstThreadMessage()){
-      console.log('this is the first thread message')
-      this.message = await this.Data.getMessageFromMessageId(
-        this.thread.firstMessageID
-      );
-      this.getMessageTime();
-      this.getMessageAuthorName();
+      this.setFirstThreadMessage()
     } else{
-      this.message = new Message()  // generating empty message for displaying mainContainer when message deleted 
-      this.message.messageText = 'This message has been deleted';
-      this.messageAuthorName = 'unknown author';
+      this.setDeletedMessage()
     }
-
-
- /*    if (firstThreadMsgId != '' && firstThreadMsgId != 'deleted') {
-      this.message = await this.Data.getMessageFromMessageId(
-        this.thread.firstMessageID
-      );
-      this.getMessageTime();
-      this.getMessageAuthorName();
-    } else if (firstThreadMsgId == 'deleted') {
-      this.message = new Message()  // generating empty message for displaying mainContainer when message deleted 
-      this.message.messageText = 'This message has been deleted';
-      this.messageAuthorName = 'unknown author';
-    } else{
-      this.getMessageTime();
-      this.getMessageAuthorName();
-    } */
   } 
 
   isAnswerMessage(){
@@ -59,6 +34,25 @@ export class MessageComponent implements OnInit {
 
   isFirstThreadMessage(){
     return this.thread.firstMessageID != '' && this.thread.firstMessageID != 'deleted'
+  }
+
+  setAnswerMessage(){
+    this.getMessageTime();
+    this.getMessageAuthorName();
+  }
+
+  async setFirstThreadMessage(){
+    this.message = await this.Data.getMessageFromMessageId(
+      this.thread.firstMessageID
+    );
+    this.getMessageTime();
+    this.getMessageAuthorName();
+  }
+
+  setDeletedMessage(){
+    this.message = new Message()  // generating empty message for displaying mainContainer although message deleted 
+    this.message.messageText = 'This message has been deleted';
+    this.messageAuthorName = 'unknown author';
   }
 
   getMessageTime() {

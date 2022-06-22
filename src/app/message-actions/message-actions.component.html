@@ -1,8 +1,6 @@
-<div class="icon-container">
-  <!--[routerLink]="['thread/'+currentThreadId]"  -->
-  <!-- [routerLink]="[{outlets: {thread: ['/thread/' + currentThreadId]}}]" -->
   <button
     class="icon"
+    title="Answer in Thread"
     *ngIf="actionsType == 'threadActions'"
     (click)="answerInThread()"
   >
@@ -10,10 +8,6 @@
       >question_answer</mat-icon
     >
   </button>
-  <button
-    class="icon"
-    (click)="deleteMessage()"
-  >
+  <button class="icon" title="Delete message" (click)="deleteMessage()">
     <mat-icon aria-hidden="false" aria-label="delete">delete</mat-icon>
   </button>
-</div>
