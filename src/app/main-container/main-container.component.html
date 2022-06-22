@@ -12,7 +12,7 @@
 
         <app-message *ngIf="thread.firstMessageID" [thread]="thread" [firstMessageID]="thread.firstMessageID" ></app-message>
         <div class="bottomRow">
-            <!-- <p>{{ getMessageAmountFromThreadID(thread.threadID) | async }} Antworten</p>  -->
+            <p>{{ thread.answerAmount}} Antworten</p> 
             <button (click)="openThread(thread)">Open Thread</button>
         </div>
     </div>

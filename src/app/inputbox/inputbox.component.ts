@@ -125,6 +125,7 @@ export class InputboxComponent implements OnInit {
   addNewMessage() {
     if (this.messageType == 'answerMessage') {
       this.addMessageToThread(this.currentThread.threadID);
+      this.updateAnswerAmountInThread();
     } else {
       this.addMessageAndThread();
     }
@@ -177,7 +178,13 @@ export class InputboxComponent implements OnInit {
       this.newMessage.toJSON(),
       uniqueMessageID
     );
+
     this.clearUserInput();
+  }
+
+  updateAnswerAmountInThread(){
+    this.currentThread.answerAmount++;
+    this.Data.saveDocWithCustomID('threads', this.currentThread, this.currentThread.threadID)
   }
 
   setFirstMessageInThread() {
