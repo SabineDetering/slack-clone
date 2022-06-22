@@ -24,6 +24,16 @@ export class InputboxComponent implements OnInit {
   public files: File[] = [];
   public uploadProgress: number = 0;
 
+  public setup = (editor) => {
+    editor.ui.registry.addButton('inline-code', {
+      text: '<>',
+      onAction: (_) =>
+        editor.insertContent(`&nbsp;<code style="color: #e01e5a;
+      background-color: #eee;
+      border: 1px solid #ddd">This is code</code>&nbsp;`),
+    });
+  };
+
   @Input('currentMessageId') currentMessageId!: string;
   @Input('messageType') messageType!: string;
 
