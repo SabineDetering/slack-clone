@@ -1,8 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
 import { CurrentChannel } from 'src/models/current-channel.class';
 import { Message } from 'src/models/message.class';
@@ -43,13 +39,17 @@ export class InputboxComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  logUserInput(){console.log(this.userInput)}
+  logUserInput() {
+    console.log(this.userInput);
+  }
 
   handleUserInput() {
+    console.log('handle userInput');
     if (this.files.length > 0) {
-      this.postMessageWithFile().subscribe((progress) => {
-        this.uploadProgress = progress;
-      });
+      this.postMessageWithFile()
+      // .subscribe((progress) => {
+      //   console.log('progress after all:', progress);
+      // });
     } else {
       this.postMessage();
     }
@@ -69,32 +69,47 @@ export class InputboxComponent implements OnInit {
   }
 
   getUploadFile(event: any) {
+    this.files = [];
     for (let i = 0; i < event.target.files.length; i++) {
       const file = event.target.files[i];
-      this.files.push(file)
+      this.files.push(file);
     }
     console.log('uploaded files:', this.files);
-    
   }
 
-  postMessageWithFile(): Observable<number> {
-    const filePathInStorage = 'chatimages/' + (this.Auth.currentUserId + '_' + this.files[0].name);
-    const storageRef = this.storage.ref(filePathInStorage);
-    const uploadTask = this.storage.upload(filePathInStorage, this.files[0]);
+  postMessageWithFile(): any {
+    console.log('array müsste leer sein:', this.files, this.newMessage.images);
+    
+    // console.log('111 postMessageWithFile()', uploadTask);
+    let task = this.files.map((file) => {
+      const filePathInStorage =
+        'chatimages/' + (this.Auth.currentUserId + '_' + file.name);
+      const storageRef = this.storage.ref(filePathInStorage);
+      const uploadTask = this.storage.upload(filePathInStorage, file);
 
-    uploadTask
-      .snapshotChanges()
-      .pipe(
-        finalize(async () => {
-          let fileDownloadURL = await firstValueFrom(
-            storageRef.getDownloadURL()
-          );
-          this.newMessage.images.push(fileDownloadURL);
-          this.postMessage();
-        })
-      )
-      .subscribe();
-    return uploadTask.percentageChanges(); 
+      uploadTask
+        .snapshotChanges()
+        .pipe(
+          finalize(async () => {
+          
+            let fileDownloadURL = await firstValueFrom(
+              storageRef.getDownloadURL()
+            );
+            this.newMessage.images.push(fileDownloadURL);
+            if (this.files.length == this.newMessage.images.length) {
+        
+              
+              this.postMessage();
+            } else {
+              console.log('noch nicht fertig');
+            }
+          })
+        )
+        .subscribe();
+        // return uploadTask.percentageChanges();
+    });
+
+    // return uploadTask.percentageChanges();
   }
 
   addNewMessage() {
