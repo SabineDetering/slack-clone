@@ -7,12 +7,12 @@
 </div>
 
 <div class="threadContainer">
-    <div class="thread" *ngFor="let thread of Data.currentThreads$ | async ;index as i">
+    <div class="thread" *ngFor="let thread of Data.currentThreads$ | async">
         <app-message-actions [actionsType]="'threadActions'" [thread]="thread"></app-message-actions>
 
         <app-message *ngIf="thread.firstMessageID" [thread]="thread" [firstMessageID]="thread.firstMessageID" ></app-message>
         <div class="bottomRow">
-            <p>3 Antworten (platzhalter)</p>
+            <!-- <p>{{ getMessageAmountFromThreadID(thread.threadID) | async }} Antworten</p>  -->
             <button (click)="openThread(thread)">Open Thread</button>
         </div>
     </div>

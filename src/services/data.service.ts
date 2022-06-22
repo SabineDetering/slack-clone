@@ -30,13 +30,15 @@ export class DataService {
   public currentMessages$: BehaviorSubject<Message[]> = new BehaviorSubject([]);
   private messageCollection: AngularFirestoreCollection<Message>;
 
-  public currentChannel$: BehaviorSubject<CurrentChannel> = new BehaviorSubject(null);
+  public currentChannel$: BehaviorSubject<CurrentChannel> = new BehaviorSubject(
+    null
+  );
 
   // public currentChannel$: BehaviorSubject<any> = new BehaviorSubject(
   //   new Channel()
   // );
   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(null);
-/*   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(
+  /*   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(
     new Thread()
   ); */
 
@@ -74,28 +76,50 @@ export class DataService {
   }
 
   getMessagesFromThreadID(threadID: string): void {
-    console.log(threadID)
     this.firestore
       .collection<Message>('messages', (ref) =>
         ref.where('threadID', '==', threadID)
       )
       .valueChanges({ idField: 'messageID' })
       .subscribe((messages) => {
-        console.log(messages)
         this.currentMessages$.next(messages);
       });
   }
 
-  async getMessageFromMessageId(messageId: string) {
-    return await firstValueFrom(
-      this.messageCollection.doc(messageId).valueChanges()
-    ) as Message;
+  async getMessageAmountFromThreadID(threadID: string) {
+    let messagesAmount = await firstValueFrom(
+      this.firestore
+        .collection<Message>('messages', (ref) =>
+          ref.where('threadID', '==', threadID)
+        )
+        .valueChanges({ idField: 'messageID' })
+    );
+
+    console.log(messagesAmount);
+    return messagesAmount.length;
+    // let messagesAmount = 0;
+    // this.firestore
+    //   .collection<Message>('messages', (ref) =>
+    //     ref.where('threadID', '==', threadID)
+    //   )
+    //   .valueChanges({ idField: 'messageID' })
+    //   .subscribe((messages) => {
+    //     messagesAmount = messages.length;
+    //   });
+    // return messagesAmount;
   }
 
-  async getUserdataFromUserID(userID: string) {  // userId is identical with Doc-Id
-    let result =  await firstValueFrom(
+  async getMessageFromMessageId(messageId: string) {
+    return (await firstValueFrom(
+      this.messageCollection.doc(messageId).valueChanges()
+    )) as Message;
+  }
+
+  async getUserdataFromUserID(userID: string) {
+    // userId is identical with Doc-Id
+    let result = await firstValueFrom(
       this.userCollection.doc(userID).valueChanges()
-    ) 
+    );
     return result;
   }
 
@@ -118,7 +142,7 @@ export class DataService {
   saveDirectChannel(directChannel: any) {
     this.directChannelCollection.doc().set(directChannel);
   }
-/* 
+  /* 
   saveMessage(message: any) {
     this.messageCollection = this.firestore.collection<Message>('messages');
     this.messageCollection.doc().set(message);
@@ -129,16 +153,16 @@ export class DataService {
     this.threadsCollection.doc(thread.threadID).set(thread); // set ID for firebase
   } */
 
-  saveDocWithCustomID(collection: string, obj: any, id: string){    
+  saveDocWithCustomID(collection: string, obj: any, id: string) {
     return new Promise((resolve, reject) => {
-    const collectionRef = this.firestore.collection(collection);
-    collectionRef.doc(id).set(obj)
-    resolve('document added to DB');
-    (err: any) => reject(err)
-    })
+      const collectionRef = this.firestore.collection(collection);
+      collectionRef.doc(id).set(obj);
+      resolve('document added to DB');
+      (err: any) => reject(err);
+    });
   }
 
-/*   async addMessage(message: any) {
+  /*   async addMessage(message: any) {
     let messageId;
     await this.messageCollection
       .add(message)
@@ -146,9 +170,7 @@ export class DataService {
     return messageId;
   } */
 
-
-  updateUserAvatar(id:string, url:string) {
-    this.userCollection.doc(id).update({photoURL:url});
+  updateUserAvatar(id: string, url: string) {
+    this.userCollection.doc(id).update({ photoURL: url });
   }
-
 }

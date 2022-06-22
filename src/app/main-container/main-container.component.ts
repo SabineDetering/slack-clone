@@ -10,25 +10,51 @@ import { DataService } from 'src/services/data.service';
   styleUrls: ['./main-container.component.scss'],
 })
 export class MainContainerComponent implements OnInit {
-  // currentChannel: Channel;
   currentChannel: CurrentChannel;
   threads: Thread[] = [];
 
   constructor(public Data: DataService) {
+    this.getCurrentChannel();
+    this.getCurrentThreads();
+  }
+
+  ngOnInit(): void {}
+
+  getCurrentChannel() {
     this.Data.currentChannel$.subscribe((channel) => {
       this.currentChannel = channel;
     });
-    // threads$ are set with click on channel in left Menu (see component channel-list)
+  }
+
+  getCurrentThreads() {
     this.Data.currentThreads$.subscribe((threads) => {
       this.threads = threads;
     });
   }
 
-  ngOnInit(): void {}
+  // async getMessagesPerThread(thread: Thread){
+  //   let messageAmount: number = 0;; 
 
+  //   this.Data.getMessageAmountFromThreadID(thread.threadID)
+  //   .subscribe((messages) => {
+  //      messageAmount = messages.length;       
+  //   }); 
+  //   return 1
 
-  openThread(thread: Thread){
+  // }
+
+  // async getMessageAmountFromThreadID(threadID: string){
+  //   // let amount = await this.Data.getMessageAmountFromThreadID(threadID);
+  //   // console.log(amount);
+    
+  // }
+
+  openThread(thread: Thread) {
+    console.log('open thread', thread);
+    
     this.Data.currentThread$.next(thread);
     this.Data.getMessagesFromThreadID(thread.threadID);
   }
+
+
 }
