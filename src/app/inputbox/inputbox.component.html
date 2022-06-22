@@ -7,6 +7,20 @@
     suffix: '.min',
     menubar: false,
     statusbar: false,
+    toolbar:
+      'undo redo | styles | bold italic underline | blockquote | code pre | aligning | lists | link image',
+    toolbar_groups: {
+      aligning: {
+        icon: 'align-left',
+        tooltip: 'Aligning',
+        items: 'alignleft aligncenter alignright alignjustify'
+      },
+      lists: {
+        icon: 'unordered-list',
+        tooltip: 'Lists',
+        items: 'bullist numlist'
+      }
+    },
     formats: {
       code: {
         inline: 'code',
