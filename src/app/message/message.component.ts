@@ -11,7 +11,6 @@ import { DataService } from 'src/services/data.service';
 export class MessageComponent implements OnInit {
   @Input() message!: Message;
   @Input() thread!: Thread;
-  /* public message: Message; */
   date: Date | undefined;
   messageAuthorName: string;
   fullsizeOpen: boolean = false;

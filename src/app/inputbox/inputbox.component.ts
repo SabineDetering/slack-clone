@@ -197,58 +197,45 @@ export class InputboxComponent implements OnInit {
 
   async createNewThread() {
     const currentTime = new Date().getTime();
-    let uniqueThreadID =
-      this.currentChannel.id +
-      currentTime +
-      Math.round(Math.random() * 10000).toString();
+    let uniqueThreadID = this.getUniqueID(currentTime);
 
     this.newThread.threadID = uniqueThreadID; // set custom ThreadID to use it for this thread and saveMessage()
     this.newThread.channelID = this.currentChannel.id;
-    await this.Data.saveDocWithCustomID(
-      'threads',
-      this.newThread.toJSON(),
-      uniqueThreadID
-    );
+    await this.Data.saveThread(this.newThread.toJSON());
     return uniqueThreadID;
   }
 
   async addMessageToThread(threadID: string) {
     const currentTime = new Date().getTime();
-    let uniqueMessageID =
-      this.currentChannel.id +
-      '-' +
-      currentTime +
-      Math.round(Math.random() * 10000).toString();
+    let uniqueMessageID = this.getUniqueID(currentTime);
+
     this.newMessage.threadID = threadID;
     this.newMessage.messageID = uniqueMessageID;
     this.newMessage.authorID = this.Auth.currentUserId;
     this.newMessage.timestamp = currentTime;
     this.newMessage.messageText = this.userInput;
 
-    await this.Data.saveDocWithCustomID(
-      'messages',
-      this.newMessage.toJSON(),
-      uniqueMessageID
-    );
+    await this.Data.saveMessage(this.newMessage.toJSON());
     this.clearUserInput();
+  }
+
+  getUniqueID(currentTime: number) {
+    return (
+      this.currentChannel.id +
+      currentTime +
+      '-' +
+      Math.round(Math.random() * 10000).toString()
+    );
   }
 
   updateAnswerAmountInThread() {
     this.currentThread.answerAmount++;
-    this.Data.saveDocWithCustomID(
-      'threads',
-      this.currentThread,
-      this.currentThread.threadID
-    );
+    this.Data.saveThread(this.newThread.toJSON());
   }
 
   setFirstMessageInThread() {
     this.newThread.firstMessageID = this.newMessage.messageID;
-    this.Data.saveDocWithCustomID(
-      'threads',
-      this.newThread.toJSON(),
-      this.newThread.threadID
-    );
+    this.Data.saveThread(this.newThread.toJSON());
   }
 
   clearUserInput() {

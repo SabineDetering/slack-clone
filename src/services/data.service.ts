@@ -130,6 +130,22 @@ export class DataService {
     });
   }
 
+  saveThread(thread: any) {
+    return new Promise((resolve, reject) => {
+      this.threadsCollection.doc(thread.threadID).set(thread);
+      resolve('thread added to DB');
+      (err: any) => reject(err);
+    });
+  }
+
+  saveMessage(message: any) {
+    return new Promise((resolve, reject) => {
+      this.messageCollection.doc(message.messageID).set(message);
+      resolve('message added to DB');
+      (err: any) => reject(err);
+    });
+  }
+
   deleteMessage(messageID: string) {
     console.log('deleting message');
     this.messageCollection.doc(messageID).delete();
@@ -139,7 +155,7 @@ export class DataService {
     console.log('deleting thread');
     this.threadsCollection.doc(threadID).delete();
   }
-  
+
   updateUserProperties(id: string, json: any) {
     this.userCollection.doc(id).update(json);
   }
