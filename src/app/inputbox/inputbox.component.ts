@@ -30,10 +30,12 @@ export class InputboxComponent implements OnInit {
   public setup = (editor) => {
     editor.ui.registry.addButton('inline-code', {
       text: '<>',
-      onAction: (_) =>
-        editor.insertContent(`&nbsp;<code style="color: #e01e5a;
+      onAction: (_) => {
+        let selection = editor.selection.getContent() || ' ';
+        editor.insertContent(`<code style="color: #e01e5a;
       background-color: #eee;
-      border: 1px solid #ddd">This is code</code>&nbsp;`),
+      border: 1px solid #ddd">${selection}</code>`);
+      },
     });
   };
 
