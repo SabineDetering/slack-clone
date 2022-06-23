@@ -31,7 +31,7 @@ export class AuthService {
   }
 
 
-  async updateAvatar(url: string) {
-    (await this.af.currentUser).updateProfile({ photoURL: url })
+  async updateProperties(json:any) {
+    (await this.af.currentUser).updateProfile(json)
   }
 }

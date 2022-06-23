@@ -49,7 +49,7 @@ export class DialogChangeAvatarComponent implements OnInit {
 
 
   saveAvatar() {
-    this.Auth.updateAvatar(this.downloadURL);
+    this.Auth.updateProperties({ photoURL: this.downloadURL});
     this.Data.updateUserProperties(this.Auth.currentUserId, {photoURL:this.downloadURL});    
   }
 

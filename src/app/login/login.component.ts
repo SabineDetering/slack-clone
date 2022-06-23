@@ -14,20 +14,36 @@ export class LoginComponent implements OnInit {
 
   providers = AuthProvider;
 
-  constructor(private router:Router,private Data:DataService,private Auth:AuthService) { }
+  constructor(private router: Router, private Data: DataService, private Auth: AuthService) { }
 
   ngOnInit(): void {
   }
 
-  printUser(event:Event) {
-    console.log(event);
-    this.Auth.updateAvatar('assets/img/avatar-neutral.png');
-    this.Data.updateUserProperties(this.Auth.currentUserId, { photoURL: 'assets/img/avatar-neutral.png' }); 
+  printUser(event: Event) {
+    console.log('logged in', event);
+    // console.log(event._delegate.displayName);
+   
+      console.log('auth.currentuser', this.Auth.currentUser);
+      if (this.Auth.currentUser?.displayName) {
+        this.Auth.updateProperties({ photoURL: 'assets/img/avatar-neutral.png' });
+        this.Data.updateUserProperties(this.Auth.currentUserId, {
+          photoURL: 'assets/img/avatar-neutral.png'
+        });
+      } else {
+
+        this.Auth.updateProperties({ displayName: 'Guest', photoURL: 'assets/img/avatar-neutral.png' });
+        this.Data.updateUserProperties(this.Auth.currentUserId, {
+          displayName: 'Guest', photoURL: 'assets/img/avatar-neutral.png'
+        });
+
+      }
+    
+   
     // this.router.navigate(['/channel/78Zf74HHoirDyWMc3ihh']);
     // this.Data.currentChannel$.next(new CurrentChannel({type:'channel',name:'news',id:'78Zf74HHoirDyWMc3ihh'}));
   }
 
-  printError(event:Event) {
+  printError(event: Event) {
     console.error(event);
   }
 }
