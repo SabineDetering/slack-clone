@@ -40,14 +40,30 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
   }
 
   async getCurrentChannelFromLocalStorage() {
-    const storageChannelID = this.Data.getCurrentChannelFromLocalStorage();
-    if (!!storageChannelID) {
-      const storageChannel = await this.Data.getChannelFromChannelId(
-        storageChannelID
-      );
-      this.Data.setCurrentChannelFromChannel(storageChannel);
-      this.Data.getThreadsFromChannelID(storageChannelID);
+    const storageChannel = await this.Data.getCurrentChannelFromLocalStorage();
+    if (!storageChannel) return;
+    else {
+      if (storageChannel.channelType == 'channel') {
+        this.setCurrentChannelToChannel(storageChannel);
+      } else {
+        this.setCurrentChannelToDirectChannel(storageChannel);
+      }
+      this.Data.getThreadsFromChannelID(storageChannel.channelID);
     }
+  }
+
+  async setCurrentChannelToChannel(storageChannel: any) {
+    const channel = await this.Data.getChannelFromChannelID(
+      storageChannel.channelID
+    );
+    this.Data.setCurrentChannelFromChannel(channel);
+  }
+
+  async setCurrentChannelToDirectChannel(storageChannel: any) {
+    const directChannel = await this.Data.getChannelFromDirectChannelID(
+      storageChannel.channelID
+    );
+    this.Data.setCurrentChannelFromDirectChannel(directChannel);
   }
 
   getCurrentThreads() {

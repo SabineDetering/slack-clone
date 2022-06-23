@@ -65,14 +65,8 @@ export class DirectChannelListComponent implements OnInit {
 
 
   async setCurrentDirectChannel(directChannel: DirectChannel) {
-    this.Data.currentChannel$.next(
-      new CurrentChannel({
-        type: 'directChannel',
-        id: directChannel.directChannelID,
-        name: directChannel.directChannelName
-      })
-    );
-    this.Data.setCurrentChannelInLocalStorage(directChannel.directChannelID);
+    this.Data.setCurrentChannelFromDirectChannel(directChannel);
+    this.Data.setCurrentChannelInLocalStorage({channelID: directChannel.directChannelID, channelType: 'directChannel'});
     this.Data.getThreadsFromChannelID(directChannel.directChannelID);
   }
 
