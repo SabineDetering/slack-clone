@@ -23,6 +23,7 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
   constructor(public Data: DataService) {
     this.getCurrentChannel();
     this.getCurrentThreads();
+    this.getCurrentThreadFromLocalStorage();
   }
 
   ngOnInit(): void {}
@@ -39,6 +40,7 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
     this.getCurrentChannelFromLocalStorage();
   }
 
+  // checks if a current channel is stored in local storage and if so, sets it in Data.currentChannel$
   async getCurrentChannelFromLocalStorage() {
     const storageChannel = await this.Data.getCurrentChannelFromLocalStorage();
     if (!storageChannel) return;
@@ -48,7 +50,6 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
       } else {
         this.setCurrentChannelToDirectChannel(storageChannel);
       }
-      this.Data.getThreadsFromChannelID(storageChannel.channelID);
     }
   }
 
@@ -56,20 +57,43 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
     const channel = await this.Data.getChannelFromChannelID(
       storageChannel.channelID
     );
-    this.Data.setCurrentChannelFromChannel(channel);
+    if (channel) {
+      this.Data.setCurrentChannelFromChannel(channel);
+      this.Data.getThreadsFromChannelID(channel.channelID);
+    } else {
+      this.Data.removeCurrentChannelFromLocalStorage();
+    }
   }
 
   async setCurrentChannelToDirectChannel(storageChannel: any) {
     const directChannel = await this.Data.getChannelFromDirectChannelID(
       storageChannel.channelID
     );
-    this.Data.setCurrentChannelFromDirectChannel(directChannel);
+    if (directChannel) {
+      this.Data.setCurrentChannelFromDirectChannel(directChannel);
+      this.Data.getThreadsFromChannelID(directChannel.directChannelID);
+    } else {
+      this.Data.removeCurrentChannelFromLocalStorage();
+    }
   }
 
   getCurrentThreads() {
     this.Data.currentThreads$.subscribe((threads) => {
       this.threads = threads;
     });
+  }
+
+  async getCurrentThreadFromLocalStorage() {
+    const storageThreadID = await this.Data.getCurrentThreadFromLocalStorage();
+    if (!storageThreadID) return;
+    else {
+      const thread = await this.Data.getThreadFromThreadID(storageThreadID);
+      if (thread) {
+        this.openThread(thread);
+      } else {
+        this.Data.removeCurrentThreadFromLocalStorage();
+      }
+    }
   }
 
   openThread(thread: Thread) {
