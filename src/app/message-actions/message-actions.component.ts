@@ -16,14 +16,14 @@ export class MessageActionsComponent implements OnInit {
   @Input() message!: Message;
   @Input() actionsType!: string;
   // currentChannel!: Channel;
-  currentChannel: CurrentChannel;
-
+/*   currentChannel: CurrentChannel;
+ */
   constructor(public router: Router, private Data: DataService) {}
 
   async ngOnInit(): Promise<void> {
-    this.Data.currentChannel$.subscribe(
+/*     this.Data.currentChannel$.subscribe(
       (channel) => (this.currentChannel = channel)
-    );
+    ); */
     if (!this.message) {
       this.message = await this.Data.getMessageFromMessageId(
         this.thread.firstMessageID
@@ -37,8 +37,10 @@ export class MessageActionsComponent implements OnInit {
   }
 
   deleteMessage() {
+    console.log(this.thread)
     this.Data.deleteMessage(this.message.messageID);
     if (this.thread.answerAmount == 0) {
+      console.log('answer amount = ', this.thread.answerAmount)
       this.deleteThread();
     } else {
       this.reduceAnswersInThread();
@@ -49,13 +51,17 @@ export class MessageActionsComponent implements OnInit {
   }
 
   reduceAnswersInThread() {
-    this.thread.answerAmount--;
-    this.Data.saveDocWithCustomID('threads', this.thread, this.thread.threadID);
+    let thread = new Thread(this.thread)
+    thread.answerAmount--;
+    this.Data.saveThread(thread.toJSON());
+    this.Data.currentThread$.next(thread)
   }
 
   deleteFirstMessageInThread() {
-    this.thread.firstMessageID = 'deleted';
-    this.Data.saveDocWithCustomID('threads', this.thread, this.thread.threadID);
+    let thread = new Thread(this.thread)
+    thread.firstMessageID = 'deleted';
+    this.Data.saveThread(thread.toJSON());
+    this.Data.currentThread$.next(thread)
   }
 
   deleteThread() {

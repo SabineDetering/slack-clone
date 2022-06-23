@@ -117,7 +117,7 @@ export class InputboxComponent implements OnInit {
 
   getCurrentThread() {
     this.Data.currentThread$.subscribe(
-      (thread) => (this.currentThread = thread)
+      (thread) => (this.currentThread = new Thread(thread))
     );
   }
 
@@ -229,9 +229,9 @@ export class InputboxComponent implements OnInit {
   }
 
   updateAnswerAmountInThread() {
-    let currentThread = new Thread (this.currentThread)
-    currentThread.answerAmount++;
-    this.Data.saveThread(currentThread.toJSON());
+    this.currentThread.answerAmount++;
+    this.Data.saveThread(this.currentThread.toJSON());
+    this.Data.currentThread$.next(this.currentThread);
   }
 
   setFirstMessageInThread() {

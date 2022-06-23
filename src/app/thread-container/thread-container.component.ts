@@ -16,31 +16,23 @@ export class ThreadContainerComponent implements OnInit {
   currentThread: Thread;
 
   constructor(public Data: DataService) {
-    this.getCurrentChannel()
-    this.getCurrentThread()
+    this.getCurrentChannel();
+    this.getCurrentThread();
   }
 
   ngOnInit(): void {}
 
-  getCurrentChannel(){
+  getCurrentChannel() {
     this.Data.currentChannel$.subscribe((channel) => {
-      this.currentChannel = channel;
+      this.currentChannel = new CurrentChannel(channel);
     });
   }
 
   getCurrentThread() {
-    this.Data.currentThread$.subscribe(
-      (thread) => (this.currentThread = thread)
-    );
+    this.Data.currentThread$.subscribe((thread) => {
+      this.currentThread = new Thread(thread);
+    });
   }
-
-  // getThreadDescription(){
-  //   if(this.currentChannel instanceof Channel){
-  //     return this.currentChannel.channelName
-  //   } else{
-  //     return this.currentChannel.directChannelMembers
-  //   }
-  // }
 
   closeThreadContainer() {
     this.Data.currentMessages$.next([]);
