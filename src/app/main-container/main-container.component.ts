@@ -45,8 +45,8 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
     this.Data.getMessagesFromThreadID(thread.threadID);
   }
 
-  trackByIndex(index: any) {
-    return index;
+  getTrackByCondition(index: any, thread: Thread){
+    return index + thread.firstMessageID;
   }
 
 }
