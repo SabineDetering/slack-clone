@@ -73,7 +73,7 @@ export class MessageComponent implements OnInit {
 
   getAuthorAvatar(){
       this.Data.getUserdataFromUserID(this.message.authorID).then((user) => {
-        this.messageAuthorAvatar = user.photoURL;
+        this.messageAuthorAvatar = user.photoURL || 'assets/img/avatar-neutral.png';  // neutral Avatar is used for guests --> no photoURL
       });
     }
 }

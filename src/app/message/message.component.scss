@@ -44,7 +44,6 @@
 .img-fullsize {
     width: unset;
     max-width: 100%;
-
 }
 
 .fullsize-container {
@@ -52,23 +51,23 @@
     left: 50%;
     top: 0;
     width: 100%;
-    transform: translate(-50%,0);
+    transform: translate(-50%, 0);
     border-radius: 8px;
     padding: 22px;
     background: white;
-    z-index:10;
+    z-index: 10;
 
-    .closeFullsize{
+    .closeFullsize {
         position: absolute;
-        right: 0px; 
+        right: 0px;
         top: 0px;
-        background-color:rgba(255, 255, 255, 0.844);
+        background-color: rgba(255, 255, 255, 0.844);
         border-radius: 2px;
         padding: 0px 4px;
         cursor: pointer;
 
-        &:hover{
-            background-color:rgba(255, 255, 255, 0.369);
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.369);
         }
     }
 }
@@ -86,3 +85,49 @@ button {
     text-decoration: underline;
     background: none;
 }
+
+.loadingSpinnerContainer {
+    @include mix.flex(center, center);
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    border-radius: 100%;
+
+    .loadingSpinner-dot{
+        font-size: 28px;
+
+        &:first-child{
+            color: mix.$primary-hover;
+            animation: dotFlashing 0.8s infinite alternate;
+            animation-delay: 0s;
+        }
+
+        &:nth-child(2){
+            color: mix.$primary-hover;
+            animation: dotFlashing 0.8s infinite alternate;
+            animation-delay: 0.5s;
+
+        }
+
+        &:last-child{
+            color: mix.$primary-hover;
+            animation: dotFlashing 0.8s infinite alternate;
+            animation-delay: 1s;
+        }
+    }
+
+}
+
+@keyframes dotFlashing {
+    0% {
+      color: mix.$primary-hover;
+    }
+    50%,
+    100% {
+        color: mix.$primary-color;
+        opacity: 0.1;
+    }
+  }
+  
+
+

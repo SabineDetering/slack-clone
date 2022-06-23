@@ -1,4 +1,12 @@
-<img *ngIf="!!message" class="img-avatar" src="{{messageAuthorAvatar || 'assets/img/avatar-neutral.png' }}" alt="author">
+<img *ngIf="!!message && messageAuthorAvatar; else loadingSpinner" class="img-avatar" src="{{messageAuthorAvatar}}"
+    alt="author">
+<ng-template #loadingSpinner>
+    <div class="loadingSpinnerContainer">
+        <span class="loadingSpinner-dot">.</span>
+        <span class="loadingSpinner-dot">.</span>
+        <span class="loadingSpinner-dot">.</span>
+    </div>
+</ng-template>
 
 <div class="mainContainer" *ngIf="message">
     <div>
@@ -6,12 +14,12 @@
         <span class="timestamp">{{ (date | date:'medium') || 'unknown date'}}</span>
     </div>
     <p [innerHTML]="message.messageText"></p>
-    <img #thumbnail class="img-thumbnail" (click)="fullsizeOpen=true; fullsize.src = image;" *ngFor="let image of message.images; index as i" src="{{image}}">
+    <img #thumbnail class="img-thumbnail" (click)="fullsizeOpen=true; fullsize.src = image;"
+        *ngFor="let image of message.images; index as i" src="{{image}}">
     <!-- consider emojis here-->
 </div>
 
 <div #fullsizeContainer [class.d-none]="!fullsizeOpen" class="fullsize-container  d-none">
-    <img class="img-fullsize"  src="" alt="fullsize"  #fullsize>
+    <img class="img-fullsize" src="" alt="fullsize" #fullsize>
     <div class="closeFullsize" (click)="fullsizeOpen=false">x</div>
 </div>
-
