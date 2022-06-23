@@ -13,19 +13,21 @@ export class MessageComponent implements OnInit {
   @Input() thread!: Thread;
   date: Date | undefined;
   messageAuthorName: string;
+  messageAuthorAvatar: string;
   fullsizeOpen: boolean = false;
 
   constructor(public Data: DataService) {}
 
   ngOnInit(): void {
     if(this.isAnswerMessage()){
-      this.setAnswerMessage()
+      this.setAnswerMessage();
     } else if(this.isFirstThreadMessage()){
-      this.setFirstThreadMessage()
+      this.setFirstThreadMessage();
     } else{
-      this.setDeletedMessage()
+      this.setDeletedMessage();
     }
   } 
+
 
   isAnswerMessage(){
     return this.message;
@@ -38,6 +40,7 @@ export class MessageComponent implements OnInit {
   setAnswerMessage(){
     this.getMessageTime();
     this.getMessageAuthorName();
+    this.getAuthorAvatar();
   }
 
   async setFirstThreadMessage(){
@@ -46,10 +49,11 @@ export class MessageComponent implements OnInit {
     );
     this.getMessageTime();
     this.getMessageAuthorName();
+    this.getAuthorAvatar();
   }
 
   setDeletedMessage(){
-    this.message = new Message()  // generating empty message for displaying mainContainer although message deleted 
+    this.message = new Message();  // generating empty message for displaying mainContainer although message deleted 
     this.message.messageText = 'This message has been deleted';
     this.messageAuthorName = 'unknown author';
   }
@@ -66,4 +70,11 @@ export class MessageComponent implements OnInit {
       });
     }
   }
+
+  getAuthorAvatar(){
+    console.log(this.message.authorID);
+      this.Data.getUserdataFromUserID(this.message.authorID).then((user) => {
+        this.messageAuthorAvatar = user.photoURL;
+      });
+    }
 }

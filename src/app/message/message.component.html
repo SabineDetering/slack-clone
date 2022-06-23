@@ -1,4 +1,4 @@
-<img class="img-avatar" src="assets/img/user-femaleAvatar.png" alt="author">
+<img *ngIf="!!message" class="img-avatar" src="{{messageAuthorAvatar || 'assets/img/avatar-neutral.png' }}" alt="author">
 
 <div class="mainContainer" *ngIf="message">
     <div>
