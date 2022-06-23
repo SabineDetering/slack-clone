@@ -66,8 +66,12 @@ export class DataService {
     });
   }
 
-  async getChannelFromChannelId(channelID: string){
+  async getChannelFromChannelID(channelID: string){
     return await firstValueFrom(this.channelCollection.doc(channelID).valueChanges()) as Channel;
+  }
+
+  async getChannelFromDirectChannelID(channelID: string){
+    return await firstValueFrom(this.directChannelCollection.doc(channelID).valueChanges()) as DirectChannel;
   }
 
   getThreadsFromChannelID(channelID: string): void {
@@ -189,8 +193,9 @@ export class DataService {
 
   // #############  LOCAL STORAGE  #############
 
-  setCurrentChannelInLocalStorage(currentChannelID: string) {
-    localStorage.setItem('currentChannel', JSON.stringify(currentChannelID));
+  setCurrentChannelInLocalStorage(currentChannel: any) {
+    console.log(currentChannel)
+    localStorage.setItem('currentChannel', JSON.stringify(currentChannel));
   }
 
   getCurrentChannelFromLocalStorage() {
