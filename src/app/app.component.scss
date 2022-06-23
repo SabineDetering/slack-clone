@@ -14,16 +14,17 @@ mat-toolbar {
 
     .avatar-with-btn {
         position: relative;
-        height:100%;
+        height: 100%;
         @include mix.flex($align: center);
-        width: 52px;
+        // min-width: 52px;
+        padding-left: 36px;
 
         .edit-btn {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            bottom: 20px;
-            right: 0;
+            width: 24px;
+            height: 24px;
+            top: -4px;
+            left: 20px;
             visibility: hidden;
         }
 
