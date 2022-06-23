@@ -33,6 +33,7 @@ export class MessageActionsComponent implements OnInit {
 
   answerInThread() {
     this.Data.currentThread$.next(this.thread);
+    this.Data.setCurrentThreadInLocalStorage(this.thread.threadID);
     this.Data.getMessagesFromThreadID(this.thread.threadID);
   }
 

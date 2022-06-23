@@ -10,6 +10,7 @@ import { Thread } from 'src/models/thread.class';
 import { Message } from 'src/models/message.class';
 import { User } from 'src/models/user.class';
 import { CurrentChannel } from 'src/models/current-channel.class';
+import { stringify } from 'querystring';
 
 @Injectable({
   providedIn: 'root',
@@ -158,5 +159,28 @@ export class DataService {
 
   updateUserProperties(id: string, json: any) {
     this.userCollection.doc(id).update(json);
+  }
+
+
+  // #############  LOCAL STORAGE  #############
+
+  setCurrentChannelInLocalStorage(currentChannelID: string) {
+    localStorage.setItem('currentChannel', JSON.stringify(currentChannelID));
+  }
+
+  getCurrentChannelFromLocalStorage() {
+    return JSON.parse(localStorage.getItem('currentChannel'));
+  }
+
+  setCurrentThreadInLocalStorage(currentThreadID: string) {
+    localStorage.setItem('currentThread', JSON.stringify(currentThreadID));
+  }
+
+  getCurrentThreadFromLocalStorage() {
+    return JSON.parse(localStorage.getItem('currentThread'));
+  }
+
+  removeCurrentThreadFromLocalStorage() {
+    localStorage.removeItem('currentThread');
   }
 }

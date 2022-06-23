@@ -40,8 +40,8 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
 
   openThread(thread: Thread) {
     console.log('open thread', thread);
-    
     this.Data.currentThread$.next(thread);
+    this.Data.setCurrentThreadInLocalStorage(thread.threadID);
     this.Data.getMessagesFromThreadID(thread.threadID);
   }
 

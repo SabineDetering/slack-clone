@@ -36,6 +36,8 @@ export class ThreadContainerComponent implements OnInit {
 
   closeThreadContainer() {
     this.Data.currentMessages$.next([]);
+    this.Data.currentThread$.next(null);
+    this.Data.removeCurrentThreadFromLocalStorage();
   }
 
   trackByIndex(index: any) {
