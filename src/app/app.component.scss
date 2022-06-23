@@ -46,7 +46,8 @@ mat-toolbar {
 
 mat-sidenav {
     height: calc(100vh - 64px);
-    max-width: 25vw;
+    min-width: 200px;
+    max-width: min(25vw,250px) ;
     overflow: auto;
     background-color: mix.$primary-color ;
     color: white;
