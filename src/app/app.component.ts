@@ -35,16 +35,12 @@ export class AppComponent {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
 
-    this.userLinks = [
-      { text: 'change profile picture (no function)', callback: this.openAvatarDialog }
-    ]
-
-    this.Data.currentMessages$.subscribe(msg => this.currentMessages = msg)
+       this.Data.currentMessages$.subscribe(msg => this.currentMessages = msg)
   }
 
 
   openAvatarDialog() {
-    const dialogRef = this.dialog.open(DialogChangeAvatarComponent);//this seems to refer to userLinks
+    const dialogRef = this.dialog.open(DialogChangeAvatarComponent);
   }
 
 }

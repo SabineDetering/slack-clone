@@ -5,9 +5,19 @@
     </button>
     <a [routerLink]="['login']"> Slacky</a>
   </div>
-  <button (click)="openAvatarDialog()">Change avatar</button>
 
-  <ngx-auth-firebaseui-avatar [canLogout]="true" [links]="userLinks" [canViewAccount]="true" [canDeleteAccount]="true" [canEditAccount]="true" (onSignOut)="router.navigate(['/login'])"></ngx-auth-firebaseui-avatar>
+  <div class="avatar-with-btn">
+    <ngx-auth-firebaseui-avatar
+      [canLogout]="true"
+      [canViewAccount]="true"
+      [canDeleteAccount]="true"
+      [canEditAccount]="true"
+      (onSignOut)="router.navigate(['/login'])"
+    ></ngx-auth-firebaseui-avatar>
+    <button mat-icon-button class="edit-btn" matTooltip="change avatar"  (click)="openAvatarDialog()">
+      <mat-icon class="edit-icon">edit</mat-icon>
+    </button>
+  </div>
 </mat-toolbar>
 
 <!-- mobile view: sidenav closed by default, open in mode 'over' with backdrop, closes on click on sidenav (or menu button) -->
