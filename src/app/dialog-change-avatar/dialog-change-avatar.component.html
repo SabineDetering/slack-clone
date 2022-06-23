@@ -8,8 +8,9 @@
 >
   <mat-icon>close</mat-icon>
 </button>
-<mat-dialog-content>
-    <input type="file" name="avatar" id="avatar" accept=".png,.jpg" (change)="uploadFile($event)">
+<mat-dialog-content cdkFocusInitial>
+    <input type="file" name="avatar" id="avatar" accept=".png,.jpg,.svg" (change)="uploadFile($event)">
+    <mat-progress-bar *ngIf="uploadPercent" mode="determinate" [value]="uploadPercent|async"></mat-progress-bar>
 </mat-dialog-content>
 
 <mat-dialog-actions>

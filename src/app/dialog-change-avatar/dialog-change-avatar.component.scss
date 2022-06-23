@@ -1,3 +1,5 @@
+@use '../../styles/mixins' as mix; //also imports _variables.scss
+
 :host {
     position: relative;
 }
@@ -10,4 +12,8 @@
 
 h2 {
     max-width: calc(100% - 40px)
+}
+
+mat-progress-bar {
+    margin-top: mix.$padding-main;
 }

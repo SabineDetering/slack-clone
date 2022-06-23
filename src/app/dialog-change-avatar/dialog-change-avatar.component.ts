@@ -5,6 +5,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { DataService } from 'src/services/data.service';
+import { Observable } from 'tinymce';
 
 @Component({
   selector: 'app-dialog-change-avatar',
@@ -14,6 +15,7 @@ import { DataService } from 'src/services/data.service';
 export class DialogChangeAvatarComponent implements OnInit {
 
   downloadURL: any;
+  uploadPercent: any;
 
   constructor(
     private dialogRef: MatDialogRef<DialogChangeAvatarComponent>,
@@ -31,7 +33,7 @@ export class DialogChangeAvatarComponent implements OnInit {
     const fileRef = this.storage.ref(filePath);
     const task = this.storage.upload(filePath, file);
     // observe percentage changes
-    // this.uploadPercent = task.percentageChanges();
+    this.uploadPercent = task.percentageChanges();
     // get notified when the download URL is available
     task.snapshotChanges().pipe(
       finalize(async () => {

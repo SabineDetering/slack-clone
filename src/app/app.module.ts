@@ -28,6 +28,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { LayoutModule } from '@angular/cdk/layout';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
@@ -123,6 +124,7 @@ import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-chang
     MatSelectModule,
     MatMenuModule,
     MatTooltipModule,
+    MatProgressBarModule,
     LayoutModule,
   ],
   providers: [
