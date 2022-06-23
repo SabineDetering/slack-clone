@@ -229,8 +229,9 @@ export class InputboxComponent implements OnInit {
   }
 
   updateAnswerAmountInThread() {
-    this.currentThread.answerAmount++;
-    this.Data.saveThread(this.newThread.toJSON());
+    let currentThread = new Thread (this.currentThread)
+    currentThread.answerAmount++;
+    this.Data.saveThread(currentThread.toJSON());
   }
 
   setFirstMessageInThread() {
