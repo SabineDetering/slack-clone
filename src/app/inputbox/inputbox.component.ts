@@ -172,7 +172,7 @@ export class InputboxComponent implements OnInit {
             }
           })
         )
-        .subscribe(); // need to trigger observable emitting
+        .subscribe(); // is needed to trigger observable emitting
     });
     // return uploadTask.percentageChanges();
   }

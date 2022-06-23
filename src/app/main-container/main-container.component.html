@@ -7,7 +7,7 @@
 </div>
 
 <div class="threadContainer">
-    <div class="thread" *ngFor="let thread of Data.currentThreads$ | async">
+    <div class="thread" *ngFor="let thread of Data.currentThreads$ | async; index as i; trackBy:trackByIndex">
         <app-message-actions [actionsType]="'threadActions'" [thread]="thread"></app-message-actions>
 
         <app-message *ngIf="thread.firstMessageID" [thread]="thread"></app-message>

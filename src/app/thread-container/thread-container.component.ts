@@ -45,4 +45,8 @@ export class ThreadContainerComponent implements OnInit {
   closeThreadContainer() {
     this.Data.currentMessages$.next([]);
   }
+
+  trackByIndex(index: any) {
+    return index;
+  }
 }

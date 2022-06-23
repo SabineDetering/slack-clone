@@ -11,7 +11,7 @@
 <div class="messagesContainer">
   <div
     class="message"
-    *ngFor="let message of Data.currentMessages$ | async; index as i"
+    *ngFor="let message of Data.currentMessages$ | async; index as i; trackBy:trackByIndex"
   >
     <app-message-actions [actionsType]="'messageActions'" [message]="message" [thread]="currentThread"></app-message-actions>
 

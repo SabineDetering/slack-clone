@@ -72,7 +72,6 @@ export class MessageComponent implements OnInit {
   }
 
   getAuthorAvatar(){
-    console.log(this.message.authorID);
       this.Data.getUserdataFromUserID(this.message.authorID).then((user) => {
         this.messageAuthorAvatar = user.photoURL;
       });

@@ -56,5 +56,8 @@ export class MainContainerComponent implements OnInit {
     this.Data.getMessagesFromThreadID(thread.threadID);
   }
 
+  trackByIndex(index: any) {
+    return index;
+  }
 
 }
