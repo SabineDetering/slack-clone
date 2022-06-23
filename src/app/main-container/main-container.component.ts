@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Channel } from 'src/models/channel.class';
 import { CurrentChannel } from 'src/models/current-channel.class';
 import { Thread } from 'src/models/thread.class';
@@ -9,7 +9,9 @@ import { DataService } from 'src/services/data.service';
   templateUrl: './main-container.component.html',
   styleUrls: ['./main-container.component.scss'],
 })
-export class MainContainerComponent implements OnInit {
+export class MainContainerComponent implements OnInit, AfterViewChecked {
+  
+  @ViewChild('threadContainer') threadContainer: any;
   currentChannel: CurrentChannel;
   threads: Thread[] = [];
 
@@ -18,7 +20,11 @@ export class MainContainerComponent implements OnInit {
     this.getCurrentThreads();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {  }
+
+  ngAfterViewChecked() {
+    this.threadContainer.nativeElement.scrollTop = this.threadContainer.nativeElement.scrollHeight;
+  }
 
   getCurrentChannel() {
     this.Data.currentChannel$.subscribe((channel) => {
@@ -31,23 +37,6 @@ export class MainContainerComponent implements OnInit {
       this.threads = threads;
     });
   }
-
-  // async getMessagesPerThread(thread: Thread){
-  //   let messageAmount: number = 0;; 
-
-  //   this.Data.getMessageAmountFromThreadID(thread.threadID)
-  //   .subscribe((messages) => {
-  //      messageAmount = messages.length;       
-  //   }); 
-  //   return 1
-
-  // }
-
-  // async getMessageAmountFromThreadID(threadID: string){
-  //   // let amount = await this.Data.getMessageAmountFromThreadID(threadID);
-  //   // console.log(amount);
-    
-  // }
 
   openThread(thread: Thread) {
     console.log('open thread', thread);
