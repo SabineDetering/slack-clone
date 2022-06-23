@@ -8,7 +8,7 @@ export class AuthService {
 
   authState = null;
 
-  constructor(private af: AngularFireAuth) {
+  constructor(public af: AngularFireAuth) {
     af.authState.subscribe(auth => {
       this.authState = auth;
       console.log('currentUser', this.currentUser);
