@@ -39,8 +39,7 @@ export class MessageActionsComponent implements OnInit {
   deleteMessage() {
     console.log(this.thread)
     this.Data.deleteMessage(this.message.messageID);
-    if (this.thread.answerAmount == 0) {
-      console.log('answer amount = ', this.thread.answerAmount)
+    if (this.isLastMessageInThread()) {
       this.deleteThread();
     } else {
       this.reduceAnswersInThread();
@@ -50,10 +49,14 @@ export class MessageActionsComponent implements OnInit {
     }
   }
 
-  reduceAnswersInThread() {
+  isLastMessageInThread(){
+    return this.thread.answerAmount == 0 || this.thread.answerAmount == 1 && this.thread.firstMessageID == 'deleted'
+  }
+
+  async reduceAnswersInThread() {
     let thread = new Thread(this.thread)
     thread.answerAmount--;
-    this.Data.saveThread(thread.toJSON());
+    await this.Data.saveThread(thread.toJSON());
     this.Data.currentThread$.next(thread)
   }
 
