@@ -1,4 +1,10 @@
-import { AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Channel } from 'src/models/channel.class';
 import { CurrentChannel } from 'src/models/current-channel.class';
 import { Thread } from 'src/models/thread.class';
@@ -10,7 +16,6 @@ import { DataService } from 'src/services/data.service';
   styleUrls: ['./main-container.component.scss'],
 })
 export class MainContainerComponent implements OnInit, AfterViewChecked {
-  
   @ViewChild('threadContainer') threadContainer: any;
   currentChannel: CurrentChannel;
   threads: Thread[] = [];
@@ -20,16 +25,29 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
     this.getCurrentThreads();
   }
 
-  ngOnInit(): void {  }
+  ngOnInit(): void {}
 
   ngAfterViewChecked() {
-    this.threadContainer.nativeElement.scrollTop = this.threadContainer.nativeElement.scrollHeight;
+    this.threadContainer.nativeElement.scrollTop =
+      this.threadContainer.nativeElement.scrollHeight;
   }
 
   getCurrentChannel() {
     this.Data.currentChannel$.subscribe((channel) => {
       this.currentChannel = channel;
     });
+    this.getCurrentChannelFromLocalStorage();
+  }
+
+  async getCurrentChannelFromLocalStorage() {
+    const storageChannelID = this.Data.getCurrentChannelFromLocalStorage();
+    if (!!storageChannelID) {
+      const storageChannel = await this.Data.getChannelFromChannelId(
+        storageChannelID
+      );
+      this.Data.setCurrentChannelFromChannel(storageChannel);
+      this.Data.getThreadsFromChannelID(storageChannelID);
+    }
   }
 
   getCurrentThreads() {
@@ -45,8 +63,7 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
     this.Data.getMessagesFromThreadID(thread.threadID);
   }
 
-  getTrackByCondition(index: any, thread: Thread){
+  getTrackByCondition(index: any, thread: Thread) {
     return index + thread.firstMessageID;
   }
-
 }

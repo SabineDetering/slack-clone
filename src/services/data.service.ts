@@ -66,6 +66,10 @@ export class DataService {
     });
   }
 
+  async getChannelFromChannelId(channelID: string){
+    return await firstValueFrom(this.channelCollection.doc(channelID).valueChanges()) as Channel;
+  }
+
   getThreadsFromChannelID(channelID: string): void {
     this.firestore
       .collection<Thread>('threads', (ref) =>
@@ -100,6 +104,27 @@ export class DataService {
       this.userCollection.doc(userID).valueChanges()
     );
     return result;
+  }
+
+  setCurrentChannelFromChannel(channel: Channel){
+    this.currentChannel$.next(
+      new CurrentChannel({
+        type: 'channel',
+        id: channel.channelID,
+        name: channel.channelName,
+        description: channel.channelDescription,
+      })
+    );
+  }
+
+  setCurrentChannelFromDirectChannel(directChannel: DirectChannel){
+    this.currentChannel$.next(
+      new CurrentChannel({
+        type: 'directChannel',
+        id: directChannel.directChannelID,
+        name: directChannel.directChannelName
+      })
+    );
   }
 
   addChannel(channel: any) {
@@ -169,7 +194,8 @@ export class DataService {
   }
 
   getCurrentChannelFromLocalStorage() {
-    return JSON.parse(localStorage.getItem('currentChannel'));
+    const storageChannel = localStorage.getItem('currentChannel');
+    return storageChannel ? JSON.parse(storageChannel) : null;
   }
 
   setCurrentThreadInLocalStorage(currentThreadID: string) {
@@ -177,7 +203,8 @@ export class DataService {
   }
 
   getCurrentThreadFromLocalStorage() {
-    return JSON.parse(localStorage.getItem('currentThread'));
+    const storageThread = localStorage.getItem('currentThread');
+    return storageThread ? JSON.parse(storageThread) : null;
   }
 
   removeCurrentThreadFromLocalStorage() {
