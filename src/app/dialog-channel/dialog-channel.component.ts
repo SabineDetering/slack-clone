@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Channel } from 'src/models/channel.class';
+import { CurrentChannel } from 'src/models/current-channel.class';
 import { DataService } from 'src/services/data.service';
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 
@@ -53,6 +54,12 @@ export class DialogChannelComponent implements OnInit {
     confirmationRef.afterClosed().subscribe(result => {
       if (result == 'confirm') {
         this.Data.saveEditedChannel(this.channel.toJSON());
+        this.Data.currentChannel$.next(new CurrentChannel({
+          type: 'channel',
+          id: this.channel.channelID,
+          name: this.channel.channelName,
+          description: this.channel.channelDescription
+        }));
         this.openSnackBar('Channel name or description has been changed.');
       } else {
         this.openSnackBar('Changes have been discarded.');
