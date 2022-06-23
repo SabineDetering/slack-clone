@@ -72,6 +72,7 @@ export class DirectChannelListComponent implements OnInit {
         name: directChannel.directChannelName
       })
     );
+    this.Data.setCurrentChannelInLocalStorage(directChannel.directChannelID);
     this.Data.getThreadsFromChannelID(directChannel.directChannelID);
   }
 
