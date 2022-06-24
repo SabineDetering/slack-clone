@@ -73,12 +73,17 @@ export class InputboxComponent implements OnInit {
   }
 
   getUploadFile(event: any): void {
-    this.files = [];
     for (let i = 0; i < event.target.files.length; i++) {
       const file = event.target.files[i];
       this.files.push(file);
     }
   }
+
+  removeUploadFile(index: number) {
+    this.files.splice(index, 1);
+  }
+
+  
 
   postMessageWithFile(): any {
     this.files.map((file) => {
