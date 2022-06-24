@@ -25,7 +25,7 @@ export class InputboxComponent implements OnInit {
 
   public currentChannel!: CurrentChannel;
   private currentThread!: Thread;
-  public userInput!: any; // ngModel Input
+  public userInput: any = ''; // ngModel Input
 
   public files: File[] = [];
 
@@ -61,7 +61,7 @@ export class InputboxComponent implements OnInit {
 
   postMessage(): void {
     this.currentChannel = this.Data.currentChannel$.getValue();
-    if (this.userInput.length > 0) {
+    if (this.userInput.length > 0 || this.files.length > 0) {
       if (this.currentMessageId) {
         this.saveEditedMessage();
       } else {
@@ -73,6 +73,7 @@ export class InputboxComponent implements OnInit {
   }
 
   getUploadFile(event: any): void {
+    this.newMessage.images = [];
     for (let i = 0; i < event.target.files.length; i++) {
       const file = event.target.files[i];
       this.files.push(file);
@@ -83,7 +84,6 @@ export class InputboxComponent implements OnInit {
     this.files.splice(index, 1);
   }
 
-  
 
   postMessageWithFile(): any {
     this.files.map((file) => {
@@ -104,6 +104,8 @@ export class InputboxComponent implements OnInit {
               this.postMessage();
             } else {
               console.log('FileUpload still in progress ...');
+              console.log('files.length', this.files.length, 'images.length', this.newMessage.images.length);
+
             }
           })
         )
