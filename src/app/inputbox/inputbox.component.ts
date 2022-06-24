@@ -7,12 +7,15 @@ import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators';
+import { EditorService } from 'src/services/editor.service';
+import { Editor } from 'tinymce';
 
 @Component({
   selector: 'app-inputbox',
   templateUrl: './inputbox.component.html',
   styleUrls: ['./inputbox.component.scss'],
 })
+
 export class InputboxComponent implements OnInit {
   @Input('currentMessageId') currentMessageId!: string;
   @Input('messageType') messageType!: string;
@@ -26,85 +29,12 @@ export class InputboxComponent implements OnInit {
 
   public files: File[] = [];
 
-  private editorSetup = (editor) => {
-    editor.ui.registry.addButton('inline-code', {
-      icon: 'sourcecode',
-      onAction: (_) => {
-        let selectionNode = editor.selection.getNode();
-        let selection = editor.selection.getContent() || ' ';
-        if (selectionNode.nodeName != 'CODE') {
-          editor.insertContent(
-            `<code style="color: #e01e5a; background-color: #eee; border: 1px solid #ddd">${selection}</code>`
-          );
-        } else {
-          editor.setContent(`${selection}`);
-        }
-      },
-    });
-    editor.ui.registry.addButton('code-block', {
-      text: '[...]',
-      onAction: (_) => {
-        let selectionNode = editor.selection.getNode();
-        let selection = editor.selection.getNode().innerHTML || ' ';
-        if (selectionNode.nodeName != 'PRE') {
-          editor.setContent(
-            `<pre style="background-color: #eee; border: 1px solid #ddd; padding: 5px">${selection}</pre>`
-          );
-        } else {
-          editor.setContent(`<p>${selection}</p>`);
-        }
-      },
-    });
-  };
-
-  public editorConfig = {
-    height: '20vh',
-    plugins: 'lists link image table code help wordcount emoticons',
-    base_url: '/tinymce',
-    suffix: '.min',
-    menubar: false,
-    statusbar: false,
-    setup: this.editorSetup,
-    toolbar:
-      'undo redo | emoticons | bold italic underline | inline-code code-block blockquote | link | aligning lists',
-    toolbar_groups: {
-      aligning: {
-        icon: 'align-left',
-        tooltip: 'Aligning',
-        items: 'alignleft aligncenter alignright alignjustify',
-      },
-      lists: {
-        icon: 'unordered-list',
-        tooltip: 'Lists',
-        items: 'bullist numlist',
-      },
-    },
-    formats: {
-      code: {
-        inline: 'code',
-        styles: {
-          color: '#e01e5a',
-          backgroundColor: '#eee',
-          border: '1px solid #ddd',
-        },
-      },
-      pre: {
-        block: 'pre',
-        styles: {
-          backgroundColor: '#eee',
-          borderRadius: '5px',
-          border: '1px solid #ddd',
-          padding: '5px',
-        },
-      },
-    },
-    style_formats_merge: true,
-  };
 
   constructor(
     private Data: DataService,
     public Auth: AuthService,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage, 
+    public editor: EditorService
   ) {
     this.getCurrentThread();
   }
