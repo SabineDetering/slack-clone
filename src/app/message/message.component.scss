@@ -9,7 +9,7 @@
 }
 
 .d-none {
-    display: none;
+    display: none!important;
 }
 
 .author {
@@ -44,31 +44,34 @@
 .img-fullsize {
     width: unset;
     max-width: 100%;
+    max-height: 100%;
 }
 
 .fullsize-container {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    width: 100%;
-    transform: translate(-50%, 0);
+    position: fixed;
+    @include mix.flex(center, center);
+    left: 1vw;
+    top: 64px;
+    right: 1vw;
+    bottom: 1vw;
     border-radius: 8px;
     padding: 22px;
     background: white;
-    z-index: 10;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    z-index: 1001;
 
-    .closeFullsize {
+    .icon{
         position: absolute;
         right: 0px;
         top: 0px;
         background-color: rgba(255, 255, 255, 0.844);
-        border-radius: 2px;
-        padding: 0px 4px;
+        border-radius: 5px;
+        transition: all 75ms ease-in-out;
         cursor: pointer;
 
         &:hover {
-            background-color: rgba(255, 255, 255, 0.369);
-        }
+            background-color: rgba(106, 104, 104, 0.1);
+          }
     }
 }
 

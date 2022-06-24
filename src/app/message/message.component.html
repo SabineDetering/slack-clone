@@ -19,7 +19,9 @@
     <!-- consider emojis here-->
 </div>
 
-<div #fullsizeContainer [class.d-none]="!fullsizeOpen" class="fullsize-container  d-none">
+<div #fullsizeContainer [class.d-none]="!fullsizeOpen"  class="fullsize-container  d-none">
     <img class="img-fullsize" src="" alt="fullsize" #fullsize>
-    <div class="closeFullsize" (click)="fullsizeOpen=false">x</div>
+    <div class="icon" (click)="fullsizeOpen = false">
+        <mat-icon  class="close-icon">close</mat-icon>
+    </div>
 </div>

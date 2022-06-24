@@ -11,10 +11,9 @@ import { AuthService } from 'src/services/auth.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-
   mobileQuery: MediaQueryList;
   userLinks: LinkMenuItem[];
   currentMessages: Message[];
@@ -27,20 +26,18 @@ export class AppComponent {
     public Data: DataService,
     public router: Router,
     public dialog: MatDialog,
-    public Auth:AuthService
+    public Auth: AuthService
   ) {
-
     //check if screen width is too small for showing sidenav
     this.mobileQuery = media.matchMedia('(max-width: 870px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
-
-       this.Data.currentMessages$.subscribe(msg => this.currentMessages = msg)
+    this.Data.currentMessages$.subscribe((msg) => (this.currentMessages = msg));
   }
 
+  
 
   openAvatarDialog() {
     const dialogRef = this.dialog.open(DialogChangeAvatarComponent);
   }
-
 }
