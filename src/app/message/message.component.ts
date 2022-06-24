@@ -56,6 +56,7 @@ export class MessageComponent implements OnInit {
     this.message = new Message();  // generating empty message for displaying mainContainer although message deleted 
     this.message.messageText = 'This message has been deleted';
     this.messageAuthorName = 'unknown author';
+    this.getAuthorAvatar('isDeleted');
   }
 
   getMessageTime() {
@@ -71,9 +72,14 @@ export class MessageComponent implements OnInit {
     }
   }
 
-  getAuthorAvatar(){
+  getAuthorAvatar(messageIsDeleted?: string) {
+    if(messageIsDeleted == 'isDeleted'){
+      this.messageAuthorAvatar = 'assets/img/avatar-deletedMessage.png';  
+      return
+    } else{
       this.Data.getUserdataFromUserID(this.message.authorID).then((user) => {
         this.messageAuthorAvatar = user.photoURL || 'assets/img/avatar-neutral.png';  // neutral Avatar is used for guests --> no photoURL
       });
+    }
     }
 }

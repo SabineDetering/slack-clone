@@ -1,4 +1,4 @@
-<img *ngIf="!!message && messageAuthorAvatar; else loadingSpinner" class="img-avatar" src="{{messageAuthorAvatar}}"
+<img *ngIf="!!messageAuthorAvatar; else loadingSpinner" class="img-avatar" src="{{messageAuthorAvatar}}"
     alt="author">
 <ng-template #loadingSpinner>
     <div class="loadingSpinnerContainer">
