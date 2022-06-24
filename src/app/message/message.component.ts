@@ -67,7 +67,7 @@ export class MessageComponent implements OnInit {
   getMessageAuthorName() {
     if (this.message) {
       this.Data.getUserdataFromUserID(this.message.authorID).then((user) => {
-        this.messageAuthorName = user.displayName || 'Guest';
+        this.messageAuthorName = user.displayName;
       });
     }
   }
