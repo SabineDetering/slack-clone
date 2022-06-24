@@ -34,8 +34,7 @@ export class AppComponent {
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
     this.Data.currentMessages$.subscribe((msg) => (this.currentMessages = msg));
   }
-
-  
+ 
 
   openAvatarDialog() {
     const dialogRef = this.dialog.open(DialogChangeAvatarComponent);

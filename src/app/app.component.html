@@ -10,11 +10,11 @@
     <ngx-auth-firebaseui-avatar
       [canLogout]="true"
       [canViewAccount]="true"
-      [canDeleteAccount]="true"
+      [canDeleteAccount]="false"
       [canEditAccount]="true"
-      (onSignOut)="router.navigate(['/login'])"
+      (onSignOut)="Auth.logout()"
     ></ngx-auth-firebaseui-avatar>
-    <button mat-icon-button class="edit-btn" matTooltip="change avatar"  (click)="openAvatarDialog()">
+    <button *ngIf="Auth.authenticated" mat-icon-button class="edit-btn" matTooltip="change avatar"  (click)="openAvatarDialog()">
       <mat-icon class="edit-icon">edit</mat-icon>
     </button>
   </div>
@@ -31,7 +31,7 @@
     (click)="mobileQuery.matches ? sidenav.toggle() : null"
   >
     <div class="sidenav-wrapper">
-      <div>
+      <div *ngIf="Auth.authenticated">
         <app-channel-list [mobile]="mobileQuery.matches"></app-channel-list>
         <app-direct-channel-list></app-direct-channel-list>
       </div>

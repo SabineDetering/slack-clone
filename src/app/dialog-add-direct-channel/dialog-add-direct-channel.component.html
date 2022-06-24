@@ -19,7 +19,9 @@
         name="userID"
         required
       >
-        <ng-container *ngFor="let user of Data.users$ | async">
+        <ng-container
+          *ngFor="let user of Data.users$ | async | orderBy: 'displayName'"
+        >
           <mat-option *ngIf="user.uid != Auth.currentUserId" [value]="user.uid">
             {{ user.displayName ? user.displayName : "Guest" }}
           </mat-option>

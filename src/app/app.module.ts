@@ -107,7 +107,7 @@ import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-chang
         // Plus protected routes are still protected even though user is connected.
         guardProtectedRoutesUntilEmailIsVerified: false,
         enableEmailVerification: false, // default: true
-        useRawUserCredential: false, // If set to true outputs the UserCredential object instead of firebase.User after login and signup - Default: false
+        useRawUserCredential: true, // If set to true outputs the UserCredential object instead of firebase.User after login and signup - Default: false
       }
     ),
 
