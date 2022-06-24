@@ -44,11 +44,11 @@ mat-toolbar {
 
 }
 
-.mat-drawer-opened {
-    // need to give the z-index a value to make fullscreen-images work
-    // otherwise navbar will always be on top
-    z-index: 20 !important;
-}
+// mat-sidenav {
+//     // need to give the z-index a value to make fullscreen-images work
+//     // otherwise navbar will always be on top
+//     // z-index: 3 !important;
+// }
 
 mat-sidenav {
     height: calc(100vh - 64px);
@@ -87,6 +87,7 @@ mat-sidenav {
 mat-sidenav-content {
     @include mix.flex();
     height: calc(100vh - 64px);
+    z-index: unset!important;
 }
 
 
