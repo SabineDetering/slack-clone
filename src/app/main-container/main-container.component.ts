@@ -32,8 +32,8 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
   }
 
   async ngOnInit(): Promise<void> {
-    this.users = await firstValueFrom(this.Data.users$);
-  }
+/*     this.users = await firstValueFrom(this.Data.users$);
+ */  }
 
   ngAfterViewChecked() {
     this.threadContainer.nativeElement.scrollTop =
@@ -80,7 +80,7 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
       storageChannel.channelID
     );
     if (directChannel) {
-      const directChannelWithProps = this.Data.setDirectChannelProperties(directChannel, this.users, this.Auth.currentUserId)
+      const directChannelWithProps = this.Data.setDirectChannelProperties(directChannel, this.Auth.currentUserId)
       this.Data.setCurrentChannelFromDirectChannel(directChannelWithProps);
       this.Data.getThreadsFromChannelID(directChannel.directChannelID);
     } else {

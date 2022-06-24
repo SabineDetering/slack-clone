@@ -30,13 +30,13 @@ export class DirectChannelListComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
 
-    this.users = await firstValueFrom(this.Data.users$);
-
+/*     this.Data.users$.subscribe(users => this.users = users);
+ */
     //subscribe directChannels and merge with users to get participant names excluding logged in user
     this.Data.directChannels$.subscribe(data => {
       this.directChannels = data
         .map(dc => {
-          const directChannel = this.Data.setDirectChannelProperties(dc, this.users, this.Auth.currentUserId)
+          const directChannel = this.Data.setDirectChannelProperties(dc, this.Auth.currentUserId)
           return directChannel;
 /*           dc = new DirectChannel(dc);
           dc.directChannelName = this.users

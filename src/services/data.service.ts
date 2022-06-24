@@ -39,6 +39,8 @@ export class DataService {
   //   new Channel()
   // );
   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(null);
+
+  private users: User[];
   /*   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(
     new Thread()
   ); */
@@ -64,6 +66,11 @@ export class DataService {
     this.directChannels$ = this.directChannelCollection.valueChanges({
       idField: 'directChannelID',
     });
+    this.subscribeToUsers()
+  }
+
+  subscribeToUsers(){
+    this.users$.subscribe(users => this.users = users);
   }
 
   async getChannelFromChannelID(channelID: string) {
@@ -143,14 +150,14 @@ export class DataService {
     );
   }
 
-  setDirectChannelProperties(dc: DirectChannel, users: User[], currentUserID: string){
+  setDirectChannelProperties(dc: DirectChannel, currentUserID: string){
     dc = new DirectChannel(dc);
-    dc.directChannelName = users
+    dc.directChannelName = this.users
       .filter(user => dc.directChannelMembers.includes(user.uid) && user.uid != currentUserID)
       .map(user => user.displayName ? user.displayName : 'Guest')
       .sort()
       .join(', ');
-    dc.directChannelAvatar = users
+    dc.directChannelAvatar = this.users
       .filter(user => dc.directChannelMembers
         .find(member => member != currentUserID) == user.uid)[0]
       .photoURL;
