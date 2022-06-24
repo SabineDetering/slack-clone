@@ -42,8 +42,8 @@ export class LoginComponent implements OnInit {
     }
 
 
-    // this.router.navigate(['/channel/78Zf74HHoirDyWMc3ihh']);
-    // this.Data.currentChannel$.next(new CurrentChannel({type:'channel',name:'news',id:'78Zf74HHoirDyWMc3ihh'}));
+     this.router.navigate(['/channel']);
+     /* this.Data.currentChannel$.next(new CurrentChannel({type:'channel',name:'news',id:'78Zf74HHoirDyWMc3ihh'})); */
   
 }
 

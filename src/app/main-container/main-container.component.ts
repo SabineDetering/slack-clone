@@ -5,9 +5,12 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { Channel } from 'src/models/channel.class';
 import { CurrentChannel } from 'src/models/current-channel.class';
 import { Thread } from 'src/models/thread.class';
+import { User } from 'src/models/user.class';
+import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 
 @Component({
@@ -19,14 +22,18 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
   @ViewChild('threadContainer') threadContainer: any;
   currentChannel: CurrentChannel;
   threads: Thread[] = [];
+  users: User[];
 
-  constructor(public Data: DataService) {
+  constructor(public Data: DataService, private Auth: AuthService) {
+
     this.getCurrentChannel();
     this.getCurrentThreads();
     this.getCurrentThreadFromLocalStorage();
   }
 
-  ngOnInit(): void {}
+  async ngOnInit(): Promise<void> {
+    this.users = await firstValueFrom(this.Data.users$);
+  }
 
   ngAfterViewChecked() {
     this.threadContainer.nativeElement.scrollTop =
@@ -34,6 +41,7 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
   }
 
   getCurrentChannel() {
+    console.log('getcurrentChannel in main component')
     this.Data.currentChannel$.subscribe((channel) => {
       this.currentChannel = channel;
     });
@@ -43,6 +51,7 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
   // checks if a current channel is stored in local storage and if so, sets it in Data.currentChannel$
   async getCurrentChannelFromLocalStorage() {
     const storageChannel = await this.Data.getCurrentChannelFromLocalStorage();
+    console.log(storageChannel)
     if (!storageChannel) return;
     else {
       if (storageChannel.channelType == 'channel') {
@@ -56,7 +65,8 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
   async setCurrentChannelToChannel(storageChannel: any) {
     const channel = await this.Data.getChannelFromChannelID(
       storageChannel.channelID
-    );
+      );
+      console.log('setCurrentChannelToChannel ', channel)
     if (channel) {
       this.Data.setCurrentChannelFromChannel(channel);
       this.Data.getThreadsFromChannelID(channel.channelID);
@@ -70,7 +80,8 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
       storageChannel.channelID
     );
     if (directChannel) {
-      this.Data.setCurrentChannelFromDirectChannel(directChannel);
+      const directChannelWithProps = this.Data.setDirectChannelProperties(directChannel, this.users, this.Auth.currentUserId)
+      this.Data.setCurrentChannelFromDirectChannel(directChannelWithProps);
       this.Data.getThreadsFromChannelID(directChannel.directChannelID);
     } else {
       this.Data.removeCurrentChannelFromLocalStorage();

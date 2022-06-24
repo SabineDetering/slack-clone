@@ -10,13 +10,14 @@ import { PrivacyNoticeComponent } from './privacy-notice/privacy-notice.componen
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
-  {
+  { path: 'channel', component: MainContainerComponent, canActivate: [LoggedInGuard],},
+/*   {
     path: 'channel/:channelID', component: MainContainerComponent, canActivate: [LoggedInGuard],
     children: [
       { path: 'thread/:threadID', component: ThreadContainerComponent, outlet: 'thread' },
     ]
   },
-  { path: 'direct-channel/:directChannelID', component: MainContainerComponent, canActivate: [LoggedInGuard] },
+  { path: 'direct-channel/:directChannelID', component: MainContainerComponent, canActivate: [LoggedInGuard] }, */
   { path: 'legal-notice', component: LegalNoticeComponent },
   { path: 'privacy-notice', component: PrivacyNoticeComponent },
 

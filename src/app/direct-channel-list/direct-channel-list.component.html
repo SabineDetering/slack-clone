@@ -22,11 +22,11 @@
         let directChannel of directChannels | orderBy: 'directChannelName'
       "
     >
+    <!-- [routerLink]="['/direct-channel/' + directChannel.directChannelID]" -->
       <a
         list-item
         *ngIf="directChannel.directChannelMembers.includes(Auth.currentUserId)"
         class="direct-channel-list-item"
-        [routerLink]="['/direct-channel/' + directChannel.directChannelID]"
         (click)="setCurrentDirectChannel(directChannel)"
       >
         <div class="left-part">

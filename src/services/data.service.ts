@@ -68,13 +68,13 @@ export class DataService {
 
   async getChannelFromChannelID(channelID: string) {
     return (await firstValueFrom(
-      this.channelCollection.doc(channelID).valueChanges()
+      this.channelCollection.doc(channelID).valueChanges({ idField: 'channelID' })
     )) as Channel;
   }
 
   async getChannelFromDirectChannelID(channelID: string) {
     return (await firstValueFrom(
-      this.directChannelCollection.doc(channelID).valueChanges()
+      this.directChannelCollection.doc(channelID).valueChanges({ idField: 'directChannelID' })
     )) as DirectChannel;
   }
 
@@ -91,6 +91,8 @@ export class DataService {
   }
 
   getThreadsFromChannelID(channelID: string): void {
+    console.log('getThreadsFromChannelID ', channelID)
+
     this.firestore
       .collection<Thread>('threads', (ref) =>
         ref.where('channelID', '==', channelID)
@@ -139,6 +141,20 @@ export class DataService {
         name: directChannel.directChannelName,
       })
     );
+  }
+
+  setDirectChannelProperties(dc: DirectChannel, users: User[], currentUserID: string){
+    dc = new DirectChannel(dc);
+    dc.directChannelName = users
+      .filter(user => dc.directChannelMembers.includes(user.uid) && user.uid != currentUserID)
+      .map(user => user.displayName ? user.displayName : 'Guest')
+      .sort()
+      .join(', ');
+    dc.directChannelAvatar = users
+      .filter(user => dc.directChannelMembers
+        .find(member => member != currentUserID) == user.uid)[0]
+      .photoURL;
+    return dc;
   }
 
   addChannel(channel: any) {

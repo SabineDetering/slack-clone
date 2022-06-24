@@ -36,7 +36,9 @@ export class DirectChannelListComponent implements OnInit {
     this.Data.directChannels$.subscribe(data => {
       this.directChannels = data
         .map(dc => {
-          dc = new DirectChannel(dc);
+          const directChannel = this.Data.setDirectChannelProperties(dc, this.users, this.Auth.currentUserId)
+          return directChannel;
+/*           dc = new DirectChannel(dc);
           dc.directChannelName = this.users
             .filter(user => dc.directChannelMembers.includes(user.uid) && user.uid != this.Auth.currentUserId)
             .map(user => user.displayName ? user.displayName : 'Guest')
@@ -46,7 +48,7 @@ export class DirectChannelListComponent implements OnInit {
             .filter(user => dc.directChannelMembers
               .find(member => member != this.Auth.currentUserId) == user.uid)[0]
             .photoURL;
-          return dc;
+          return dc; */
         })
     })
   }
