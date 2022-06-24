@@ -54,8 +54,17 @@ export class ChannelListComponent implements OnInit {
   }
 
   setCurrentChannel(channel: Channel) {
+    if(channel.channelID != this.Data.getCurrentChannelFromLocalStorage()){
     this.Data.setCurrentChannelFromChannel(channel);
     this.Data.setCurrentChannelInLocalStorage({channelID: channel.channelID, channelType: 'channel'});
     this.Data.getThreadsFromChannelID(channel.channelID);
+    this.closeCurrentThread()
+    }
   }
+
+  closeCurrentThread(){
+    this.Data.removeCurrentThreadFromLocalStorage();
+    this.Data.currentThread$.next(null)
+    this.Data.currentMessages$.next([])
+  }  
 }
