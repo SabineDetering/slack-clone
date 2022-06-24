@@ -10,7 +10,7 @@
       mat-icon-button
       title="Add new channel"
       class="add-btn"
-      (click)="openChannelDialog();$event.stopPropagation()"
+      (click)="openChannelDialog(); $event.stopPropagation()"
     >
       <mat-icon>add</mat-icon>
     </button>
@@ -19,6 +19,7 @@
   <mat-nav-list *ngIf="channelsOpen" class="channel-list">
     <!-- [routerLink]="['/channel/' + channel.channelID]" -->
     <a
+      [routerLink]="['/channel']"
       list-item
       (click)="setCurrentChannel(channel)"
       class="channel-list-item"
@@ -26,7 +27,9 @@
     >
       <div class="left-part">
         <span class="hash"># </span>
-        <span class="name" [title]="channel.channelName">{{ channel.channelName }}</span>
+        <span class="name" [title]="channel.channelName">{{
+          channel.channelName
+        }}</span>
       </div>
       <button
         mat-icon-button
@@ -38,7 +41,9 @@
       </button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="openChannelDialog(channel)">Edit</button>
-        <button mat-menu-item (click)="openDeleteConfirmation(channel)">Delete</button>
+        <button mat-menu-item (click)="openDeleteConfirmation(channel)">
+          Delete
+        </button>
       </mat-menu>
     </a>
   </mat-nav-list>

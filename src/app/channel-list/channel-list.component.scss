@@ -1,10 +1,13 @@
 @use '../../styles/mixins' as mix; //also imports _variables.scss
 
+:host {
+    width: 250px;
+}
 
 .channel-header {
     @include mix.flex(space-between, center);
-    padding: mix.$padding-main 0 0 mix.$padding-main;
-    width: 100%;
+    padding: mix.$padding-main 10px 0 mix.$padding-main;
+    width: 250px;
     cursor: pointer;
 
     .channel-header-left {
@@ -30,12 +33,13 @@
 
     .channel-list-item {
         padding-left: mix.$padding-main;
-        width: 100%;
+        padding-right: 10px;
+        width: 250px;
         @include mix.flex($justify: space-between, $align: center);
 
         .left-part {
             @include mix.flex($align: center, $gap: 8px);
-            width: 100%;
+            // width: 100%;
 
             .hash {
                 width: 32px;
@@ -44,7 +48,7 @@
             }
 
             .name {
-                max-width:calc( 25vw - 36px - 40px - 2*16px);
+                max-width: calc(250px - 16px - 40px - 40px - 10px);
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
