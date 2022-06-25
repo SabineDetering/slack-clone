@@ -229,6 +229,14 @@ export class DataService {
     this.userCollection.doc(id).delete();    
   }
 
+
+  closeThreadContainer() {
+    this.currentMessages$.next([]);
+    console.log('currentMessages', this.currentMessages$);
+    this.currentThread$.next(null);
+    this.removeCurrentThreadFromLocalStorage();
+  }
+
   // #############  LOCAL STORAGE  #############
 
   setCurrentChannelInLocalStorage(currentChannel: any) {

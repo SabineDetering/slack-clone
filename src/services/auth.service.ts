@@ -57,7 +57,5 @@ export class AuthService {
     //delete user from firebase collections
     //TODO: delete corresponding direct channels, threads, messages
     this.Data.deleteUser(user.uid);
-
-    this.router.navigate(['/login']);
   }
 }

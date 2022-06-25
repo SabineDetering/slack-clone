@@ -38,6 +38,8 @@ export class LoginComponent implements OnInit {
           this.Auth.deleteAnonymousUser(this.user);
         }
         this.user = null;
+        this.router.navigate(['/login']);
+        this.Data.closeThreadContainer();
       }
     })
   }
