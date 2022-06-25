@@ -3,11 +3,11 @@
 <div class="footer">
 
   <ng-container *ngFor="let file of messageFiles; index as i">
+    <span *ngIf="file.isLoading == 'true'">[in progress]</span>
+    <span *ngIf="file.isLoading == 'false'">[ready]</span>
     <span *ngIf="!!file" class="infoUploadedFile">Attachments: {{ file?.name }}
     </span>
     <mat-icon class="icon" (click)="deleteFile(i)" aria-hidden="false" aria-label="send-icon">delete</mat-icon>
-
-    <!-- <span *ngIf="!!file && !!uploadProgress" class="uploadProgress">Upload: {{ uploadProgress }}%</span> -->
   </ng-container>
 
   <mat-icon class="icon icon-ImageUpload" aria-hidden="false" aria-label="insert_photo">
@@ -15,5 +15,5 @@
     <input type="file" multiple (change)="getUploadFile($event)" accept="*.jpg.png" />
   </mat-icon>
 
-  <mat-icon class="icon" (click)="handleUserInput()" aria-hidden="false" aria-label="send-icon">send</mat-icon>
+  <mat-icon class="icon" (click)="handleSendingMessage()" aria-hidden="false" aria-label="send-icon">send</mat-icon>
 </div>
