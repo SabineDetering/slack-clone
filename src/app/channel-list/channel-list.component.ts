@@ -48,6 +48,7 @@ export class ChannelListComponent implements OnInit {
     confirmationRef.afterClosed().subscribe((result) => {
       if (result == 'confirm') {
         this.Data.deleteChannel(channel.channelID);
+        //TODO: delete all Threads and messages of that channel
         this.openSnackBar('Channel has been deleted.');
       }
     });

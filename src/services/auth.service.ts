@@ -43,16 +43,21 @@ export class AuthService {
   }
 
 
-  async logout() {
-    //TODO: delete user from auth and firestore
-    
-    // if (!this.currentUser.email) { // anonymous user
-    //   //delete user from firebase authentication
-    //   console.log('before auth delete',this.currentUser);
-    //   (await this.af.currentUser).delete();
-    //   //delete user from firebase collections
-    //   this.Data.deleteUser(this.currentUserId);
-    // }
+  /**
+   * deletes anonymous users from authentication and firestore collections after logout   * 
+   * @param user  - user to be deleted
+   */
+  async deleteAnonymousUser(user) {
+    //delete user from firebase authentication
+    deleteUser(user).then(() => {
+      console.log('is deleted from auth', user);
+    }).catch((error) => {
+      console.log('error deleting anonymous user: ', error);
+    });
+    //delete user from firebase collections
+    //TODO: delete corresponding direct channels, threads, messages
+    this.Data.deleteUser(user.uid);
+
     this.router.navigate(['/login']);
   }
 }

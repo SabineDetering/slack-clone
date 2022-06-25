@@ -12,6 +12,7 @@ import { DataService } from 'src/services/data.service';
 export class LoginComponent implements OnInit {
 
   providers = AuthProvider;
+  user: any;
 
   constructor(private router: Router, private Data: DataService, private Auth: AuthService) { }
 
@@ -19,11 +20,12 @@ export class LoginComponent implements OnInit {
   }
 
 
-  getUser(event: any) {
+  getUserChange(event: any) {
     console.log('login event', event);
     console.log('login event', event.user.uid);
     this.Auth.af.onAuthStateChanged(user => {
       if (user) {//login
+        this.user = user;
         if (user.isAnonymous) {
           this.setStandardAvatarAndGuestName(user.uid, 'guest');
         } else if (!event.user.photoURL) {
@@ -31,7 +33,11 @@ export class LoginComponent implements OnInit {
         }
         this.router.navigate(['/channel']);
       } else { //logout
-       
+        console.log('logged out user', this.user);
+        if (this.user.isAnonymous) {
+          this.Auth.deleteAnonymousUser(this.user);
+        }
+        this.user = null;
       }
     })
   }
@@ -53,11 +59,11 @@ export class LoginComponent implements OnInit {
         displayName: 'Guest', photoURL: 'assets/img/avatar-neutral.png'
       });
     }
-}
+  }
 
 
-printError(event: Event) {
-  console.error(event);
-}
+  printError(event: Event) {
+    console.error(event);
+  }
 
 }
