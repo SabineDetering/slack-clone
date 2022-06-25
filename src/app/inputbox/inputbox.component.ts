@@ -15,7 +15,6 @@ import { Editor } from 'tinymce';
   templateUrl: './inputbox.component.html',
   styleUrls: ['./inputbox.component.scss'],
 })
-
 export class InputboxComponent implements OnInit {
   @Input('currentMessageId') currentMessageId!: string;
   @Input('messageType') messageType!: string;
@@ -27,13 +26,12 @@ export class InputboxComponent implements OnInit {
   private currentThread!: Thread;
   public userInput: any = ''; // ngModel Input
 
-  public files: File[] = [];
-
+  public messageFiles: any[] = []; // datatype: object
 
   constructor(
     private Data: DataService,
     public Auth: AuthService,
-    private storage: AngularFireStorage, 
+    private storage: AngularFireStorage,
     public editor: EditorService
   ) {
     this.getCurrentThread();
@@ -52,7 +50,7 @@ export class InputboxComponent implements OnInit {
   }
 
   handleUserInput(): void {
-    if (this.files.length > 0) {
+    if (this.messageFiles.length > 0) {
       this.postMessageWithFile();
     } else {
       this.postMessage();
@@ -61,7 +59,7 @@ export class InputboxComponent implements OnInit {
 
   postMessage(): void {
     this.currentChannel = this.Data.currentChannel$.getValue();
-    if (this.userInput.length > 0 || this.files.length > 0) {
+    if (this.userInput.length > 0 || this.messageFiles.length > 0) {
       if (this.currentMessageId) {
         this.saveEditedMessage();
       } else {
@@ -72,21 +70,63 @@ export class InputboxComponent implements OnInit {
     }
   }
 
-  getUploadFile(event: any): void {
-    this.newMessage.images = [];
+  // save files in local ARRAY and Trigger Upload to Storage
+  async getUploadFile(event: any) {
     for (let i = 0; i < event.target.files.length; i++) {
-      const file = event.target.files[i];
-      this.files.push(file);
+      console.log('getUploadFile', event.target.files[i]);
+      const newFile = event.target.files[i];
+      if (!this.filenameAlreadyChoosen(newFile)) {
+        this.messageFiles.push(newFile);
+        await this.saveFileToStorage(newFile);
+      } else {
+        alert('file is already chosen');
+      }
     }
   }
 
-  removeUploadFile(index: number) {
-    this.files.splice(index, 1);
+  filenameAlreadyChoosen(newFile: File) {
+    return this.messageFiles.some((file) => file.name === newFile.name);
   }
 
+  deleteFile(i: number) {
+    let currFile = this.messageFiles[i];
+    if (currFile.downloadURL) {
+      this.storage.storage.refFromURL(currFile.downloadUrl).delete();
+    }
+    this.messageFiles.splice(i, 1);
+  }
 
+  // upload files to Firebase STORAGE
+  async saveFileToStorage(file: File) {
+    const filePathInStorage =
+      'chatimages/' + (this.Auth.currentUserId + '_' + file.name);
+    const storageRef = this.storage.ref(filePathInStorage);
+    const uploadTask = this.storage.upload(filePathInStorage, file);
+
+   uploadTask
+      .snapshotChanges()
+      .pipe(
+        finalize(async () => {
+          let fileDownloadURL = await firstValueFrom(
+            storageRef.getDownloadURL()
+          );
+          let fileIndex = this.messageFiles.indexOf(file);
+          console.log('fileIndex', fileIndex);
+
+          this.messageFiles[fileIndex].downloadURL = fileDownloadURL;
+        })
+      )
+      .subscribe((data) => {
+        console.log('data from subscribe', data.state);
+        if (data.state == 'success') {
+          console.log('upload finished');
+        }
+      });
+  }
+
+  // post all data, including files to Database --> enable button only if all data is uploaded54
   postMessageWithFile(): any {
-    this.files.map((file) => {
+    this.messageFiles.map((file) => {
       const filePathInStorage =
         'chatimages/' + (this.Auth.currentUserId + '_' + file.name);
       const storageRef = this.storage.ref(filePathInStorage);
@@ -100,12 +140,16 @@ export class InputboxComponent implements OnInit {
               storageRef.getDownloadURL()
             );
             this.newMessage.images.push(fileDownloadURL);
-            if (this.files.length == this.newMessage.images.length) {
+            if (this.messageFiles.length == this.newMessage.images.length) {
               this.postMessage();
             } else {
               console.log('FileUpload still in progress ...');
-              console.log('files.length', this.files.length, 'images.length', this.newMessage.images.length);
-
+              console.log(
+                'files.length',
+                this.messageFiles.length,
+                'images.length',
+                this.newMessage.images.length
+              );
             }
           })
         )
@@ -178,6 +222,6 @@ export class InputboxComponent implements OnInit {
 
   clearUserInput() {
     this.userInput = '';
-    this.files = [];
+    this.messageFiles = [];
   }
 }

@@ -2,10 +2,10 @@
 
 <div class="footer">
 
-  <ng-container *ngFor="let file of files; index as i">
+  <ng-container *ngFor="let file of messageFiles; index as i">
     <span *ngIf="!!file" class="infoUploadedFile">Attachments: {{ file?.name }}
     </span>
-    <mat-icon class="icon" (click)="removeUploadFile(i)" aria-hidden="false" aria-label="send-icon">delete</mat-icon>
+    <mat-icon class="icon" (click)="deleteFile(i)" aria-hidden="false" aria-label="send-icon">delete</mat-icon>
 
     <!-- <span *ngIf="!!file && !!uploadProgress" class="uploadProgress">Upload: {{ uploadProgress }}%</span> -->
   </ng-container>
