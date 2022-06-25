@@ -219,8 +219,14 @@ export class DataService {
     this.threadsCollection.doc(threadID).delete();
   }
 
+
   updateUserProperties(id: string, json: any) {
     this.userCollection.doc(id).update(json);
+  }
+
+
+  deleteUser(id: string) {
+    this.userCollection.doc(id).delete();    
   }
 
   // #############  LOCAL STORAGE  #############
