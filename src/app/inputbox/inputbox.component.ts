@@ -15,7 +15,6 @@ import { Editor } from 'tinymce';
   templateUrl: './inputbox.component.html',
   styleUrls: ['./inputbox.component.scss'],
 })
-
 export class InputboxComponent implements OnInit {
   @Input('currentMessageId') currentMessageId!: string;
   @Input('messageType') messageType!: string;
@@ -27,13 +26,12 @@ export class InputboxComponent implements OnInit {
   private currentThread!: Thread;
   public userInput: any = ''; // ngModel Input
 
-  public files: File[] = [];
-
+  public messageFiles: any[] = []; // datatype: object
 
   constructor(
     private Data: DataService,
     public Auth: AuthService,
-    private storage: AngularFireStorage, 
+    private storage: AngularFireStorage,
     public editor: EditorService
   ) {
     this.getCurrentThread();
@@ -41,27 +39,15 @@ export class InputboxComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  logUserInput() {
-    console.log(this.userInput);
-  }
-
   getCurrentThread() {
     this.Data.currentThread$.subscribe(
       (thread) => (this.currentThread = new Thread(thread))
     );
   }
 
-  handleUserInput(): void {
-    if (this.files.length > 0) {
-      this.postMessageWithFile();
-    } else {
-      this.postMessage();
-    }
-  }
-
-  postMessage(): void {
-    this.currentChannel = this.Data.currentChannel$.getValue();
-    if (this.userInput.length > 0 || this.files.length > 0) {
+  handleSendingMessage(): void {
+    this.currentChannel = this.Data.currentChannel$.getValue(); // consider deleting --> not needed?
+    if (this.userInput.length > 0 || this.messageFiles.length > 0) {
       if (this.currentMessageId) {
         this.saveEditedMessage();
       } else {
@@ -72,46 +58,68 @@ export class InputboxComponent implements OnInit {
     }
   }
 
-  getUploadFile(event: any): void {
-    this.newMessage.images = [];
+  // save files in local ARRAY and Trigger Upload to Storage
+  // no need for if "filename is already choosen before" --> becaucse ...
+  // ... by default (of inputfield typ file?), its not possible to upload same filename twice!
+  async getUploadFile(event: any) {
     for (let i = 0; i < event.target.files.length; i++) {
-      const file = event.target.files[i];
-      this.files.push(file);
+      const newFile = event.target.files[i];
+      this.messageFiles.push(newFile); // array to display in frontend
+      await this.saveFileToStorage(newFile);
     }
   }
 
-  removeUploadFile(index: number) {
-    this.files.splice(index, 1);
+  filenameAlreadyChoosen(newFile: File) {
+    return this.messageFiles?.some((file) => file.name === newFile.name);
   }
 
+  deleteFile(i: number) {
+    let currFile = this.messageFiles[i];
+    if (currFile.downloadURL) {
+      this.storage.storage.refFromURL(currFile.downloadUrl).delete();
+    }
+    this.messageFiles.splice(i, 1);
+  }
 
-  postMessageWithFile(): any {
-    this.files.map((file) => {
-      const filePathInStorage =
-        'chatimages/' + (this.Auth.currentUserId + '_' + file.name);
-      const storageRef = this.storage.ref(filePathInStorage);
-      const uploadTask = this.storage.upload(filePathInStorage, file);
+  // upload each file individually to Firebase STORAGE (message not send yet)
+  async saveFileToStorage(file: File) {
+    this.setLoadingStatus('true', file);
 
-      uploadTask
-        .snapshotChanges()
-        .pipe(
-          finalize(async () => {
-            let fileDownloadURL = await firstValueFrom(
-              storageRef.getDownloadURL()
-            );
-            this.newMessage.images.push(fileDownloadURL);
-            if (this.files.length == this.newMessage.images.length) {
-              this.postMessage();
-            } else {
-              console.log('FileUpload still in progress ...');
-              console.log('files.length', this.files.length, 'images.length', this.newMessage.images.length);
+    const filePathInStorage =
+      'chatimages/' + (this.Auth.currentUserId + '_' + file.name);
+    const storageRef = this.storage.ref(filePathInStorage);
+    const uploadTask = this.storage.upload(filePathInStorage, file);
 
-            }
-          })
-        )
-        .subscribe(); // is needed to trigger observable emitting
-    });
-    // return uploadTask.percentageChanges();
+    uploadTask
+      .snapshotChanges()
+      .pipe(
+        finalize(async () => {
+          let fileDownloadURL = await firstValueFrom(
+            storageRef.getDownloadURL()
+          );
+          // CAVE: user can still delete file before sending message
+          // therefore, URL is not saved in newMessage object but rather temporarily in each file obj
+          let currentFile = this.getFileFromMessageFiles(file);
+          currentFile.downloadURL = fileDownloadURL;
+        })
+      )
+      .subscribe((data) => {
+        if (data.state == 'success') {
+          this.setLoadingStatus('false', file);
+        }
+      });
+  }
+
+  setLoadingStatus(status: string, file: File) {
+    const fileIndex = this.messageFiles.indexOf(file);
+    const currentfile = this.messageFiles[fileIndex];
+    currentfile.isLoading = status;
+  }
+
+  getFileFromMessageFiles(file: File) {
+    let indexOfFile = this.messageFiles.indexOf(file);
+    let fileObject = this.messageFiles[indexOfFile];
+    return fileObject;
   }
 
   addNewMessage() {
@@ -135,7 +143,6 @@ export class InputboxComponent implements OnInit {
   async createNewThread() {
     const currentTime = new Date().getTime();
     let uniqueThreadID = this.getUniqueID(currentTime);
-
     this.newThread.threadID = uniqueThreadID; // set custom ThreadID to use it for this thread and saveMessage()
     this.newThread.channelID = this.currentChannel.id;
     await this.Data.saveThread(this.newThread.toJSON());
@@ -151,6 +158,10 @@ export class InputboxComponent implements OnInit {
     this.newMessage.authorID = this.Auth.currentUserId;
     this.newMessage.timestamp = currentTime;
     this.newMessage.messageText = this.userInput;
+    // transfer temporary saved downloadURL to messageFiles
+    this.messageFiles.forEach((file) => {
+      this.newMessage.images.push(file.downloadURL);
+    });
 
     await this.Data.saveMessage(this.newMessage.toJSON());
     this.clearUserInput();
@@ -178,6 +189,6 @@ export class InputboxComponent implements OnInit {
 
   clearUserInput() {
     this.userInput = '';
-    this.files = [];
+    this.messageFiles = [];
   }
 }
