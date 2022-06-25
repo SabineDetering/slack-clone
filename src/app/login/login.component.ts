@@ -19,14 +19,21 @@ export class LoginComponent implements OnInit {
   }
 
 
-  async getUser(event) {
+  getUser(event: any) {
     console.log('login event', event);
-    if (event.user.isAnonymous) {
-      this.setStandardAvatarAndGuestName('guest');
-    } else if (!event.user.photoURL) {
-      this.setStandardAvatarAndGuestName('avatar');
-    }
-    this.router.navigate(['/channel']);
+    console.log('login event', event.user.uid);
+    this.Auth.af.onAuthStateChanged(user => {
+      if (user) {//login
+        if (user.isAnonymous) {
+          this.setStandardAvatarAndGuestName(user.uid, 'guest');
+        } else if (!event.user.photoURL) {
+          this.setStandardAvatarAndGuestName(user.uid, 'avatar');
+        }
+        this.router.navigate(['/channel']);
+      } else { //logout
+       
+      }
+    })
   }
 
 
@@ -34,23 +41,23 @@ export class LoginComponent implements OnInit {
    * sets avatar to standard avatar 
    * and additionally for anonymous users displayName is set to 'Guest'
    */
-  setStandardAvatarAndGuestName(type: string) {
+  setStandardAvatarAndGuestName(id: string, type: string) {
     if (type == 'avatar') {// registered user without avatar
       this.Auth.updateProperties({ photoURL: 'assets/img/avatar-neutral.png' });
-      this.Data.updateUserProperties(this.Auth.currentUserId, {
+      this.Data.updateUserProperties(id, {
         photoURL: 'assets/img/avatar-neutral.png'
       });
     } else {//anonymous user
       this.Auth.updateProperties({ displayName: 'Guest', photoURL: 'assets/img/avatar-neutral.png' });
-      this.Data.updateUserProperties(this.Auth.currentUserId, {
+      this.Data.updateUserProperties(id, {
         displayName: 'Guest', photoURL: 'assets/img/avatar-neutral.png'
       });
     }
-  }
+}
 
 
-  printError(event: Event) {
-    console.error(event);
-  }
+printError(event: Event) {
+  console.error(event);
+}
 
 }
