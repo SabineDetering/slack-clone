@@ -1,4 +1,4 @@
-@use '../styles/mixins' as mix; //also imports _variables.scss
+@use "../styles/mixins" as mix; //also imports _variables.scss
 
 mat-toolbar {
     @include mix.flex($justify: space-between, $align: center);
@@ -41,7 +41,6 @@ mat-toolbar {
             }
         }
     }
-
 }
 
 // mat-sidenav {
@@ -54,12 +53,10 @@ mat-sidenav {
     height: calc(100vh - 64px - 73px);
     // min-width: 200px;
     // max-width: min(25vw,250px) ;
-    width: 251px;// 1px border-right from material
+    width: 251px; // 1px border-right from material
     overflow: auto;
-    background-color: mix.$primary-color ;
+    background-color: mix.$primary-color;
     color: white;
-
-
 
     .sidenav-wrapper {
         height: 100%;
@@ -67,10 +64,10 @@ mat-sidenav {
     }
 
     .legal-list {
-        position:fixed;
-        bottom:0;
-        left:0;
-        border-right:1px solid mix.$primary-color;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        border-right: 1px solid mix.$primary-color;
         background-color: mix.$primary-color;
         @include mix.flex($dir: column);
         font-size: 14px;
@@ -88,18 +85,19 @@ mat-sidenav {
 }
 
 
+.mat-drawer-content {
+    overflow: unset;
+}
 
 mat-sidenav-content {
     @include mix.flex();
     height: calc(100vh - 64px);
-    z-index: unset!important;
+    z-index: unset !important;
 }
-
 
 .outlet-main {
     flex: 1;
 }
-
 
 .outlet-thread {
     width: 25vw;
