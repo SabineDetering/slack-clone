@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthProvider, NgxAuthFirebaseUIModule } from 'ngx-auth-firebaseui';
-import { firstValueFrom } from 'rxjs';
-import { CurrentChannel } from 'src/models/current-channel.class';
+import { AuthProvider } from 'ngx-auth-firebaseui';
 import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 
@@ -18,29 +16,26 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router, private Data: DataService, private Auth: AuthService) { }
 
   ngOnInit(): void {
-    // this.Auth.af.authState.subscribe(auth => {
-    //   if (!!auth) { this.setStandardAvatarAndGuestName(); }
-    // });
   }
 
 
   async getUser(event) {
-    let user = await firstValueFrom(this.Auth.af.authState);
-    console.log('user after await', user);
-    console.log('auth.currentuser after await', this.Auth.currentUser);
-    // if (!user.uid == null) {
-      this.setStandardAvatarAndGuestName();
-    // }
+    console.log('login event', event);
+    if (event.user.isAnonymous) {
+      this.setStandardAvatarAndGuestName('guest');
+    } else if (!event.user.photoURL) {
+      this.setStandardAvatarAndGuestName('avatar');
+    }
+    this.router.navigate(['/channel']);
   }
 
-  /**
-   * 
-   */
-  setStandardAvatarAndGuestName() {
-    console.log('entered function setStandardAvatarAndGuestName');
-    console.log('auth.currentuser.displayName', this.Auth.currentUser.displayName);
 
-    if (!!this.Auth.currentUser.displayName) {
+  /**
+   * sets avatar to standard avatar 
+   * and additionally for anonymous users displayName is set to 'Guest'
+   */
+  setStandardAvatarAndGuestName(type: string) {
+    if (type == 'avatar') {// registered user without avatar
       this.Auth.updateProperties({ photoURL: 'assets/img/avatar-neutral.png' });
       this.Data.updateUserProperties(this.Auth.currentUserId, {
         photoURL: 'assets/img/avatar-neutral.png'
@@ -51,14 +46,11 @@ export class LoginComponent implements OnInit {
         displayName: 'Guest', photoURL: 'assets/img/avatar-neutral.png'
       });
     }
+  }
 
 
-     this.router.navigate(['/channel']);
-     /* this.Data.currentChannel$.next(new CurrentChannel({type:'channel',name:'news',id:'78Zf74HHoirDyWMc3ihh'})); */
-  
-}
+  printError(event: Event) {
+    console.error(event);
+  }
 
-printError(event: Event) {
-  console.error(event);
-}
 }
