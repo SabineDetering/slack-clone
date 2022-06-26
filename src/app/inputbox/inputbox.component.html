@@ -1,14 +1,14 @@
 <editor [(ngModel)]="userInput" [init]="editor.editorConfig"></editor>
 
 <div class="footer">
-
-  <ng-container *ngFor="let file of messageFiles; index as i">
-    <span *ngIf="file.isLoading == 'true'">[in progress]</span>
-    <span *ngIf="file.isLoading == 'false'">[ready]</span>
-    <span *ngIf="!!file" class="infoUploadedFile">Attachments: {{ file?.name }}
-    </span>
-    <mat-icon class="icon" (click)="deleteFile(i)" aria-hidden="false" aria-label="send-icon">delete</mat-icon>
-  </ng-container>
+  <div class="wrapperFiles">
+    <span *ngIf="messageFiles.length > 0">Files: </span>
+    <div class="file" *ngFor="let file of messageFiles; index as i">
+      <span> {{file.name}}</span>
+      <mat-icon *ngIf="file.isLoading == 'false'" class="icon-delete" (click)="deleteFile(i)">clear</mat-icon>
+      <mat-icon *ngIf="file.isLoading == 'true'" class="icon">loop</mat-icon>
+    </div>
+  </div>
 
   <mat-icon class="icon icon-ImageUpload" aria-hidden="false" aria-label="insert_photo">
     insert_photo

@@ -9,8 +9,21 @@
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
-editor{
+editor {
     width: 100%;
+}
+
+// scrollbar for DIV "wrapper-files" --> when it contains more files
+::-webkit-scrollbar {
+    height: 4px;
+    background-color: grey;
+    transform: translate(0, 6px);
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: white;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
 }
 
 .footer {
@@ -18,10 +31,17 @@ editor{
     width: 100%;
     padding: mix.$padding-medium;
 
-    span{
+    span {
         font-size: 12px;
         opacity: 0.7;
     }
+}
+
+.wrapperFiles {
+    @include mix.flex(flex-end, center, row, 10px);
+    margin-right:8px;
+    flex: 1;
+    height: 22px;
 }
 
 button {
@@ -35,6 +55,40 @@ button {
     &:hover {
         background: lightgrey;
     }
+}
+
+.file {
+    position: relative;
+    z-index:1;
+    @include mix.flex(flex-end, center, row, 10px);
+    background-color: rgba(211, 211, 211, 0.324);
+    border-radius: 2px;
+    padding: 4px 6px;
+
+    &:hover {
+        .icon-delete {
+            opacity: 1;
+        }
+    }
+}
+
+.icon-delete {
+    position: absolute;
+    @include mix.flex(center, center);
+
+    font-size:12px;
+    right: -12px;
+    top: -10px;
+    opacity: 0;
+    padding: 2px;
+    border-radius: 2px;
+    background-color: rgba(246, 245, 245, 0.832);
+    cursor: pointer;
+    z-index:10;
+
+    // &:hover {
+    //     opacity: 0.8;
+    // }
 }
 
 mat-icon {
@@ -52,17 +106,19 @@ mat-icon {
     position: relative;
     cursor: pointer;
 
+    // icon for DataUpload is hiding behind an inputfield
     input {
         position: absolute;
-        left: 50%;
-        bottom: 0%;
-        transform: translate(-50%);
+        background-color: red;
+        width:22px;
+        right: 0;
+        bottom: 0;
         opacity: 0;
         z-index: 10;
         cursor: pointer;
     }
 }
 
-code{
-color: red;
+code {
+    color: red;
 }

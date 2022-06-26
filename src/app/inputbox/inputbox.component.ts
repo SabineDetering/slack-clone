@@ -75,8 +75,9 @@ export class InputboxComponent implements OnInit {
 
   deleteFile(i: number) {
     let currFile = this.messageFiles[i];
-    if (currFile.downloadURL) {
-      this.storage.storage.refFromURL(currFile.downloadUrl).delete();
+    if (currFile.filePathInStorage) {
+      const storageRef = this.storage.ref(currFile.filePathInStorage);
+      storageRef.delete();
     }
     this.messageFiles.splice(i, 1);
   }
@@ -85,7 +86,7 @@ export class InputboxComponent implements OnInit {
   async saveFileToStorage(file: File) {
     this.setLoadingStatus('true', file);
 
-    const filePathInStorage =
+    let filePathInStorage =
       'chatimages/' + (this.Auth.currentUserId + '_' + file.name);
     const storageRef = this.storage.ref(filePathInStorage);
     const uploadTask = this.storage.upload(filePathInStorage, file);
@@ -101,6 +102,7 @@ export class InputboxComponent implements OnInit {
           // therefore, URL is not saved in newMessage object but rather temporarily in each file obj
           let currentFile = this.getFileFromMessageFiles(file);
           currentFile.downloadURL = fileDownloadURL;
+          currentFile.filePathInStorage = filePathInStorage; // save, if file is deleted
         })
       )
       .subscribe((data) => {
@@ -152,19 +154,22 @@ export class InputboxComponent implements OnInit {
   async addMessageToThread(threadID: string) {
     const currentTime = new Date().getTime();
     let uniqueMessageID = this.getUniqueID(currentTime);
-
     this.newMessage.threadID = threadID;
     this.newMessage.messageID = uniqueMessageID;
     this.newMessage.authorID = this.Auth.currentUserId;
     this.newMessage.timestamp = currentTime;
     this.newMessage.messageText = this.userInput;
+    this.addImagesToMessage();
+    await this.Data.saveMessage(this.newMessage.toJSON());
+    this.clearUserInput();
+  }
+
+  addImagesToMessage() {
     // transfer temporary saved downloadURL to messageFiles
+    this.newMessage.images = [];
     this.messageFiles.forEach((file) => {
       this.newMessage.images.push(file.downloadURL);
     });
-
-    await this.Data.saveMessage(this.newMessage.toJSON());
-    this.clearUserInput();
   }
 
   getUniqueID(currentTime: number) {
@@ -190,5 +195,6 @@ export class InputboxComponent implements OnInit {
   clearUserInput() {
     this.userInput = '';
     this.messageFiles = [];
+    this.newMessage.images = [];
   }
 }
