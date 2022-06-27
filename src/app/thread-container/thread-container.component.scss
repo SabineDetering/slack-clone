@@ -45,3 +45,11 @@
     display: unset !important;
 }
 }
+
+.first-message{
+  border-bottom: 1px solid #ddd;
+/* 
+  &::after{
+    content: ;
+  } */
+}

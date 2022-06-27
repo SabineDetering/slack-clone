@@ -92,7 +92,7 @@ export class MessageComponent implements OnInit {
           this.messageAuthorAvatar =
             user.photoURL || 'assets/img/avatar-neutral.png';
         // neutral Avatar is used for guests --> no photoURL
-        else this.messageAuthorAvatar = 'assets/img/avatar-deletedMessage.png';
+        else this.messageAuthorAvatar = 'assets/img/avatar-unknown.png';
       });
     }
   }
