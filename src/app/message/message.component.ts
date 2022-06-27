@@ -63,7 +63,7 @@ export class MessageComponent implements OnInit {
     this.message = new Message(); // generating empty message for displaying mainContainer although message deleted
     this.message.messageText = 'This message has been deleted';
     this.messageAuthorName = 'unknown author';
-    this.isDeleted = true;  // disables Editing this messge
+    this.isDeleted = true; // disables Editing this messge
     this.getAuthorAvatar('isDeleted');
   }
 
@@ -74,8 +74,10 @@ export class MessageComponent implements OnInit {
   // always get up to date Displayname from authors ID
   getMessageAuthorName() {
     if (this.message) {
+      console.log(this.message.authorID);
       this.Data.getUserdataFromUserID(this.message.authorID).then((user) => {
-        this.messageAuthorName = user.displayName;
+        if (user) this.messageAuthorName = user.displayName;
+        else this.messageAuthorName = 'user deleted';
       });
     }
   }
@@ -86,8 +88,11 @@ export class MessageComponent implements OnInit {
       return;
     } else {
       this.Data.getUserdataFromUserID(this.message.authorID).then((user) => {
-        this.messageAuthorAvatar =
-          user.photoURL || 'assets/img/avatar-neutral.png'; // neutral Avatar is used for guests --> no photoURL
+        if (user)
+          this.messageAuthorAvatar =
+            user.photoURL || 'assets/img/avatar-neutral.png';
+        // neutral Avatar is used for guests --> no photoURL
+        else this.messageAuthorAvatar = 'assets/img/avatar-deletedMessage.png';
       });
     }
   }
