@@ -23,7 +23,11 @@ export class LoginComponent implements OnInit {
   getUserChange(event: any) {
     console.log('login event', event);
     console.log('login event', event.user.uid);
-    this.Auth.af.onAuthStateChanged(user => {
+/*     this.Auth.af.onAuthStateChanged(user => {
+      console.log('getUserChange')
+      console.log(this.Auth.currentUserId)
+      console.log(this.user)
+      console.log(user)
       if (user) {//login
         this.user = user;
         if (user.isAnonymous) {
@@ -41,7 +45,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/login']);
         this.closeThreadContainer();
       }
-    })
+    }) */
   }
 
 

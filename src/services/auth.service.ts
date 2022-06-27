@@ -10,6 +10,8 @@ import { DataService } from './data.service';
 export class AuthService {
 
   authState = null;
+  user: any;
+
 
   constructor(
     public af: AngularFireAuth,
@@ -17,9 +19,55 @@ export class AuthService {
     private Data: DataService
   ) {
     af.authState.subscribe(auth => {
+      console.log(auth)
       this.authState = auth;
+      if(auth) {
+        this.af.onAuthStateChanged(user => {
+          console.log('getUserChange')
+          console.log(this.currentUserId)
+          console.log(this.user)
+          console.log(user)
+          if (user) {//login
+            this.user = user;
+            if (user.isAnonymous) {
+              this.setStandardAvatarAndGuestName(user.uid, 'guest');
+            } else if (this.currentUser.photoURL) {
+              this.setStandardAvatarAndGuestName(user.uid, 'avatar');
+            }
+            this.router.navigate(['/channel']);
+          } else { //logout
+            console.log('logged out user', this.user);
+            if (this.user.isAnonymous) {
+              this.deleteAnonymousUser(this.user);
+            }
+            this.user = null;
+            this.router.navigate(['/login']);
+            this.closeThreadContainer();
+          }
+        })
+      }
       console.log('currentUser', this.currentUser);
     });
+  }
+
+  setStandardAvatarAndGuestName(id: string, type: string) {
+    if (type == 'avatar') {// registered user without avatar
+      this.updateProperties({ photoURL: 'assets/img/avatar-neutral.png' });
+      this.Data.updateUserProperties(id, {
+        photoURL: 'assets/img/avatar-neutral.png'
+      });
+    } else {//anonymous user
+      this.updateProperties({ displayName: 'Guest', photoURL: 'assets/img/avatar-neutral.png' });
+      this.Data.updateUserProperties(id, {
+        displayName: 'Guest', photoURL: 'assets/img/avatar-neutral.png'
+      });
+    }
+  }
+
+  
+  closeThreadContainer() {
+    this.Data.closeCurrentThread(false);
+    this.Data.deleteThreadSubscription();
   }
 
 
