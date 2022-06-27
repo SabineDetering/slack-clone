@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
     console.error(event);
   }
 
-  
+
 /**
  * 
  */

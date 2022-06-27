@@ -20,7 +20,7 @@ export class DialogAddDirectChannelComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<DialogAddDirectChannelComponent>,
     public Data: DataService,
-    public Auth:AuthService,
+    public Auth: AuthService,
     private _snackBar: MatSnackBar
   ) {
   }
@@ -35,7 +35,10 @@ export class DialogAddDirectChannelComponent implements OnInit {
 
 
   saveDirectChannel() {
-    this.dm.directChannelMembers.push(this.Auth.currentUserId);
+    //currentUser must always be part of member list
+    if (!this.dm.directChannelMembers.includes(this.Auth.currentUserId)) {
+      this.dm.directChannelMembers.push(this.Auth.currentUserId);
+    }
     console.log(this.dm);
     this.Data.saveDirectChannel(this.dm.toJSON());
     this.dialogRef.close('saved');

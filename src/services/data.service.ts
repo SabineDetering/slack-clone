@@ -40,13 +40,10 @@ export class DataService {
   public currentChannel$: BehaviorSubject<CurrentChannel> = new BehaviorSubject(
     null
   );
-
-  // public currentChannel$: BehaviorSubject<any> = new BehaviorSubject(
-  //   new Channel()
-  // );
   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(null);
 
   private users: User[];
+  public directChannels: DirectChannel[];
 
   private threadSubscription!: Subscription;
   /*   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(
@@ -55,6 +52,7 @@ export class DataService {
 
   // public currentDirectChannel$: BehaviorSubject<DirectChannel> =
   //   new BehaviorSubject(new DirectChannel());
+
 
   constructor(private readonly firestore: AngularFirestore) {
     this.channelCollection = this.firestore.collection<Channel>('channels');
@@ -74,11 +72,17 @@ export class DataService {
     this.directChannels$ = this.directChannelCollection.valueChanges({
       idField: 'directChannelID',
     });
+
     this.subscribeToUsers();
+    this.subscribeToDirectChannels();
   }
 
   subscribeToUsers() {
-    this.users$.subscribe((users) => (this.users = users));
+    this.users$.subscribe(users => this.users = users);
+  }
+
+  subscribeToDirectChannels() {
+    this.directChannels$.subscribe(dc => this.directChannels = dc);
   }
 
   async getChannelFromChannelID(channelID: string) {
@@ -162,20 +166,18 @@ export class DataService {
 
   setDirectChannelProperties(dc: DirectChannel, currentUserID: string) {
     dc = new DirectChannel(dc);
+    console.log(dc);
     dc.directChannelName = this.users
-      .filter(
-        (user) =>
-          dc.directChannelMembers.includes(user.uid) &&
-          user.uid != currentUserID
+      .filter(user =>
+        dc.directChannelMembers.includes(user.uid)
+        && (user.uid != currentUserID || dc.directChannelMembers.length == 1)
       )
-      .map(user => user.displayName )
+      .map(user => user.displayName)
       .sort()
       .join(', ');
-    dc.directChannelAvatar = this.users.filter(
-      (user) =>
-        dc.directChannelMembers.find((member) => member != currentUserID) ==
-        user.uid
-    )[0].photoURL;
+    dc.directChannelAvatar = this.users
+      .filter(user => dc.directChannelMembers[0] == user.uid)[0]
+      .photoURL;
     return dc;
   }
 
@@ -184,7 +186,7 @@ export class DataService {
     this.currentThread$.next(null);
     if (removeFromLocalStorage) this.removeCurrentThreadFromLocalStorage();
   }
- 
+
   addChannel(channel: any) {
     this.channelCollection.add(channel);
   }
@@ -287,32 +289,59 @@ export class DataService {
     this.userCollection.doc(id).delete();
   }
 
-  // #############  LOCAL STORAGE  #############
-
-  setCurrentChannelInLocalStorage(currentChannel: any) {
-    console.log(currentChannel);
-    localStorage.setItem('currentChannel', JSON.stringify(currentChannel));
+  deleteDirectChannel(directChannelID: string) {
+    console.log('deleting directChannel');
+    this.directChannelCollection.doc(directChannelID).delete();
   }
 
-  getCurrentChannelFromLocalStorage() {
-    const storageChannel = localStorage.getItem('currentChannel');
-    return storageChannel ? JSON.parse(storageChannel) : null;
+  /**
+   * if User is the only member in direct channel, the channel (TODO: and all its threads and messages) is deleted
+   * if User is one of several members, userID is deleted from member list
+   * @param userID
+   */
+  deleteUserFromDirectChannels(userID: string) {
+    this.directChannels.forEach(dc => {
+      if (dc.directChannelMembers.includes(userID)) {
+        if (dc.directChannelMembers.length == 1) {
+          this.deleteDirectChannel(dc.directChannelID);
+          this.deleteThreadsInChannel(dc.directChannelID);
+          this.deleteMessagesInChannel(dc.directChannelID);
+        } else {
+          //TODO: delete user from member list and update dc in firestore
+        }
+      }
+    })
   }
 
-  setCurrentThreadInLocalStorage(currentThreadID: string) {
-    localStorage.setItem('currentThread', JSON.stringify(currentThreadID));
+    // #############  LOCAL STORAGE  #############
+
+    setCurrentChannelInLocalStorage(currentChannel: any) {
+      console.log(currentChannel);
+      localStorage.setItem('currentChannel', JSON.stringify(currentChannel));
+    }
+
+    getCurrentChannelFromLocalStorage() {
+      const storageChannel = localStorage.getItem('currentChannel');
+      return storageChannel ? JSON.parse(storageChannel) : null;
+    }
+
+    setCurrentThreadInLocalStorage(currentThreadID: string) {
+      localStorage.setItem('currentThread', JSON.stringify(currentThreadID));
+    }
+
+    getCurrentThreadFromLocalStorage() {
+      const storageThread = localStorage.getItem('currentThread');
+      return storageThread ? JSON.parse(storageThread) : null;
+    }
+
+    removeCurrentChannelFromLocalStorage() {
+      localStorage.removeItem('currentChannel');
+    }
+
+    removeCurrentThreadFromLocalStorage() {
+      localStorage.removeItem('currentThread');
+    }
   }
 
-  getCurrentThreadFromLocalStorage() {
-    const storageThread = localStorage.getItem('currentThread');
-    return storageThread ? JSON.parse(storageThread) : null;
-  }
 
-  removeCurrentChannelFromLocalStorage() {
-    localStorage.removeItem('currentChannel');
-  }
 
-  removeCurrentThreadFromLocalStorage() {
-    localStorage.removeItem('currentThread');
-  }
-}

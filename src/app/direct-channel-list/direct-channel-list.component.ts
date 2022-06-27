@@ -29,29 +29,15 @@ export class DirectChannelListComponent implements OnInit {
 
 
   async ngOnInit(): Promise<void> {
-
-    /*     this.Data.users$.subscribe(users => this.users = users);
-     */
     //subscribe directChannels and merge with users to get participant names excluding logged in user
     this.Data.directChannels$.subscribe(data => {
       this.directChannels = data
-        .filter(
+        .filter(//only direct channels of current user
           dc =>
             dc.directChannelMembers.includes(this.Auth.currentUserId)
-        ).map(dc => {
+        ).map(dc => {//get names and avatar for direct channel
           const directChannel = this.Data.setDirectChannelProperties(dc, this.Auth.currentUserId)
           return directChannel;
-          /*           dc = new DirectChannel(dc);
-                    dc.directChannelName = this.users
-                      .filter(user => dc.directChannelMembers.includes(user.uid) && user.uid != this.Auth.currentUserId)
-                      .map(user => user.displayName ? user.displayName : 'Guest')
-                      .sort()
-                      .join(', ');
-                    dc.directChannelAvatar = this.users
-                      .filter(user => dc.directChannelMembers
-                        .find(member => member != this.Auth.currentUserId) == user.uid)[0]
-                      .photoURL;
-                    return dc; */
         })
     })
   }

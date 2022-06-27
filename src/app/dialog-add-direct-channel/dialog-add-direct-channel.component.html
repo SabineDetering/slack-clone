@@ -22,8 +22,14 @@
         <ng-container
           *ngFor="let user of Data.users$ | async | orderBy: 'displayName'"
         >
-          <mat-option *ngIf="user.uid != Auth.currentUserId" [value]="user.uid">
-            {{ user.displayName ? user.displayName : "Guest" }}
+          <mat-option
+            *ngIf="
+              (!Auth.currentUser.currentUser.isAnonymous && !!user.email) ||
+              (Auth.currentUser.currentUser.isAnonymous && user.uid == Auth.currentUserId)
+            "
+            [value]="user.uid"
+          >
+            {{ user.displayName }}
           </mat-option>
         </ng-container>
       </mat-select>
