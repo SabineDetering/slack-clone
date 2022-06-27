@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
 import { CurrentChannel } from 'src/models/current-channel.class';
 import { Message } from 'src/models/message.class';
@@ -18,6 +18,8 @@ import { Editor } from 'tinymce';
 export class InputboxComponent implements OnInit {
   @Input('currentMessageId') currentMessageId!: string;
   @Input('messageType') messageType!: string;
+  @Input('editMessage') editMessage!: Message;  // transferred from app-message
+  @Output() setEditmode = new EventEmitter<string>();  // if finished editing to close inputbox
 
   private newMessage = new Message();
   private newThread = new Thread();
@@ -37,7 +39,16 @@ export class InputboxComponent implements OnInit {
     this.getCurrentThread();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.editMessage) {
+      console.log(this.editMessage);
+      this.handleEditMessage();
+    }
+  }
+
+  handleEditMessage(){
+    this.userInput = this.editMessage.messageText;
+  }
 
   getCurrentThread() {
     this.Data.currentThread$.subscribe(
@@ -49,7 +60,7 @@ export class InputboxComponent implements OnInit {
     this.currentChannel = this.Data.currentChannel$.getValue(); // consider deleting --> not needed?
     if (this.userInput.length > 0 || this.messageFiles.length > 0) {
       if (this.currentMessageId) {
-        this.saveEditedMessage();
+        // this.saveEditedMessage();
       } else {
         this.addNewMessage();
       }
@@ -133,9 +144,6 @@ export class InputboxComponent implements OnInit {
     }
   }
 
-  // TODO
-  saveEditedMessage(image?: string) {}
-
   async addMessageAndThread() {
     const uniqueThreadID = await this.createNewThread();
     await this.addMessageToThread(uniqueThreadID);
@@ -194,6 +202,7 @@ export class InputboxComponent implements OnInit {
   }
 
   clearUserInput() {
+    this.setEditmode.emit('false');  // triggers closing inputbox if it was open in editmode
     this.userInput = '';
     this.messageFiles = [];
     this.newMessage.images = [];
