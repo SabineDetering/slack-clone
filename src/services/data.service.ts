@@ -3,7 +3,7 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
-import { BehaviorSubject, firstValueFrom, map, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, map, Observable, Subscription } from 'rxjs';
 import { Channel } from 'src/models/channel.class';
 import { DirectChannel } from 'src/models/direct-channel.class';
 import { Thread } from 'src/models/thread.class';
@@ -41,6 +41,8 @@ export class DataService {
   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(null);
 
   private users: User[];
+
+  private threadSubscription!: Subscription;
   /*   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(
     new Thread()
   ); */
@@ -98,8 +100,6 @@ export class DataService {
   }
 
   getThreadsFromChannelID(channelID: string): void {
-    console.log('getThreadsFromChannelID ', channelID)
-
     this.firestore
       .collection<Thread>('threads', (ref) =>
         ref.where('channelID', '==', channelID)
@@ -111,7 +111,7 @@ export class DataService {
   }
 
   getMessagesFromThreadID(threadID: string): void {
-    this.firestore
+    this.threadSubscription = this.firestore
       .collection<Message>('messages', (ref) =>
         ref.where('threadID', '==', threadID)
       )
@@ -162,6 +162,10 @@ export class DataService {
         .find(member => member != currentUserID) == user.uid)[0]
       .photoURL;
     return dc;
+  }
+
+  deleteThreadSubscription(){
+    this.threadSubscription.unsubscribe();
   }
 
   addChannel(channel: any) {
