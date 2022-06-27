@@ -74,7 +74,6 @@ export class MessageComponent implements OnInit {
   // always get up to date Displayname from authors ID
   getMessageAuthorName() {
     if (this.message) {
-      console.log(this.message.authorID);
       this.Data.getUserdataFromUserID(this.message.authorID).then((user) => {
         if (user) this.messageAuthorName = user.displayName;
         else this.messageAuthorName = 'user deleted';

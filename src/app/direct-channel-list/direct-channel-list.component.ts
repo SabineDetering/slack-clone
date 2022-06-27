@@ -11,62 +11,66 @@ import { DialogAddDirectChannelComponent } from '../dialog-add-direct-channel/di
 @Component({
   selector: 'app-direct-channel-list',
   templateUrl: './direct-channel-list.component.html',
-  styleUrls: ['./direct-channel-list.component.scss']
+  styleUrls: ['./direct-channel-list.component.scss'],
 })
 export class DirectChannelListComponent implements OnInit {
-
   directChannelsOpen = true;
   @Input() mobile: boolean;
   users: User[];
   directChannels: DirectChannel[];
 
-
   constructor(
     public dialog: MatDialog,
     public Data: DataService,
     public Auth: AuthService
-  ) { }
-
+  ) {}
 
   async ngOnInit(): Promise<void> {
     //subscribe directChannels and merge with users to get participant names excluding logged in user
-    this.Data.directChannels$.subscribe(data => {
+    this.Data.directChannels$.subscribe((data) => {
       this.directChannels = data
-        .filter(//only direct channels of current user
-          dc =>
-            dc.directChannelMembers.includes(this.Auth.currentUserId)
-        ).map(dc => {//get names and avatar for direct channel
-          const directChannel = this.Data.setDirectChannelProperties(dc, this.Auth.currentUserId)
+        .filter(
+          //only direct channels of current user
+          (dc) => dc.directChannelMembers.includes(this.Auth.currentUserId)
+        )
+        .map((dc) => {
+          //get names and avatar for direct channel
+          const directChannel = this.Data.setDirectChannelProperties(
+            dc,
+            this.Auth.currentUserId
+          );
           return directChannel;
-        })
-    })
+        });
+    });
   }
-
 
   toggleDirectChannels(event: Event) {
     event.stopPropagation();
     this.directChannelsOpen = !this.directChannelsOpen;
   }
 
-
   openAddDirectChannelDialog(event: Event) {
     event.stopPropagation();
     this.dialog.open(DialogAddDirectChannelComponent);
   }
 
-
   async setCurrentDirectChannel(directChannel: DirectChannel) {
     this.Data.setCurrentChannelFromDirectChannel(directChannel);
-    this.Data.setCurrentChannelInLocalStorage({ channelID: directChannel.directChannelID, channelType: 'directChannel' });
+    /*     this.Data.setCurrentChannelInLocalStorage({ channelID: directChannel.directChannelID, channelType: 'directChannel' }); */
+    const sessionData = {
+      userID:  this.Auth.currentUserId,
+      channel: {
+        channelID: directChannel.directChannelID,
+        type: 'directChannel',
+      },
+      threadID: null,
+    };
+    this.Data.setUserSessionInLocalStorage(sessionData);
     this.Data.getThreadsFromChannelID(directChannel.directChannelID);
-    this.closeCurrentThread()
+    this.closeCurrentThread();
   }
-
 
   closeCurrentThread() {
-    this.Data.closeCurrentThread(true)
+    this.Data.closeCurrentThread(true);
   }
-
 }
-
-

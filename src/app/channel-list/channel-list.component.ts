@@ -3,6 +3,7 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Channel } from 'src/models/channel.class';
 import { CurrentChannel } from 'src/models/current-channel.class';
+import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 import { DialogChannelComponent } from '../dialog-channel/dialog-channel.component';
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
@@ -17,28 +18,25 @@ export class ChannelListComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
+    private Auth: AuthService,
     public Data: DataService,
     private _snackBar: MatSnackBar
-  ) { }
+  ) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
-  
   toggleChannels(event: Event) {
     event.stopPropagation();
     this.channelsOpen = !this.channelsOpen;
   }
 
-
   openSnackBar(message: string, action?: string) {
     this._snackBar.open(message, action, { duration: 3000 });
   }
 
-
   openChannelDialog(channel?: Channel) {
     this.dialog.open(DialogChannelComponent, { data: channel });
   }
-
 
   openDeleteConfirmation(channel: Channel) {
     const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
@@ -58,11 +56,16 @@ export class ChannelListComponent implements OnInit {
     });
   }
 
-
   setCurrentChannel(channel: Channel) {
     if (channel.channelID != this.Data.getCurrentChannelFromLocalStorage()) {
       this.Data.setCurrentChannelFromChannel(channel);
-      this.Data.setCurrentChannelInLocalStorage({ channelID: channel.channelID, channelType: 'channel' });
+      /* this.Data.setCurrentChannelInLocalStorage({ channelID: channel.channelID, channelType: 'channel' }); */
+      const sessionData = {
+        userID: this.Auth.currentUserId,
+        channel: { channelID: channel.channelID, type: 'channel' },
+        threadID: null,
+      };
+      this.Data.setUserSessionInLocalStorage(sessionData);
       this.Data.getThreadsFromChannelID(channel.channelID);
       this.Data.closeCurrentThread(true);
     }
@@ -70,5 +73,5 @@ export class ChannelListComponent implements OnInit {
 
   // closeCurrentThread() {
   //   this.Data.closeCurrentThread(true);
-  // }  
+  // }
 }

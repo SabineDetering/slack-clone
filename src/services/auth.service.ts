@@ -48,6 +48,7 @@ export class AuthService {
    * @param user  - user to be deleted
    */
   async deleteAnonymousUser(user) {
+    console.log(user)
     //delete user from firebase authentication
     deleteUser(user).then(() => {
       console.log('is deleted from auth', user);
@@ -57,6 +58,7 @@ export class AuthService {
     //delete user from firebase collections
     //TODO: delete corresponding direct channels, threads, messages
     this.Data.deleteUser(user.uid);
+    this.Data.removeUserSessionFromLocalStorage(user.uid)
     this.Data.deleteUserFromDirectChannels(user.uid);
   }
 }

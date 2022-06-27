@@ -316,6 +316,17 @@ export class DataService {
 
   // #############  LOCAL STORAGE  #############
 
+  setUserSessionInLocalStorage(sessionData: any){
+    console.log(sessionData);
+    localStorage.setItem(`session-${sessionData.userID}`, JSON.stringify(sessionData));
+  }
+
+  getUserSessionFromLocalStorage(userID: string){
+    const sessionData = localStorage.getItem(`session-${userID}`)
+    console.log(sessionData);
+    return sessionData ? JSON.parse(sessionData) : null;
+  }
+
   setCurrentChannelInLocalStorage(currentChannel: any) {
     console.log(currentChannel);
     localStorage.setItem('currentChannel', JSON.stringify(currentChannel));
@@ -333,6 +344,10 @@ export class DataService {
   getCurrentThreadFromLocalStorage() {
     const storageThread = localStorage.getItem('currentThread');
     return storageThread ? JSON.parse(storageThread) : null;
+  }
+
+  removeUserSessionFromLocalStorage(userID: string){
+    localStorage.removeItem(`session-${userID}`);
   }
 
   removeCurrentChannelFromLocalStorage() {

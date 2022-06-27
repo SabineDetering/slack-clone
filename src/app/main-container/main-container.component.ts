@@ -29,9 +29,13 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
     this.getCurrentChannel();
     this.getCurrentThreads();
     this.getCurrentThreadFromLocalStorage();
+    console.log('main constructor')
   }
+  
+  ngOnInit(): void {
+    console.log('main ngOnInit')
+    console.log(this.Auth.currentUserId)
 
-  async ngOnInit(): Promise<void> {
 /*     this.users = await firstValueFrom(this.Data.users$);
  */  }
 
@@ -41,7 +45,6 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
   }
 
   getCurrentChannel() {
-    console.log('getcurrentChannel in main component')
     this.Data.currentChannel$.subscribe((channel) => {
       this.currentChannel = channel;
     });
@@ -66,7 +69,6 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
     const channel = await this.Data.getChannelFromChannelID(
       storageChannel.channelID
       );
-      console.log('setCurrentChannelToChannel ', channel)
     if (channel) {
       this.Data.setCurrentChannelFromChannel(channel);
       this.Data.getThreadsFromChannelID(channel.channelID);
@@ -110,7 +112,7 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
   openThread(thread: Thread) {
     console.log('open thread', thread);
     this.Data.currentThread$.next(thread);
-    this.Data.setCurrentThreadInLocalStorage(thread.threadID);
+    /* this.Data.setCurrentThreadInLocalStorage(thread.threadID); */
     this.Data.getMessagesFromThreadID(thread.threadID);
   }
 
