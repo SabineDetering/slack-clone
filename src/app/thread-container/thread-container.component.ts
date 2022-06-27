@@ -34,11 +34,9 @@ export class ThreadContainerComponent implements OnInit {
     });
   }
 
-  // closeThreadContainer() {
-  //   this.Data.currentMessages$.next([]);
-  //   this.Data.currentThread$.next(null);
-  //   this.Data.removeCurrentThreadFromLocalStorage();
-  // }
+  closeThreadContainer(){
+    this.Data.closeCurrentThread(true)
+  }
 
   trackByIndex(index: any) {
     return index;

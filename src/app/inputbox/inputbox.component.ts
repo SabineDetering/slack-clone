@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
 import { CurrentChannel } from 'src/models/current-channel.class';
 import { Message } from 'src/models/message.class';
@@ -18,8 +18,10 @@ import { Editor } from 'tinymce';
 export class InputboxComponent implements OnInit {
   @Input('currentMessageId') currentMessageId!: string;
   @Input('messageType') messageType!: string;
+  @Input('editMessage') editMessage: Message = null; // transferred from app-message
+  @Output() setEditmode = new EventEmitter<string>(); // if finished editing to close inputbox
 
-  private newMessage = new Message();
+  private message = new Message();
   private newThread = new Thread();
 
   public currentChannel!: CurrentChannel;
@@ -37,7 +39,11 @@ export class InputboxComponent implements OnInit {
     this.getCurrentThread();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.editMessage) {
+      this.handleEditMessage();
+    }
+  }
 
   getCurrentThread() {
     this.Data.currentThread$.subscribe(
@@ -45,12 +51,24 @@ export class InputboxComponent implements OnInit {
     );
   }
 
+  getCurrentChannel() {
+    this.currentChannel = this.Data.currentChannel$.getValue(); // consider relocating to onInit() ??
+  }
+
+  handleEditMessage() {
+    this.message = new Message(this.editMessage);
+    this.userInput = this.message.messageText;
+    console.log('handleEditMessage:', this.editMessage);
+  }
+
   handleSendingMessage(): void {
-    this.currentChannel = this.Data.currentChannel$.getValue(); // consider deleting --> not needed?
+    this.getCurrentChannel();
     if (this.userInput.length > 0 || this.messageFiles.length > 0) {
-      if (this.currentMessageId) {
+      if (this.editMessage) {
+        console.log('add EDITED message', this.editMessage);
         this.saveEditedMessage();
       } else {
+        console.log('add NEW message');
         this.addNewMessage();
       }
     } else {
@@ -75,17 +93,18 @@ export class InputboxComponent implements OnInit {
 
   deleteFile(i: number) {
     let currFile = this.messageFiles[i];
-    if (currFile.downloadURL) {
-      this.storage.storage.refFromURL(currFile.downloadUrl).delete();
+    if (currFile.filePathInStorage) {
+      const storageRef = this.storage.ref(currFile.filePathInStorage);
+      storageRef.delete();
     }
     this.messageFiles.splice(i, 1);
   }
 
-  // upload each file individually to Firebase STORAGE (message not send yet)
+  // upload each file individually to Firebase STORAGE (not in DB yet!)
   async saveFileToStorage(file: File) {
     this.setLoadingStatus('true', file);
 
-    const filePathInStorage =
+    let filePathInStorage =
       'chatimages/' + (this.Auth.currentUserId + '_' + file.name);
     const storageRef = this.storage.ref(filePathInStorage);
     const uploadTask = this.storage.upload(filePathInStorage, file);
@@ -97,10 +116,11 @@ export class InputboxComponent implements OnInit {
           let fileDownloadURL = await firstValueFrom(
             storageRef.getDownloadURL()
           );
-          // CAVE: user can still delete file before sending message
-          // therefore, URL is not saved in newMessage object but rather temporarily in each file obj
-          let currentFile = this.getFileFromMessageFiles(file);
+          // Note: user can still delete file before sending message
+          // URL is stored temporarily in each file obj, until commiting to send
+          let currentFile = this.getFileFromTempArray(file);
           currentFile.downloadURL = fileDownloadURL;
+          currentFile.filePathInStorage = filePathInStorage; // save, if file is deleted
         })
       )
       .subscribe((data) => {
@@ -110,13 +130,7 @@ export class InputboxComponent implements OnInit {
       });
   }
 
-  setLoadingStatus(status: string, file: File) {
-    const fileIndex = this.messageFiles.indexOf(file);
-    const currentfile = this.messageFiles[fileIndex];
-    currentfile.isLoading = status;
-  }
-
-  getFileFromMessageFiles(file: File) {
+  getFileFromTempArray(file: File) {
     let indexOfFile = this.messageFiles.indexOf(file);
     let fileObject = this.messageFiles[indexOfFile];
     return fileObject;
@@ -130,9 +144,6 @@ export class InputboxComponent implements OnInit {
       this.addMessageAndThread();
     }
   }
-
-  // TODO
-  saveEditedMessage(image?: string) {}
 
   async addMessageAndThread() {
     const uniqueThreadID = await this.createNewThread();
@@ -149,22 +160,34 @@ export class InputboxComponent implements OnInit {
     return uniqueThreadID;
   }
 
+  async saveEditedMessage() {
+    this.message.messageText = this.userInput;
+    await this.Data.updateMessage(this.message.toJSON());
+    this.clearData();
+  }
+
   async addMessageToThread(threadID: string) {
     const currentTime = new Date().getTime();
     let uniqueMessageID = this.getUniqueID(currentTime);
+    this.message.threadID = threadID;
+    this.message.channelID = this.currentChannel.id;
+    this.message.messageID = uniqueMessageID;
+    this.message.authorID = this.Auth.currentUserId;
+    this.message.timestamp = currentTime;
+    this.addImagesToMessage();
+    this.message.messageText = this.userInput;
+    console.log('addMessageToThread, message ready to save:', this.message);
 
-    this.newMessage.threadID = threadID;
-    this.newMessage.messageID = uniqueMessageID;
-    this.newMessage.authorID = this.Auth.currentUserId;
-    this.newMessage.timestamp = currentTime;
-    this.newMessage.messageText = this.userInput;
+    await this.Data.saveMessage(this.message.toJSON());
+    this.clearData();
+  }
+
+  addImagesToMessage() {
     // transfer temporary saved downloadURL to messageFiles
+    this.message.images = [];
     this.messageFiles.forEach((file) => {
-      this.newMessage.images.push(file.downloadURL);
+      this.message.images.push(file.downloadURL);
     });
-
-    await this.Data.saveMessage(this.newMessage.toJSON());
-    this.clearUserInput();
   }
 
   getUniqueID(currentTime: number) {
@@ -176,19 +199,28 @@ export class InputboxComponent implements OnInit {
     );
   }
 
+  setFirstMessageInThread() {
+    this.newThread.firstMessageID = this.message.messageID;
+    this.Data.saveThread(this.newThread.toJSON());
+  }
+
+  clearData() {
+    this.setEditmode.emit('false'); // triggers closing inputbox if it was open in editmode
+    this.editMessage = null;
+    this.userInput = '';
+    this.messageFiles = [];
+    this.message.images = [];
+  }
+
   updateAnswerAmountInThread() {
     this.currentThread.answerAmount++;
     this.Data.saveThread(this.currentThread.toJSON());
     this.Data.currentThread$.next(this.currentThread);
   }
 
-  setFirstMessageInThread() {
-    this.newThread.firstMessageID = this.newMessage.messageID;
-    this.Data.saveThread(this.newThread.toJSON());
-  }
-
-  clearUserInput() {
-    this.userInput = '';
-    this.messageFiles = [];
+  setLoadingStatus(status: string, file: File) {
+    const fileIndex = this.messageFiles.indexOf(file);
+    const currentfile = this.messageFiles[fileIndex];
+    currentfile.isLoading = status;
   }
 }

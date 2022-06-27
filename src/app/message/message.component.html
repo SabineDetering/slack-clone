@@ -1,5 +1,4 @@
-<img *ngIf="!!messageAuthorAvatar; else loadingSpinner" class="img-avatar" src="{{messageAuthorAvatar}}"
-    alt="author">
+<img *ngIf="!!messageAuthorAvatar; else loadingSpinner" class="img-avatar" src="{{messageAuthorAvatar}}" alt="author">
 <ng-template #loadingSpinner>
     <div class="loadingSpinnerContainer">
         <span class="loadingSpinner-dot">.</span>
@@ -13,15 +12,18 @@
         <span class="author">{{ messageAuthorName }}</span>
         <span class="timestamp">{{ (date | date:'medium') || 'unknown date'}}</span>
     </div>
-    <p [innerHTML]="message.messageText"></p>
+    <div *ngIf="!inEditmode" [innerHTML]="message.messageText" (click)="setEditmode('true')"></div>
+    <!-- Inpubox: 
+        @Input() Variable tranfsferring current Message from message-comp to inputbox
+        @Output() Variable sends back Event,when edited message is saved to trigger hide inputbox -->
+    <app-inputbox *ngIf="inEditmode && !isDeleted" (setEditmode)="setEditmode($event)" [editMessage]="message"></app-inputbox>
     <img #thumbnail class="img-thumbnail" (click)="fullsizeOpen=true; fullsize.src = image;"
         *ngFor="let image of message.images; index as i" src="{{image}}">
-    <!-- consider emojis here-->
 </div>
 
-<div #fullsizeContainer [class.d-none]="!fullsizeOpen"  class="fullsize-container  d-none">
+<div #fullsizeContainer [class.d-none]="!fullsizeOpen" class="fullsize-container  d-none">
     <img class="img-fullsize" src="" alt="fullsize" #fullsize>
     <div class="icon" (click)="fullsizeOpen = false">
-        <mat-icon  class="close-icon">close</mat-icon>
+        <mat-icon class="close-icon">close</mat-icon>
     </div>
 </div>

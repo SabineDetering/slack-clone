@@ -32,11 +32,23 @@ export class AppComponent {
     this.mobileQuery = media.matchMedia('(max-width: 870px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
-    this.Data.currentMessages$.subscribe((msg) => (this.currentMessages = msg));
+    this.Data.currentMessages$.subscribe((msg) => {
+      this.currentMessages = msg;
+      console.log(this.currentMessages);
+    });
   }
- 
 
   openAvatarDialog() {
     const dialogRef = this.dialog.open(DialogChangeAvatarComponent);
+  }
+
+  logout() {
+    this.closeCurrentThread();
+    this.Auth.logout();
+  }
+
+  closeCurrentThread() {
+    this.Data.closeCurrentThread(false)
+    this.Data.deleteThreadSubscription();
   }
 }

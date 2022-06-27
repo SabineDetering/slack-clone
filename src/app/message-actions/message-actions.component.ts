@@ -37,13 +37,13 @@ export class MessageActionsComponent implements OnInit {
     this.Data.getMessagesFromThreadID(this.thread.threadID);
   }
 
-  deleteMessage() {
+  async deleteMessage() {
     console.log(this.thread)
     this.Data.deleteMessage(this.message.messageID);
     if (this.isLastMessageInThread()) {
       this.deleteThread();
     } else {
-      this.reduceAnswersInThread();
+      await this.reduceAnswersInThread();
       if (this.thread.firstMessageID == this.message.messageID) {
         this.deleteFirstMessageInThread();
       }

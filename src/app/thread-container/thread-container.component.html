@@ -9,6 +9,7 @@
   <!-- {{ currentChannel.directChannelMembers ? currentChannel.directChannelMembers : currentChannel.channelName }} -->
 </div>
 <div class="messagesContainer">
+  <app-message *ngIf="currentThread.firstMessageID == 'deleted'" [thread]="currentThread"></app-message>
   <div
     class="message"
     *ngFor="let message of Data.currentMessages$ | async; index as i; trackBy:trackByIndex"
