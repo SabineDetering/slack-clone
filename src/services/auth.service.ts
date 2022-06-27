@@ -24,11 +24,6 @@ export class AuthService {
         this.af.onAuthStateChanged(user => {
           if (user) {//login
             this.user = user;
-            if (user.isAnonymous) {
-              this.setStandardAvatarAndGuestName(user.uid, 'guest');
-            } else if (this.currentUser.photoURL) {
-              this.setStandardAvatarAndGuestName(user.uid, 'avatar');
-            }
             this.router.navigate(['/channel']);
           } else { //logout
             console.log('logged out user', this.user);
@@ -43,20 +38,6 @@ export class AuthService {
       }
       console.log('currentUser', this.currentUser);
     });
-  }
-
-  setStandardAvatarAndGuestName(id: string, type: string) {
-    if (type == 'avatar') {// registered user without avatar
-      this.updateProperties({ photoURL: 'assets/img/avatar-neutral.png' });
-      this.Data.updateUserProperties(id, {
-        photoURL: 'assets/img/avatar-neutral.png'
-      });
-    } else {//anonymous user
-      this.updateProperties({ displayName: 'Guest', photoURL: 'assets/img/avatar-neutral.png' });
-      this.Data.updateUserProperties(id, {
-        displayName: 'Guest', photoURL: 'assets/img/avatar-neutral.png'
-      });
-    }
   }
 
   
