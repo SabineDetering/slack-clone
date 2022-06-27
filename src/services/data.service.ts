@@ -230,6 +230,15 @@ export class DataService {
     });
   }
 
+  updateMessage(message: any) {
+    console.log('updateMessage', message);
+    return new Promise((resolve, reject) => {
+      this.messageCollection.doc(message.messageID).update(message);
+      resolve('edited message added to DB');
+      (err: any) => reject(err);
+    });
+  }
+
   updateUserProperties(id: string, json: any) {
     this.userCollection.doc(id).update(json);
   }

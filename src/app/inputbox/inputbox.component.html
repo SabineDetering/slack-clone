@@ -10,10 +10,13 @@
     </div>
   </div>
 
-  <mat-icon class="icon icon-ImageUpload" aria-hidden="false" aria-label="insert_photo">
+
+  <mat-icon *ngIf="!editMessage" class="icon icon-ImageUpload" aria-hidden="false" aria-label="insert_photo">
     insert_photo
     <input type="file" multiple (change)="getUploadFile($event)" accept="*.jpg.png" />
   </mat-icon>
+
+  <mat-icon *ngIf="editMessage" class="icon" (click)="clearData()" >cancel</mat-icon>
 
   <mat-icon class="icon" (click)="handleSendingMessage()" aria-hidden="false" aria-label="send-icon">send</mat-icon>
 </div>

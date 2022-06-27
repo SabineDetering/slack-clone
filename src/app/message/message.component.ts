@@ -18,6 +18,7 @@ export class MessageComponent implements OnInit {
   messageAuthorAvatar: string;
   fullsizeOpen: boolean = false;
 
+  public isDeleted: boolean = false;
   public inEditmode: boolean = false;
   public userInput: any = ''; // ngModel Input
 
@@ -34,7 +35,7 @@ export class MessageComponent implements OnInit {
   }
 
   setEditmode(isEditing: string) {
-    if (isEditing == 'true') {
+    if (isEditing == 'true' && !this.isDeleted) {
       this.inEditmode = true;
     } else {
       this.inEditmode = false;
@@ -71,6 +72,7 @@ export class MessageComponent implements OnInit {
     this.message = new Message(); // generating empty message for displaying mainContainer although message deleted
     this.message.messageText = 'This message has been deleted';
     this.messageAuthorName = 'unknown author';
+    this.isDeleted = true;  // disables Editing this messge
     this.getAuthorAvatar('isDeleted');
   }
 
