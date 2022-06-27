@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
         }
         this.user = null;
         this.router.navigate(['/login']);
-        // this.Data.closeThreadContainer();
+        this.closeThreadContainer();
       }
     })
   }
@@ -68,4 +68,12 @@ export class LoginComponent implements OnInit {
     console.error(event);
   }
 
+  
+/**
+ * 
+ */
+  closeThreadContainer() {
+    this.Data.closeCurrentThread(false);
+    this.Data.deleteThreadSubscription();
+  }
 }

@@ -10,9 +10,8 @@
     <ngx-auth-firebaseui-avatar
       [canLogout]="true"
       [canViewAccount]="true"
-      [canDeleteAccount]="false"
-      [canEditAccount]="true"
-      (onSignOut)="closeCurrentThread()"
+      [canDeleteAccount]="true"
+      [canEditAccount]="true"     
     ></ngx-auth-firebaseui-avatar>
     <button *ngIf="Auth.authenticated" mat-icon-button class="edit-btn" matTooltip="change avatar"  (click)="openAvatarDialog()">
       <mat-icon class="edit-icon">edit</mat-icon>

@@ -38,14 +38,14 @@ export class AppComponent {
     });
   }
 
-  
+
   openAvatarDialog() {
     const dialogRef = this.dialog.open(DialogChangeAvatarComponent);
   }
 
 
-  closeCurrentThread() {
-    this.Data.closeCurrentThread(false);
-    this.Data.deleteThreadSubscription();
-  }
+  // closeCurrentThread() {
+  //   this.Data.closeCurrentThread(false);
+  //   this.Data.deleteThreadSubscription();
+  // }
 }

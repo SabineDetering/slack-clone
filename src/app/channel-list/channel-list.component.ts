@@ -19,22 +19,26 @@ export class ChannelListComponent implements OnInit {
     public dialog: MatDialog,
     public Data: DataService,
     private _snackBar: MatSnackBar
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
+  
   toggleChannels(event: Event) {
     event.stopPropagation();
     this.channelsOpen = !this.channelsOpen;
   }
 
+
   openSnackBar(message: string, action?: string) {
     this._snackBar.open(message, action, { duration: 3000 });
   }
 
+
   openChannelDialog(channel?: Channel) {
     this.dialog.open(DialogChannelComponent, { data: channel });
   }
+
 
   openDeleteConfirmation(channel: Channel) {
     const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
@@ -54,16 +58,17 @@ export class ChannelListComponent implements OnInit {
     });
   }
 
+
   setCurrentChannel(channel: Channel) {
-    if(channel.channelID != this.Data.getCurrentChannelFromLocalStorage()){
-    this.Data.setCurrentChannelFromChannel(channel);
-    this.Data.setCurrentChannelInLocalStorage({channelID: channel.channelID, channelType: 'channel'});
-    this.Data.getThreadsFromChannelID(channel.channelID);
-    this.closeCurrentThread()
+    if (channel.channelID != this.Data.getCurrentChannelFromLocalStorage()) {
+      this.Data.setCurrentChannelFromChannel(channel);
+      this.Data.setCurrentChannelInLocalStorage({ channelID: channel.channelID, channelType: 'channel' });
+      this.Data.getThreadsFromChannelID(channel.channelID);
+      this.Data.closeCurrentThread(true);
     }
   }
 
-  closeCurrentThread(){
-    this.Data.closeCurrentThread(true)
-  }  
+  // closeCurrentThread() {
+  //   this.Data.closeCurrentThread(true);
+  // }  
 }

@@ -168,7 +168,7 @@ export class DataService {
           dc.directChannelMembers.includes(user.uid) &&
           user.uid != currentUserID
       )
-      .map((user) => (user.displayName ? user.displayName : 'Guest'))
+      .map(user => user.displayName )
       .sort()
       .join(', ');
     dc.directChannelAvatar = this.users.filter(
@@ -184,11 +184,7 @@ export class DataService {
     this.currentThread$.next(null);
     if (removeFromLocalStorage) this.removeCurrentThreadFromLocalStorage();
   }
-
-  deleteThreadSubscription() {
-    this.threadSubscription.unsubscribe();
-  }
-
+ 
   addChannel(channel: any) {
     this.channelCollection.add(channel);
   }
@@ -283,16 +279,12 @@ export class DataService {
     this.threadsCollection.doc(threadID).delete();
   }
 
-  deleteUser(id: string) {
-    this.userCollection.doc(id).delete();
+  deleteThreadSubscription() {
+    this.threadSubscription.unsubscribe();
   }
 
-
-  closeThreadContainer() {
-    this.currentMessages$.next([]);
-    console.log('currentMessages', this.currentMessages$);
-    this.currentThread$.next(null);
-    this.removeCurrentThreadFromLocalStorage();
+  deleteUser(id: string) {
+    this.userCollection.doc(id).delete();
   }
 
   // #############  LOCAL STORAGE  #############

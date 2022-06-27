@@ -35,7 +35,7 @@ export class ThreadContainerComponent implements OnInit {
   }
 
   closeThreadContainer(){
-    this.Data.closeCurrentThread(true)
+    this.Data.closeCurrentThread(true);
   }
 
   trackByIndex(index: any) {

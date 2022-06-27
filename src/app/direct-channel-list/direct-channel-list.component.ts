@@ -30,25 +30,28 @@ export class DirectChannelListComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
 
-/*     this.Data.users$.subscribe(users => this.users = users);
- */
+    /*     this.Data.users$.subscribe(users => this.users = users);
+     */
     //subscribe directChannels and merge with users to get participant names excluding logged in user
     this.Data.directChannels$.subscribe(data => {
       this.directChannels = data
-        .map(dc => {
+        .filter(
+          dc =>
+            dc.directChannelMembers.includes(this.Auth.currentUserId)
+        ).map(dc => {
           const directChannel = this.Data.setDirectChannelProperties(dc, this.Auth.currentUserId)
           return directChannel;
-/*           dc = new DirectChannel(dc);
-          dc.directChannelName = this.users
-            .filter(user => dc.directChannelMembers.includes(user.uid) && user.uid != this.Auth.currentUserId)
-            .map(user => user.displayName ? user.displayName : 'Guest')
-            .sort()
-            .join(', ');
-          dc.directChannelAvatar = this.users
-            .filter(user => dc.directChannelMembers
-              .find(member => member != this.Auth.currentUserId) == user.uid)[0]
-            .photoURL;
-          return dc; */
+          /*           dc = new DirectChannel(dc);
+                    dc.directChannelName = this.users
+                      .filter(user => dc.directChannelMembers.includes(user.uid) && user.uid != this.Auth.currentUserId)
+                      .map(user => user.displayName ? user.displayName : 'Guest')
+                      .sort()
+                      .join(', ');
+                    dc.directChannelAvatar = this.users
+                      .filter(user => dc.directChannelMembers
+                        .find(member => member != this.Auth.currentUserId) == user.uid)[0]
+                      .photoURL;
+                    return dc; */
         })
     })
   }
@@ -68,15 +71,15 @@ export class DirectChannelListComponent implements OnInit {
 
   async setCurrentDirectChannel(directChannel: DirectChannel) {
     this.Data.setCurrentChannelFromDirectChannel(directChannel);
-    this.Data.setCurrentChannelInLocalStorage({channelID: directChannel.directChannelID, channelType: 'directChannel'});
+    this.Data.setCurrentChannelInLocalStorage({ channelID: directChannel.directChannelID, channelType: 'directChannel' });
     this.Data.getThreadsFromChannelID(directChannel.directChannelID);
     this.closeCurrentThread()
   }
 
 
-  closeCurrentThread(){
+  closeCurrentThread() {
     this.Data.closeCurrentThread(true)
-  }  
+  }
 
 }
 
