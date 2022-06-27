@@ -23,29 +23,6 @@ export class LoginComponent implements OnInit {
   getUserChange(event: any) {
     console.log('login event', event);
     console.log('login event', event.user.uid);
-/*     this.Auth.af.onAuthStateChanged(user => {
-      console.log('getUserChange')
-      console.log(this.Auth.currentUserId)
-      console.log(this.user)
-      console.log(user)
-      if (user) {//login
-        this.user = user;
-        if (user.isAnonymous) {
-          this.setStandardAvatarAndGuestName(user.uid, 'guest');
-        } else if (!event.user.photoURL) {
-          this.setStandardAvatarAndGuestName(user.uid, 'avatar');
-        }
-        this.router.navigate(['/channel']);
-      } else { //logout
-        console.log('logged out user', this.user);
-        if (this.user.isAnonymous) {
-          this.Auth.deleteAnonymousUser(this.user);
-        }
-        this.user = null;
-        this.router.navigate(['/login']);
-        this.closeThreadContainer();
-      }
-    }) */
   }
 
 

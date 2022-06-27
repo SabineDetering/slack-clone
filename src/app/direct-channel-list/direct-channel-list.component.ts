@@ -55,9 +55,9 @@ export class DirectChannelListComponent implements OnInit {
   }
 
   async setCurrentDirectChannel(directChannel: DirectChannel) {
+    // set new channel only if it's not the same as the last opened channel
     if (!this.sameAsStorageChannel(directChannel.directChannelID)) {
       this.Data.setCurrentChannelFromDirectChannel(directChannel);
-      /*     this.Data.setCurrentChannelInLocalStorage({ channelID: directChannel.directChannelID, channelType: 'directChannel' }); */
       this.Data.setUserSessionInLocalStorage(
         this.Auth.currentUserId,
         directChannel.directChannelID,
@@ -70,11 +70,13 @@ export class DirectChannelListComponent implements OnInit {
   }
 
   sameAsStorageChannel(directChannelID: string) {
-    return (
-      directChannelID ==
-      this.Data.getUserSessionFromLocalStorage(this.Auth.currentUserId).channel
-        .channelID
-    );
+    if (this.Data.getUserSessionFromLocalStorage(this.Auth.currentUserId))
+      return (
+        directChannelID ==
+        this.Data.getUserSessionFromLocalStorage(this.Auth.currentUserId)
+          .channel.channelID
+      );
+    else return false;
   }
 
   closeCurrentThread() {

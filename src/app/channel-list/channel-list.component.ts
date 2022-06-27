@@ -50,7 +50,6 @@ export class ChannelListComponent implements OnInit {
     confirmationRef.afterClosed().subscribe((result) => {
       if (result == 'confirm') {
         this.Data.deleteChannel(channel.channelID);
-        //TODO: delete all Threads and messages of that channel
         this.openSnackBar('Channel has been deleted.');
       }
     });
@@ -59,7 +58,6 @@ export class ChannelListComponent implements OnInit {
   setCurrentChannel(channel: Channel) {
     if (!this.sameAsStorageChannel(channel.channelID)) {
       this.Data.setCurrentChannelFromChannel(channel);
-      /* this.Data.setCurrentChannelInLocalStorage({ channelID: channel.channelID, channelType: 'channel' }); */
       this.Data.setUserSessionInLocalStorage(
         this.Auth.currentUserId,
         channel.channelID,
@@ -72,10 +70,12 @@ export class ChannelListComponent implements OnInit {
   }
 
   sameAsStorageChannel(channelID: string) {
-    return (
-      channelID ==
-      this.Data.getUserSessionFromLocalStorage(this.Auth.currentUserId).channel
-        .channelID
-    );
+    if (this.Data.getUserSessionFromLocalStorage(this.Auth.currentUserId))
+      return (
+        channelID ==
+        this.Data.getUserSessionFromLocalStorage(this.Auth.currentUserId)
+          .channel.channelID
+      );
+    else return false;
   }
 }

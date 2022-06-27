@@ -28,12 +28,9 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
     this.getCurrentChannel();
     this.getCurrentThreads();
     this.getLastUserSessionFromLocalStorage();
-    /* this.getCurrentThreadFromLocalStorage(); */
   }
 
   ngOnInit(): void {
-    /*     this.users = await firstValueFrom(this.Data.users$);
-     */
   }
 
   ngAfterViewChecked() {
@@ -45,7 +42,6 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
     this.Data.currentChannel$.subscribe((channel) => {
       this.currentChannel = channel;
     });
-    /* this.getCurrentChannelFromLocalStorage(); */
   }
 
   getCurrentThreads() {
@@ -54,16 +50,15 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
     });
   }
 
+    // checks if a current channel and thread are stored in local storage for the current user and if so, sets them in Data.currentChannel$ and Data.currentThread$
   async getLastUserSessionFromLocalStorage() {
     const storageSession = await this.Data.getUserSessionFromLocalStorage(
       this.Auth.currentUserId
     );
-    console.log(storageSession);
     if (!storageSession) this.showDefaultChannel();
     else {
-      const currentChannelIsSet = await this.setCurrentChannel(storageSession);
-      if (currentChannelIsSet && !!storageSession.threadID) {
-        console.log('set Thread');
+      await this.setCurrentChannel(storageSession);
+      if (!!storageSession.threadID) {
         this.setCurrentThread(storageSession);
       }
     }
@@ -76,28 +71,12 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
       // is of type 'directChannel'
       else
         this.setCurrentChannelToDirectChannel(storageSession.channel.channelID);
-      resolve(true);
+      resolve('current channel has been restored');
       (err: any) => reject(err);
     });
   }
 
-  // checks if a current channel is stored in local storage and if so, sets it in Data.currentChannel$
-  /*   async getCurrentChannelFromLocalStorage() {
-    const storageChannel = await this.Data.getCurrentChannelFromLocalStorage();
-    console.log(storageChannel);
-    if (!storageChannel) return;
-    else {
-      if (storageChannel.channelType == 'channel') {
-        this.setCurrentChannelToChannel(storageChannel);
-      } else {
-        this.setCurrentChannelToDirectChannel(storageChannel);
-      }
-    }
-  } */
-
   async setCurrentChannelToChannel(channelID: any) {
-    console.log('setCurrentChannelToChannel');
-    console.log(channelID);
     const channel = await this.Data.getChannelFromChannelID(channelID);
     if (channel) {
       this.Data.setCurrentChannelFromChannel(channel);
@@ -124,13 +103,10 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
   }
 
   showDefaultChannel() {
-    console.log('show default channel');
     const showDefaultChannelSubscription = this.Data.channels$.subscribe(
       (channels) => {
-        console.log(showDefaultChannelSubscription);
         this.setCurrentChannelToChannel(channels[0].channelID);
         showDefaultChannelSubscription.unsubscribe();
-        console.log(showDefaultChannelSubscription);
       }
     );
   }
@@ -151,19 +127,6 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  /*   async getCurrentThreadFromLocalStorage() {
-    const storageThreadID = await this.Data.getCurrentThreadFromLocalStorage();
-    if (!storageThreadID) return;
-    else {
-      const thread = await this.Data.getThreadFromThreadID(storageThreadID);
-      if (thread) {
-        this.openThread(thread);
-      } else {
-        this.Data.removeCurrentThreadFromLocalStorage();
-      }
-    }
-  } */
-
   openThread(thread: Thread) {
     console.log('open thread', thread);
     this.Data.currentThread$.next(thread);
@@ -173,7 +136,6 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
       this.currentChannel.type,
       thread.threadID
     );
-    /* this.Data.setCurrentThreadInLocalStorage(thread.threadID); */
     this.Data.getMessagesFromThreadID(thread.threadID);
   }
 

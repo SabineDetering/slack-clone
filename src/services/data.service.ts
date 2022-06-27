@@ -329,7 +329,6 @@ export class DataService {
       channel: { channelID: channelID, type: channelType },
       threadID: threadID,
     };
-    console.log(sessionData);
     localStorage.setItem(`session-${userID}`, JSON.stringify(sessionData));
   }
 
@@ -339,36 +338,7 @@ export class DataService {
     return sessionData ? JSON.parse(sessionData) : null;
   }
 
-/*   setCurrentChannelInLocalStorage(currentChannel: any) {
-    console.log(currentChannel);
-    localStorage.setItem('currentChannel', JSON.stringify(currentChannel));
-  }
-
-  getCurrentChannelFromLocalStorage() {
-    const storageChannel = localStorage.getItem('currentChannel');
-    return storageChannel ? JSON.parse(storageChannel) : null;
-  }
-
-  setCurrentThreadInLocalStorage(currentThreadID: string) {
-    localStorage.setItem('currentThread', JSON.stringify(currentThreadID));
-  }
-
-  getCurrentThreadFromLocalStorage() {
-    const storageThread = localStorage.getItem('currentThread');
-    return storageThread ? JSON.parse(storageThread) : null;
-  } */
-
   removeUserSessionFromLocalStorage(userID: string) {
     localStorage.removeItem(`session-${userID}`);
   }
-
-/*   removeCurrentChannelFromLocalStorage() {
-    localStorage.removeItem('currentChannel');
-  }
-
-  removeCurrentThreadFromLocalStorage() {
-    localStorage.removeItem('currentThread');
-  }
-} */
-
 }
