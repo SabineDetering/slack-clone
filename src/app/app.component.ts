@@ -48,8 +48,7 @@ export class AppComponent {
   }
 
   closeCurrentThread() {
-    this.Data.currentMessages$.next([]);
-    this.Data.currentThread$.next(null);
+    this.Data.closeCurrentThread(false)
     this.Data.deleteThreadSubscription();
   }
 }

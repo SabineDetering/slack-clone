@@ -3,7 +3,13 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
-import { BehaviorSubject, firstValueFrom, map, Observable, Subscription } from 'rxjs';
+import {
+  BehaviorSubject,
+  firstValueFrom,
+  map,
+  Observable,
+  Subscription,
+} from 'rxjs';
 import { Channel } from 'src/models/channel.class';
 import { DirectChannel } from 'src/models/direct-channel.class';
 import { Thread } from 'src/models/thread.class';
@@ -68,22 +74,26 @@ export class DataService {
     this.directChannels$ = this.directChannelCollection.valueChanges({
       idField: 'directChannelID',
     });
-    this.subscribeToUsers()
+    this.subscribeToUsers();
   }
 
-  subscribeToUsers(){
-    this.users$.subscribe(users => this.users = users);
+  subscribeToUsers() {
+    this.users$.subscribe((users) => (this.users = users));
   }
 
   async getChannelFromChannelID(channelID: string) {
     return (await firstValueFrom(
-      this.channelCollection.doc(channelID).valueChanges({ idField: 'channelID' })
+      this.channelCollection
+        .doc(channelID)
+        .valueChanges({ idField: 'channelID' })
     )) as Channel;
   }
 
   async getChannelFromDirectChannelID(channelID: string) {
     return (await firstValueFrom(
-      this.directChannelCollection.doc(channelID).valueChanges({ idField: 'directChannelID' })
+      this.directChannelCollection
+        .doc(channelID)
+        .valueChanges({ idField: 'directChannelID' })
     )) as DirectChannel;
   }
 
@@ -150,21 +160,32 @@ export class DataService {
     );
   }
 
-  setDirectChannelProperties(dc: DirectChannel, currentUserID: string){
+  setDirectChannelProperties(dc: DirectChannel, currentUserID: string) {
     dc = new DirectChannel(dc);
     dc.directChannelName = this.users
-      .filter(user => dc.directChannelMembers.includes(user.uid) && user.uid != currentUserID)
-      .map(user => user.displayName ? user.displayName : 'Guest')
+      .filter(
+        (user) =>
+          dc.directChannelMembers.includes(user.uid) &&
+          user.uid != currentUserID
+      )
+      .map((user) => (user.displayName ? user.displayName : 'Guest'))
       .sort()
       .join(', ');
-    dc.directChannelAvatar = this.users
-      .filter(user => dc.directChannelMembers
-        .find(member => member != currentUserID) == user.uid)[0]
-      .photoURL;
+    dc.directChannelAvatar = this.users.filter(
+      (user) =>
+        dc.directChannelMembers.find((member) => member != currentUserID) ==
+        user.uid
+    )[0].photoURL;
     return dc;
   }
 
-  deleteThreadSubscription(){
+  closeCurrentThread(removeFromLocalStorage: boolean) {
+    this.currentMessages$.next([]);
+    this.currentThread$.next(null);
+    if (removeFromLocalStorage) this.removeCurrentThreadFromLocalStorage();
+  }
+
+  deleteThreadSubscription() {
     this.threadSubscription.unsubscribe();
   }
 
@@ -174,10 +195,6 @@ export class DataService {
 
   saveEditedChannel(channel: any) {
     this.channelCollection.doc(channel.channelID).set(channel);
-  }
-
-  deleteChannel(channelID: string) {
-    this.channelCollection.doc(channelID).delete();
   }
 
   saveChannel(channel: any) {
@@ -213,24 +230,52 @@ export class DataService {
     });
   }
 
-  deleteMessage(messageID: string) {
-    console.log('deleting message');
-    this.messageCollection.doc(messageID).delete();
-  }
-
-  deleteThread(threadID: string) {
-    console.log('deleting thread');
-    this.threadsCollection.doc(threadID).delete();
-  }
-
-
   updateUserProperties(id: string, json: any) {
     this.userCollection.doc(id).update(json);
   }
 
+  // ############  DELETE FUNCTIONS #############
+
+  deleteChannel(channelID: string) {
+    this.deleteThreadsInChannel(channelID);
+    this.deleteMessagesInChannel(channelID);
+    this.channelCollection.doc(channelID).delete();
+  }
+
+  deleteThreadsInChannel(channelID: string) {
+    this.firestore
+      .collection<Thread>('threads', (ref) =>
+        ref.where('channelID', '==', channelID)
+      )
+      .valueChanges()
+      .subscribe((threads) => {
+        threads.forEach((thread) => this.deleteThread(thread.threadID));
+      });
+  }
+
+  deleteMessagesInChannel(channelID: string) {
+    this.firestore
+      .collection<Message>('messages', (ref) =>
+        ref.where('channelID', '==', channelID)
+      )
+      .valueChanges()
+      .subscribe((messages) => {
+        messages.forEach((message) => this.deleteMessage(message.messageID));
+      });
+  }
+
+  deleteMessage(messageID: string) {
+    console.log('deleting message ', messageID);
+    this.messageCollection.doc(messageID).delete();
+  }
+
+  deleteThread(threadID: string) {
+    console.log('deleting thread ', threadID);
+    this.threadsCollection.doc(threadID).delete();
+  }
 
   deleteUser(id: string) {
-    this.userCollection.doc(id).delete();    
+    this.userCollection.doc(id).delete();
   }
 
   // #############  LOCAL STORAGE  #############

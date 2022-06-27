@@ -75,9 +75,7 @@ export class DirectChannelListComponent implements OnInit {
 
 
   closeCurrentThread(){
-    this.Data.removeCurrentThreadFromLocalStorage();
-    this.Data.currentThread$.next(null)
-    this.Data.currentMessages$.next([])
+    this.Data.closeCurrentThread(true)
   }  
 
 }

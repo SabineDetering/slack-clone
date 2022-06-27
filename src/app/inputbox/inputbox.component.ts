@@ -155,6 +155,7 @@ export class InputboxComponent implements OnInit {
     const currentTime = new Date().getTime();
     let uniqueMessageID = this.getUniqueID(currentTime);
     this.newMessage.threadID = threadID;
+    this.newMessage.channelID = this.currentChannel.id;
     this.newMessage.messageID = uniqueMessageID;
     this.newMessage.authorID = this.Auth.currentUserId;
     this.newMessage.timestamp = currentTime;
