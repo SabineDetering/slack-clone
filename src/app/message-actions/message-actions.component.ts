@@ -4,6 +4,7 @@ import { Channel } from 'src/models/channel.class';
 import { CurrentChannel } from 'src/models/current-channel.class';
 import { Message } from 'src/models/message.class';
 import { Thread } from 'src/models/thread.class';
+import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 import { EditorService } from 'src/services/editor.service';
 
@@ -13,6 +14,7 @@ import { EditorService } from 'src/services/editor.service';
   styleUrls: ['./message-actions.component.scss'],
 })
 export class MessageActionsComponent implements OnInit {
+  @Input() currentChannel!: CurrentChannel;
   @Input() thread!: Thread;
   @Input() message!: Message;
   @Input() actionsType!: string;
@@ -22,7 +24,8 @@ export class MessageActionsComponent implements OnInit {
   constructor(
     public router: Router,
     private Data: DataService,
-    private editor: EditorService
+    private editor: EditorService,
+    private Auth: AuthService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -38,7 +41,7 @@ export class MessageActionsComponent implements OnInit {
 
   answerInThread() {
     this.Data.currentThread$.next(this.thread);
-    this.Data.setCurrentThreadInLocalStorage(this.thread.threadID);
+    this.Data.setUserSessionInLocalStorage(this.Auth.currentUserId, this.currentChannel.id, this.currentChannel.type,  this.thread.threadID);
     this.Data.getMessagesFromThreadID(this.thread.threadID);
   }
 

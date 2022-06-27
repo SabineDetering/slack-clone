@@ -181,11 +181,13 @@ export class DataService {
     return dc;
   }
 
-  closeCurrentThread(removeFromLocalStorage: boolean) {
+  closeCurrentThread(removeFromLocalStorage: boolean, userID: string) {
     this.currentMessages$.next([]);
     this.currentThread$.next(null);
-    if (removeFromLocalStorage) this.removeCurrentThreadFromLocalStorage();
-  }
+    if (removeFromLocalStorage){ 
+      let storageSession = this.getUserSessionFromLocalStorage(userID)
+      this.setUserSessionInLocalStorage(userID, storageSession.channel.channelID, storageSession.channel.type, null);
+  }}
 
   addChannel(channel: any) {
     this.channelCollection.add(channel);
@@ -316,18 +318,28 @@ export class DataService {
 
   // #############  LOCAL STORAGE  #############
 
-  setUserSessionInLocalStorage(sessionData: any){
+  setUserSessionInLocalStorage(
+    userID: string,
+    channelID: string,
+    channelType: string,
+    threadID: string
+  ) {
+    const sessionData = {
+      userID: userID,
+      channel: { channelID: channelID, type: channelType },
+      threadID: threadID,
+    };
     console.log(sessionData);
-    localStorage.setItem(`session-${sessionData.userID}`, JSON.stringify(sessionData));
+    localStorage.setItem(`session-${userID}`, JSON.stringify(sessionData));
   }
 
-  getUserSessionFromLocalStorage(userID: string){
-    const sessionData = localStorage.getItem(`session-${userID}`)
+  getUserSessionFromLocalStorage(userID: string) {
+    const sessionData = localStorage.getItem(`session-${userID}`);
     console.log(sessionData);
     return sessionData ? JSON.parse(sessionData) : null;
   }
 
-  setCurrentChannelInLocalStorage(currentChannel: any) {
+/*   setCurrentChannelInLocalStorage(currentChannel: any) {
     console.log(currentChannel);
     localStorage.setItem('currentChannel', JSON.stringify(currentChannel));
   }
@@ -344,17 +356,19 @@ export class DataService {
   getCurrentThreadFromLocalStorage() {
     const storageThread = localStorage.getItem('currentThread');
     return storageThread ? JSON.parse(storageThread) : null;
-  }
+  } */
 
-  removeUserSessionFromLocalStorage(userID: string){
+  removeUserSessionFromLocalStorage(userID: string) {
     localStorage.removeItem(`session-${userID}`);
   }
 
-  removeCurrentChannelFromLocalStorage() {
+/*   removeCurrentChannelFromLocalStorage() {
     localStorage.removeItem('currentChannel');
   }
 
   removeCurrentThreadFromLocalStorage() {
     localStorage.removeItem('currentThread');
   }
+} */
+
 }

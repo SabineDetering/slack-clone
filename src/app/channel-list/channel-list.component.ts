@@ -57,21 +57,25 @@ export class ChannelListComponent implements OnInit {
   }
 
   setCurrentChannel(channel: Channel) {
-    if (channel.channelID != this.Data.getCurrentChannelFromLocalStorage()) {
+    if (!this.sameAsStorageChannel(channel.channelID)) {
       this.Data.setCurrentChannelFromChannel(channel);
       /* this.Data.setCurrentChannelInLocalStorage({ channelID: channel.channelID, channelType: 'channel' }); */
-      const sessionData = {
-        userID: this.Auth.currentUserId,
-        channel: { channelID: channel.channelID, type: 'channel' },
-        threadID: null,
-      };
-      this.Data.setUserSessionInLocalStorage(sessionData);
+      this.Data.setUserSessionInLocalStorage(
+        this.Auth.currentUserId,
+        channel.channelID,
+        'channel',
+        null
+      );
       this.Data.getThreadsFromChannelID(channel.channelID);
-      this.Data.closeCurrentThread(true);
+      this.Data.closeCurrentThread(true, this.Auth.currentUserId);
     }
   }
 
-  // closeCurrentThread() {
-  //   this.Data.closeCurrentThread(true);
-  // }
+  sameAsStorageChannel(channelID: string) {
+    return (
+      channelID ==
+      this.Data.getUserSessionFromLocalStorage(this.Auth.currentUserId).channel
+        .channelID
+    );
+  }
 }

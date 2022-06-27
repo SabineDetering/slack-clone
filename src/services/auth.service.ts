@@ -19,14 +19,9 @@ export class AuthService {
     private Data: DataService
   ) {
     af.authState.subscribe(auth => {
-      console.log(auth)
       this.authState = auth;
       if(auth) {
         this.af.onAuthStateChanged(user => {
-          console.log('getUserChange')
-          console.log(this.currentUserId)
-          console.log(this.user)
-          console.log(user)
           if (user) {//login
             this.user = user;
             if (user.isAnonymous) {
@@ -66,7 +61,7 @@ export class AuthService {
 
   
   closeThreadContainer() {
-    this.Data.closeCurrentThread(false);
+    this.Data.closeCurrentThread(false, this.currentUserId);
     this.Data.deleteThreadSubscription();
   }
 

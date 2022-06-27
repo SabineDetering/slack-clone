@@ -25,19 +25,16 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
   users: User[];
 
   constructor(public Data: DataService, private Auth: AuthService) {
-
     this.getCurrentChannel();
     this.getCurrentThreads();
-    this.getCurrentThreadFromLocalStorage();
-    console.log('main constructor')
+    this.getLastUserSessionFromLocalStorage();
+    /* this.getCurrentThreadFromLocalStorage(); */
   }
-  
-  ngOnInit(): void {
-    console.log('main ngOnInit')
-    console.log(this.Auth.currentUserId)
 
-/*     this.users = await firstValueFrom(this.Data.users$);
- */  }
+  ngOnInit(): void {
+    /*     this.users = await firstValueFrom(this.Data.users$);
+     */
+  }
 
   ngAfterViewChecked() {
     this.threadContainer.nativeElement.scrollTop =
@@ -48,46 +45,7 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
     this.Data.currentChannel$.subscribe((channel) => {
       this.currentChannel = channel;
     });
-    this.getCurrentChannelFromLocalStorage();
-  }
-
-  // checks if a current channel is stored in local storage and if so, sets it in Data.currentChannel$
-  async getCurrentChannelFromLocalStorage() {
-    const storageChannel = await this.Data.getCurrentChannelFromLocalStorage();
-    console.log(storageChannel)
-    if (!storageChannel) return;
-    else {
-      if (storageChannel.channelType == 'channel') {
-        this.setCurrentChannelToChannel(storageChannel);
-      } else {
-        this.setCurrentChannelToDirectChannel(storageChannel);
-      }
-    }
-  }
-
-  async setCurrentChannelToChannel(storageChannel: any) {
-    const channel = await this.Data.getChannelFromChannelID(
-      storageChannel.channelID
-      );
-    if (channel) {
-      this.Data.setCurrentChannelFromChannel(channel);
-      this.Data.getThreadsFromChannelID(channel.channelID);
-    } else {
-      this.Data.removeCurrentChannelFromLocalStorage();
-    }
-  }
-
-  async setCurrentChannelToDirectChannel(storageChannel: any) {
-    const directChannel = await this.Data.getChannelFromDirectChannelID(
-      storageChannel.channelID
-    );
-    if (directChannel) {
-      const directChannelWithProps = this.Data.setDirectChannelProperties(directChannel, this.Auth.currentUserId)
-      this.Data.setCurrentChannelFromDirectChannel(directChannelWithProps);
-      this.Data.getThreadsFromChannelID(directChannel.directChannelID);
-    } else {
-      this.Data.removeCurrentChannelFromLocalStorage();
-    }
+    /* this.getCurrentChannelFromLocalStorage(); */
   }
 
   getCurrentThreads() {
@@ -96,7 +54,104 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  async getCurrentThreadFromLocalStorage() {
+  async getLastUserSessionFromLocalStorage() {
+    const storageSession = await this.Data.getUserSessionFromLocalStorage(
+      this.Auth.currentUserId
+    );
+    console.log(storageSession);
+    if (!storageSession) this.showDefaultChannel();
+    else {
+      const currentChannelIsSet = await this.setCurrentChannel(storageSession);
+      if (currentChannelIsSet && !!storageSession.threadID) {
+        console.log('set Thread');
+        this.setCurrentThread(storageSession);
+      }
+    }
+  }
+
+  setCurrentChannel(storageSession: any) {
+    return new Promise((resolve, reject) => {
+      if (storageSession.channel.type == 'channel')
+        this.setCurrentChannelToChannel(storageSession.channel.channelID);
+      // is of type 'directChannel'
+      else
+        this.setCurrentChannelToDirectChannel(storageSession.channel.channelID);
+      resolve(true);
+      (err: any) => reject(err);
+    });
+  }
+
+  // checks if a current channel is stored in local storage and if so, sets it in Data.currentChannel$
+  /*   async getCurrentChannelFromLocalStorage() {
+    const storageChannel = await this.Data.getCurrentChannelFromLocalStorage();
+    console.log(storageChannel);
+    if (!storageChannel) return;
+    else {
+      if (storageChannel.channelType == 'channel') {
+        this.setCurrentChannelToChannel(storageChannel);
+      } else {
+        this.setCurrentChannelToDirectChannel(storageChannel);
+      }
+    }
+  } */
+
+  async setCurrentChannelToChannel(channelID: any) {
+    console.log('setCurrentChannelToChannel');
+    console.log(channelID);
+    const channel = await this.Data.getChannelFromChannelID(channelID);
+    if (channel) {
+      this.Data.setCurrentChannelFromChannel(channel);
+      this.Data.getThreadsFromChannelID(channelID);
+    } else {
+      this.Data.removeUserSessionFromLocalStorage(this.Auth.currentUserId);
+    }
+  }
+
+  async setCurrentChannelToDirectChannel(directChannelID: any) {
+    const directChannel = await this.Data.getChannelFromDirectChannelID(
+      directChannelID
+    );
+    if (directChannel) {
+      const directChannelWithProps = this.Data.setDirectChannelProperties(
+        directChannel,
+        this.Auth.currentUserId
+      );
+      this.Data.setCurrentChannelFromDirectChannel(directChannelWithProps);
+      this.Data.getThreadsFromChannelID(directChannelID);
+    } else {
+      this.Data.removeUserSessionFromLocalStorage(this.Auth.currentUserId);
+    }
+  }
+
+  showDefaultChannel() {
+    console.log('show default channel');
+    const showDefaultChannelSubscription = this.Data.channels$.subscribe(
+      (channels) => {
+        console.log(showDefaultChannelSubscription);
+        this.setCurrentChannelToChannel(channels[0].channelID);
+        showDefaultChannelSubscription.unsubscribe();
+        console.log(showDefaultChannelSubscription);
+      }
+    );
+  }
+
+  async setCurrentThread(storageSession: any) {
+    const thread = await this.Data.getThreadFromThreadID(
+      storageSession.threadID
+    );
+    if (thread) {
+      this.openThread(thread);
+    } else {
+      this.Data.setUserSessionInLocalStorage(
+        this.Auth.currentUserId,
+        storageSession.channel.channelID,
+        storageSession.channel.type,
+        null
+      );
+    }
+  }
+
+  /*   async getCurrentThreadFromLocalStorage() {
     const storageThreadID = await this.Data.getCurrentThreadFromLocalStorage();
     if (!storageThreadID) return;
     else {
@@ -107,11 +162,17 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
         this.Data.removeCurrentThreadFromLocalStorage();
       }
     }
-  }
+  } */
 
   openThread(thread: Thread) {
     console.log('open thread', thread);
     this.Data.currentThread$.next(thread);
+    this.Data.setUserSessionInLocalStorage(
+      this.Auth.currentUserId,
+      this.currentChannel.id,
+      this.currentChannel.type,
+      thread.threadID
+    );
     /* this.Data.setCurrentThreadInLocalStorage(thread.threadID); */
     this.Data.getMessagesFromThreadID(thread.threadID);
   }

@@ -55,22 +55,29 @@ export class DirectChannelListComponent implements OnInit {
   }
 
   async setCurrentDirectChannel(directChannel: DirectChannel) {
-    this.Data.setCurrentChannelFromDirectChannel(directChannel);
-    /*     this.Data.setCurrentChannelInLocalStorage({ channelID: directChannel.directChannelID, channelType: 'directChannel' }); */
-    const sessionData = {
-      userID:  this.Auth.currentUserId,
-      channel: {
-        channelID: directChannel.directChannelID,
-        type: 'directChannel',
-      },
-      threadID: null,
-    };
-    this.Data.setUserSessionInLocalStorage(sessionData);
-    this.Data.getThreadsFromChannelID(directChannel.directChannelID);
-    this.closeCurrentThread();
+    if (!this.sameAsStorageChannel(directChannel.directChannelID)) {
+      this.Data.setCurrentChannelFromDirectChannel(directChannel);
+      /*     this.Data.setCurrentChannelInLocalStorage({ channelID: directChannel.directChannelID, channelType: 'directChannel' }); */
+      this.Data.setUserSessionInLocalStorage(
+        this.Auth.currentUserId,
+        directChannel.directChannelID,
+        'directChannel',
+        null
+      );
+      this.Data.getThreadsFromChannelID(directChannel.directChannelID);
+      this.closeCurrentThread();
+    }
+  }
+
+  sameAsStorageChannel(directChannelID: string) {
+    return (
+      directChannelID ==
+      this.Data.getUserSessionFromLocalStorage(this.Auth.currentUserId).channel
+        .channelID
+    );
   }
 
   closeCurrentThread() {
-    this.Data.closeCurrentThread(true);
+    this.Data.closeCurrentThread(true, this.Auth.currentUserId);
   }
 }

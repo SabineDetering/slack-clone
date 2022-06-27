@@ -3,6 +3,7 @@ import { Channel } from 'src/models/channel.class';
 import { CurrentChannel } from 'src/models/current-channel.class';
 import { DirectChannel } from 'src/models/direct-channel.class';
 import { Thread } from 'src/models/thread.class';
+import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class ThreadContainerComponent implements OnInit {
   currentChannel: CurrentChannel;
   currentThread: Thread;
 
-  constructor(public Data: DataService) {
+  constructor(public Data: DataService, private Auth: AuthService) {
     this.getCurrentChannel();
     this.getCurrentThread();
   }
@@ -35,7 +36,7 @@ export class ThreadContainerComponent implements OnInit {
   }
 
   closeThreadContainer(){
-    this.Data.closeCurrentThread(true);
+    this.Data.closeCurrentThread(true, this.Auth.currentUserId);
   }
 
   trackByIndex(index: any) {
