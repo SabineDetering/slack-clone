@@ -53,7 +53,6 @@ export class DataService {
   // public currentDirectChannel$: BehaviorSubject<DirectChannel> =
   //   new BehaviorSubject(new DirectChannel());
 
-
   constructor(private readonly firestore: AngularFirestore) {
     this.channelCollection = this.firestore.collection<Channel>('channels');
     this.channels$ = this.channelCollection.valueChanges({
@@ -78,11 +77,11 @@ export class DataService {
   }
 
   subscribeToUsers() {
-    this.users$.subscribe(users => this.users = users);
+    this.users$.subscribe((users) => (this.users = users));
   }
 
   subscribeToDirectChannels() {
-    this.directChannels$.subscribe(dc => this.directChannels = dc);
+    this.directChannels$.subscribe((dc) => (this.directChannels = dc));
   }
 
   async getChannelFromChannelID(channelID: string) {
@@ -168,16 +167,17 @@ export class DataService {
     dc = new DirectChannel(dc);
     console.log(dc);
     dc.directChannelName = this.users
-      .filter(user =>
-        dc.directChannelMembers.includes(user.uid)
-        && (user.uid != currentUserID || dc.directChannelMembers.length == 1)
+      .filter(
+        (user) =>
+          dc.directChannelMembers.includes(user.uid) &&
+          (user.uid != currentUserID || dc.directChannelMembers.length == 1)
       )
-      .map(user => user.displayName)
+      .map((user) => user.displayName)
       .sort()
       .join(', ');
-    dc.directChannelAvatar = this.users
-      .filter(user => dc.directChannelMembers[0] == user.uid)[0]
-      .photoURL;
+    dc.directChannelAvatar = this.users.filter(
+      (user) => dc.directChannelMembers[0] == user.uid
+    )[0].photoURL;
     return dc;
   }
 
@@ -282,7 +282,8 @@ export class DataService {
   }
 
   deleteThreadSubscription() {
-    this.threadSubscription.unsubscribe();
+    if (this.threadSubscription) this.threadSubscription.unsubscribe();
+    else return;
   }
 
   deleteUser(id: string) {
@@ -300,7 +301,7 @@ export class DataService {
    * @param userID
    */
   deleteUserFromDirectChannels(userID: string) {
-    this.directChannels.forEach(dc => {
+    this.directChannels.forEach((dc) => {
       if (dc.directChannelMembers.includes(userID)) {
         if (dc.directChannelMembers.length == 1) {
           this.deleteDirectChannel(dc.directChannelID);
@@ -310,38 +311,35 @@ export class DataService {
           //TODO: delete user from member list and update dc in firestore
         }
       }
-    })
+    });
   }
 
-    // #############  LOCAL STORAGE  #############
+  // #############  LOCAL STORAGE  #############
 
-    setCurrentChannelInLocalStorage(currentChannel: any) {
-      console.log(currentChannel);
-      localStorage.setItem('currentChannel', JSON.stringify(currentChannel));
-    }
-
-    getCurrentChannelFromLocalStorage() {
-      const storageChannel = localStorage.getItem('currentChannel');
-      return storageChannel ? JSON.parse(storageChannel) : null;
-    }
-
-    setCurrentThreadInLocalStorage(currentThreadID: string) {
-      localStorage.setItem('currentThread', JSON.stringify(currentThreadID));
-    }
-
-    getCurrentThreadFromLocalStorage() {
-      const storageThread = localStorage.getItem('currentThread');
-      return storageThread ? JSON.parse(storageThread) : null;
-    }
-
-    removeCurrentChannelFromLocalStorage() {
-      localStorage.removeItem('currentChannel');
-    }
-
-    removeCurrentThreadFromLocalStorage() {
-      localStorage.removeItem('currentThread');
-    }
+  setCurrentChannelInLocalStorage(currentChannel: any) {
+    console.log(currentChannel);
+    localStorage.setItem('currentChannel', JSON.stringify(currentChannel));
   }
 
+  getCurrentChannelFromLocalStorage() {
+    const storageChannel = localStorage.getItem('currentChannel');
+    return storageChannel ? JSON.parse(storageChannel) : null;
+  }
 
+  setCurrentThreadInLocalStorage(currentThreadID: string) {
+    localStorage.setItem('currentThread', JSON.stringify(currentThreadID));
+  }
 
+  getCurrentThreadFromLocalStorage() {
+    const storageThread = localStorage.getItem('currentThread');
+    return storageThread ? JSON.parse(storageThread) : null;
+  }
+
+  removeCurrentChannelFromLocalStorage() {
+    localStorage.removeItem('currentChannel');
+  }
+
+  removeCurrentThreadFromLocalStorage() {
+    localStorage.removeItem('currentThread');
+  }
+}
