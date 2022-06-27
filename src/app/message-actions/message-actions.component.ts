@@ -5,6 +5,7 @@ import { CurrentChannel } from 'src/models/current-channel.class';
 import { Message } from 'src/models/message.class';
 import { Thread } from 'src/models/thread.class';
 import { DataService } from 'src/services/data.service';
+import { EditorService } from 'src/services/editor.service';
 
 @Component({
   selector: 'app-message-actions',
@@ -16,12 +17,16 @@ export class MessageActionsComponent implements OnInit {
   @Input() message!: Message;
   @Input() actionsType!: string;
   // currentChannel!: Channel;
-/*   currentChannel: CurrentChannel;
- */
-  constructor(public router: Router, private Data: DataService) {}
+  /*   currentChannel: CurrentChannel;
+   */
+  constructor(
+    public router: Router,
+    private Data: DataService,
+    private editor: EditorService
+  ) {}
 
   async ngOnInit(): Promise<void> {
-/*     this.Data.currentChannel$.subscribe(
+    /*     this.Data.currentChannel$.subscribe(
       (channel) => (this.currentChannel = channel)
     ); */
     if (!this.message) {
@@ -38,7 +43,7 @@ export class MessageActionsComponent implements OnInit {
   }
 
   async deleteMessage() {
-    console.log(this.thread)
+    console.log(this.thread);
     this.Data.deleteMessage(this.message.messageID);
     if (this.isLastMessageInThread()) {
       this.deleteThread();
@@ -50,25 +55,32 @@ export class MessageActionsComponent implements OnInit {
     }
   }
 
-  isLastMessageInThread(){
-    return this.thread.answerAmount == 0 || this.thread.answerAmount == 1 && this.thread.firstMessageID == 'deleted'
+  isLastMessageInThread() {
+    return (
+      this.thread.answerAmount == 0 ||
+      (this.thread.answerAmount == 1 && this.thread.firstMessageID == 'deleted')
+    );
   }
 
   async reduceAnswersInThread() {
-    let thread = new Thread(this.thread)
+    let thread = new Thread(this.thread);
     thread.answerAmount--;
     await this.Data.saveThread(thread.toJSON());
-    this.Data.currentThread$.next(thread)
+    this.Data.currentThread$.next(thread);
   }
 
   deleteFirstMessageInThread() {
-    let thread = new Thread(this.thread)
+    let thread = new Thread(this.thread);
     thread.firstMessageID = 'deleted';
     this.Data.saveThread(thread.toJSON());
-    this.Data.currentThread$.next(thread)
+    this.Data.currentThread$.next(thread);
   }
 
   deleteThread() {
     this.Data.deleteThread(this.thread.threadID);
+  }
+
+  setEditmode() {
+    this.editor.messageToEdit = this.message;
   }
 }

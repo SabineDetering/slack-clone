@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
+import { Message } from 'src/models/message.class';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EditorService {
+
+  public messageToEdit!: Message;
 
   private editorSetup = (editor) => {
     editor.ui.registry.addButton('inline-code', {

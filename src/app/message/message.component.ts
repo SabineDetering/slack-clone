@@ -19,7 +19,6 @@ export class MessageComponent implements OnInit {
   fullsizeOpen: boolean = false;
 
   public isDeleted: boolean = false;
-  public inEditmode: boolean = false;
   public userInput: any = ''; // ngModel Input
 
   constructor(public Data: DataService, public editor: EditorService) {}
@@ -31,14 +30,6 @@ export class MessageComponent implements OnInit {
       this.setFirstThreadMessage();
     } else {
       this.setDeletedMessage();
-    }
-  }
-
-  setEditmode(isEditing: string) {
-    if (isEditing == 'true' && !this.isDeleted) {
-      this.inEditmode = true;
-    } else {
-      this.inEditmode = false;
     }
   }
 

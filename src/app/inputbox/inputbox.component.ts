@@ -19,7 +19,6 @@ export class InputboxComponent implements OnInit {
   @Input('currentMessageId') currentMessageId!: string;
   @Input('messageType') messageType!: string;
   @Input('editMessage') editMessage: Message = null; // transferred from app-message
-  @Output() setEditmode = new EventEmitter<string>(); // if finished editing to close inputbox
 
   private message = new Message();
   private newThread = new Thread();
@@ -62,6 +61,8 @@ export class InputboxComponent implements OnInit {
   }
 
   handleSendingMessage(): void {
+    console.log('handleSendingMessage:', this.message);
+    
     this.getCurrentChannel();
     if (this.userInput.length > 0 || this.messageFiles.length > 0) {
       if (this.editMessage) {
@@ -205,7 +206,9 @@ export class InputboxComponent implements OnInit {
   }
 
   clearData() {
-    this.setEditmode.emit('false'); // triggers closing inputbox if it was open in editmode
+    console.log('clearData');
+    
+    this.editor.messageToEdit = null;
     this.editMessage = null;
     this.userInput = '';
     this.messageFiles = [];

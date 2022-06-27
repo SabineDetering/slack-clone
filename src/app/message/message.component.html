@@ -12,11 +12,10 @@
         <span class="author">{{ messageAuthorName }}</span>
         <span class="timestamp">{{ (date | date:'medium') || 'unknown date'}}</span>
     </div>
-    <div *ngIf="!inEditmode" [innerHTML]="message.messageText" (click)="setEditmode('true')"></div>
-    <!-- Inpubox: 
-        @Input() Variable tranfsferring current Message from message-comp to inputbox
-        @Output() Variable sends back Event,when edited message is saved to trigger hide inputbox -->
-    <app-inputbox *ngIf="inEditmode && !isDeleted" (setEditmode)="setEditmode($event)" [editMessage]="message"></app-inputbox>
+    <app-inputbox *ngIf="editor.messageToEdit?.messageID == message.messageID && !isDeleted; else messageText"  [editMessage]="message"></app-inputbox>
+    <ng-template #messageText>
+        <div [innerHTML]="message.messageText"></div>
+    </ng-template>
     <img #thumbnail class="img-thumbnail" (click)="fullsizeOpen=true; fullsize.src = image;"
         *ngFor="let image of message.images; index as i" src="{{image}}">
 </div>
@@ -27,3 +26,7 @@
         <mat-icon class="close-icon">close</mat-icon>
     </div>
 </div>
+
+    <!-- INFO *** INPUTBOX ***
+        @Input() Variable tranfsferring current Message from message-comp to inputbox
+        @Output() Variable sends back Event,when edited message is saved to trigger hide inputbox -->
