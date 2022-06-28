@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { deleteUser, getAuth } from 'firebase/auth';
+import { deleteUser } from 'firebase/auth';
 import { DataService } from './data.service';
 
 @Injectable({
@@ -80,7 +80,6 @@ export class AuthService {
       console.log('error deleting anonymous user: ', error);
     });
     //delete user from firebase collections
-    //TODO: delete corresponding direct channels, threads, messages
     this.Data.deleteUser(user.uid);
     this.Data.removeUserSessionFromLocalStorage(user.uid)
     this.Data.deleteUserFromDirectChannels(user.uid);

@@ -48,6 +48,7 @@ import { MessageActionsComponent } from './message-actions/message-actions.compo
 import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { PrivacyNoticeComponent } from './privacy-notice/privacy-notice.component';
 import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-change-avatar.component';
+import { PERSISTENCE } from '@angular/fire/compat/auth';
 
 @NgModule({
   declarations: [
@@ -130,6 +131,7 @@ import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-chang
   providers: [
     OrderByPipe,
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
+    { provide: PERSISTENCE, useValue: 'local' },
   ],
   bootstrap: [AppComponent],
 })

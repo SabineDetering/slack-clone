@@ -16,7 +16,6 @@ import { Thread } from 'src/models/thread.class';
 import { Message } from 'src/models/message.class';
 import { User } from 'src/models/user.class';
 import { CurrentChannel } from 'src/models/current-channel.class';
-import { stringify } from 'querystring';
 
 @Injectable({
   providedIn: 'root',
@@ -164,7 +163,7 @@ export class DataService {
   }
 
   setDirectChannelProperties(dc: DirectChannel, currentUserID: string) {
-    dc = new DirectChannel(dc);
+    // dc = new DirectChannel(dc);
     console.log(dc);
     dc.directChannelName = this.users
       .filter(
@@ -243,6 +242,10 @@ export class DataService {
     this.userCollection.doc(id).update(json);
   }
 
+  updateDirectChannel(id: string, json: any) {
+    this.directChannelCollection.doc(id).update(json);
+  }
+
   // ############  DELETE FUNCTIONS #############
 
   deleteChannel(channelID: string) {
@@ -311,6 +314,8 @@ export class DataService {
           this.deleteMessagesInChannel(dc.directChannelID);
         } else {
           //TODO: delete user from member list and update dc in firestore
+          dc.directChannelMembers.splice(dc.directChannelMembers.indexOf(userID), 1);
+          this.updateDirectChannel(dc.directChannelID, { directChannelMembers: dc.directChannelMembers });
         }
       }
     });
