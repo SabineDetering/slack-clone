@@ -12,6 +12,7 @@ import { EditorService } from 'src/services/editor.service';
 export class MessageComponent implements OnInit {
   @Input() message!: Message;
   @Input() thread!: Thread;
+  @Input() firstAnswerMessage: Boolean = false;
 
   date: Date | undefined;
   messageAuthorName: string;

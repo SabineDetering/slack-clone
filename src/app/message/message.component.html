@@ -1,32 +1,61 @@
-<img *ngIf="!!messageAuthorAvatar; else loadingSpinner" class="img-avatar" src="{{messageAuthorAvatar}}" alt="author">
-<ng-template #loadingSpinner>
+<div class="message-container">
+  <img
+    *ngIf="!!messageAuthorAvatar; else loadingSpinner"
+    class="img-avatar"
+    src="{{ messageAuthorAvatar }}"
+    alt="author"
+  />
+  <ng-template #loadingSpinner>
     <div class="loadingSpinnerContainer">
-        <span class="loadingSpinner-dot">.</span>
-        <span class="loadingSpinner-dot">.</span>
-        <span class="loadingSpinner-dot">.</span>
+      <span class="loadingSpinner-dot">.</span>
+      <span class="loadingSpinner-dot">.</span>
+      <span class="loadingSpinner-dot">.</span>
     </div>
-</ng-template>
+  </ng-template>
 
-<div class="mainContainer" *ngIf="message">
+  <div class="mainContainer" *ngIf="message">
     <div>
-        <span class="author">{{ messageAuthorName }}</span>
-        <span class="timestamp">{{ (date | date:'medium') || 'unknown date'}}</span>
+      <span class="author">{{ messageAuthorName }}</span>
+      <span class="timestamp">{{
+        (date | date: "medium") || "unknown date"
+      }}</span>
     </div>
-    <app-inputbox *ngIf="editor.messageToEdit?.messageID == message.messageID && !isDeleted; else messageText"  [editMessage]="message"></app-inputbox>
+    <app-inputbox
+      *ngIf="
+        editor.messageToEdit?.messageID == message.messageID && !isDeleted;
+        else messageText
+      "
+      [editMessage]="message"
+    ></app-inputbox>
     <ng-template #messageText>
-        <div [innerHTML]="message.messageText"></div>
+      <div [innerHTML]="message.messageText"></div>
     </ng-template>
-    <img #thumbnail class="img-thumbnail" (click)="fullsizeOpen=true; fullsize.src = image;"
-        *ngFor="let image of message.images; index as i" src="{{image}}">
+    <img
+      #thumbnail
+      class="img-thumbnail"
+      (click)="fullsizeOpen = true; fullsize.src = image"
+      *ngFor="let image of message.images; index as i"
+      src="{{ image }}"
+    />
+  </div>
 </div>
 
-<div #fullsizeContainer [class.d-none]="!fullsizeOpen" class="fullsize-container  d-none">
-    <img class="img-fullsize" src="" alt="fullsize" #fullsize>
-    <div class="icon" (click)="fullsizeOpen = false">
-        <mat-icon class="close-icon">close</mat-icon>
-    </div>
+<div *ngIf="firstAnswerMessage" class="first-message-separator">
+  <span>{{ Data.currentThread.answerAmount }} answers</span>
+  <hr />
 </div>
 
-    <!-- INFO *** INPUTBOX ***
+<div
+  #fullsizeContainer
+  [class.d-none]="!fullsizeOpen"
+  class="fullsize-container d-none"
+>
+  <img class="img-fullsize" src="" alt="fullsize" #fullsize />
+  <div class="icon" (click)="fullsizeOpen = false">
+    <mat-icon class="close-icon">close</mat-icon>
+  </div>
+</div>
+
+<!-- INFO *** INPUTBOX ***
         @Input() Variable tranfsferring current Message from message-comp to inputbox
         @Output() Variable sends back Event,when edited message is saved to trigger hide inputbox -->

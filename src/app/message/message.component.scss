@@ -2,141 +2,156 @@
 // flex($justify: flex-start, $align: flex-start, $dir: row, $gap: 0)
 
 :host {
+  @include mix.flex(center, flex-start, column, 8px);
+  position: relative;
+  padding: mix.$padding-medium;
+  border-radius: 12px;
+}
+
+.message-container{
     @include mix.flex(center, flex-start, row, 12px);
-    position: relative;
-    padding: mix.$padding-medium;
-    border-radius: 12px;
 }
 
 .d-none {
-    display: none!important;
+  display: none !important;
 }
 
 .author {
-    font-weight: bold;
-    margin-right: 8px;
+  font-weight: bold;
+  margin-right: 8px;
 }
 
 .timestamp {
-    font-size: 12px;
-    color: grey;
+  font-size: 12px;
+  color: grey;
 }
 
 .mainContainer {
-    @include mix.flex(flex-start, flex-start, column);
-    width: 100%;
+  @include mix.flex(flex-start, flex-start, column);
+  width: 100%;
 }
 
 .img-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
 }
 
 .img-thumbnail {
-    width: unset;
-    max-width: 50%;
-    height: unset;
-    max-height: 100px;
-    margin-bottom: 8px;
-    cursor: pointer;
+  width: unset;
+  max-width: 50%;
+  height: unset;
+  max-height: 100px;
+  margin-bottom: 8px;
+  cursor: pointer;
 
-    &:hover {
-        opacity: 0.5;
-        border: solid 1px lightgrey;
-    }
+  &:hover {
+    opacity: 0.5;
+    border: solid 1px lightgrey;
+  }
+}
+
+.first-message-separator {
+  @include mix.flex(center, center, row, 8px);
+  width: 100%;
+
+  span{
+    font-size: 12px;
+    color: #555;
+  }
+
+  hr{
+    flex: 1;
+    border: none;;
+    border-bottom: 0.5px solid #aaa;
+  }
 }
 
 .img-fullsize {
-    width: unset;
-    max-width: 100%;
-    max-height: 100%;
+  width: unset;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .fullsize-container {
-    position: fixed;
-    @include mix.flex(center, center);
-    left: 1vw;
-    top: 64px;
-    right: 1vw;
-    bottom: 1vw;
-    border-radius: 8px;
-    padding: 22px;
-    background: white;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    z-index: 1001;
+  position: fixed;
+  @include mix.flex(center, center);
+  left: 1vw;
+  top: 64px;
+  right: 1vw;
+  bottom: 1vw;
+  border-radius: 8px;
+  padding: 22px;
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  z-index: 1001;
 
-    .icon{
-        position: absolute;
-        right: 0px;
-        top: 0px;
-        background-color: rgba(255, 255, 255, 0.844);
-        border-radius: 5px;
-        transition: all 75ms ease-in-out;
-        cursor: pointer;
+  .icon {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    background-color: rgba(255, 255, 255, 0.844);
+    border-radius: 5px;
+    transition: all 75ms ease-in-out;
+    cursor: pointer;
 
-        &:hover {
-            background-color: rgba(106, 104, 104, 0.1);
-          }
+    &:hover {
+      background-color: rgba(106, 104, 104, 0.1);
     }
+  }
 }
 
 .bottomRow {
-    @include mix.flex(flex-start, center, row, 8px);
-    width: 100%;
-    font-size: 12px;
-    margin-top: 8px;
+  @include mix.flex(flex-start, center, row, 8px);
+  width: 100%;
+  font-size: 12px;
+  margin-top: 8px;
 }
 
 button {
-    border: none;
-    font-size: 12px;
-    text-decoration: underline;
-    background: none;
+  border: none;
+  font-size: 12px;
+  text-decoration: underline;
+  background: none;
 }
 
 .loadingSpinnerContainer {
-    @include mix.flex(center, center);
-    width: 32px;
-    min-width: 32px;
-    height: 32px;
-    border-radius: 100%;
+  @include mix.flex(center, center);
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  border-radius: 100%;
 
-    .loadingSpinner-dot{
-        font-size: 28px;
+  .loadingSpinner-dot {
+    font-size: 28px;
 
-        &:first-child{
-            color: mix.$primary-hover;
-            animation: dotFlashing 0.8s infinite alternate;
-            animation-delay: 0s;
-        }
-
-        &:nth-child(2){
-            color: mix.$primary-hover;
-            animation: dotFlashing 0.8s infinite alternate;
-            animation-delay: 0.5s;
-
-        }
-
-        &:last-child{
-            color: mix.$primary-hover;
-            animation: dotFlashing 0.8s infinite alternate;
-            animation-delay: 1s;
-        }
+    &:first-child {
+      color: mix.$primary-hover;
+      animation: dotFlashing 0.8s infinite alternate;
+      animation-delay: 0s;
     }
 
+    &:nth-child(2) {
+      color: mix.$primary-hover;
+      animation: dotFlashing 0.8s infinite alternate;
+      animation-delay: 0.5s;
+    }
+
+    &:last-child {
+      color: mix.$primary-hover;
+      animation: dotFlashing 0.8s infinite alternate;
+      animation-delay: 1s;
+    }
+  }
 }
 
 @keyframes dotFlashing {
-    0% {
-      color: mix.$primary-hover;
-    }
-    50%,
-    100% {
-        color: mix.$primary-color;
-        opacity: 0.1;
-    }
+  0% {
+    color: mix.$primary-hover;
   }
-  
-
-
+  50%,
+  100% {
+    color: mix.$primary-color;
+    opacity: 0.1;
+  }
+}
