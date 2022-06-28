@@ -3,6 +3,7 @@
 :host {
   @include mix.flex(flex-start, center, column);
   width: 30%;
+  min-width: 300px;
   position: relative;
   height: calc(100vh - 64px);
 }
