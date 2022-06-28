@@ -18,7 +18,7 @@ import { DataService } from 'src/services/data.service';
   templateUrl: './main-container.component.html',
   styleUrls: ['./main-container.component.scss'],
 })
-export class MainContainerComponent implements OnInit, AfterViewChecked {
+export class MainContainerComponent implements OnInit {
   @ViewChild('threadContainer') threadContainer: any;
   currentChannel: CurrentChannel;
   threads: Thread[] = [];
@@ -33,9 +33,8 @@ export class MainContainerComponent implements OnInit, AfterViewChecked {
   ngOnInit(): void {
   }
 
-  ngAfterViewChecked() {
-    this.threadContainer.nativeElement.scrollTop =
-      this.threadContainer.nativeElement.scrollHeight;
+  scrollToBottom() {
+    this.threadContainer.nativeElement.scrollTop = this.threadContainer.nativeElement.scrollHeight;
   }
 
   getCurrentChannel() {

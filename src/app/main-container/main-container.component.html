@@ -6,8 +6,8 @@
 
 </div>
 
-<div class="threadContainer" id="threadContainer" #threadContainer >
-    <div class="thread" *ngFor="let thread of Data.currentThreads$ | async; index as i; trackBy:getTrackByCondition">
+<div #myList class="threadContainer" id="threadContainer" #threadContainer >
+    <div class="thread" *ngFor="let thread of Data.currentThreads$ | async; index as i; trackBy:getTrackByCondition; let last = last">
         <app-message-actions *ngIf="!!thread.firstMessageID" [actionsType]="'threadActions'" [currentChannel]="currentChannel" [thread]="thread"></app-message-actions>
 
         <app-message *ngIf="!!thread.firstMessageID" [thread]="thread"></app-message>
@@ -15,6 +15,7 @@
             <p>{{ thread.answerAmount}} Antworten</p> 
             <button (click)="openThread(thread)">Open Thread</button>
         </div>
+        {{last ? scrollToBottom() : ''}}
     </div>
 </div>
 
