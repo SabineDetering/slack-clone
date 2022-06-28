@@ -1,6 +1,6 @@
-<div class="head" *ngIf="currentChannel">
-    <span class="channelName">{{ currentChannel.name }}</span>
-    <span class="channelDescription">{{ currentChannel.description }}</span>
+<div class="head" *ngIf="Data.currentChannel">
+    <span class="channelName">{{ Data.currentChannel.name }}</span>
+    <span class="channelDescription">{{ Data.currentChannel.description }}</span>
 </div>
 <div>
 
@@ -8,7 +8,7 @@
 
 <div #myList class="threadContainer" id="threadContainer" #threadContainer >
     <div class="thread" *ngFor="let thread of Data.currentThreads$ | async; index as i; trackBy:getTrackByCondition; let last = last">
-        <app-message-actions *ngIf="!!thread.firstMessageID" [actionsType]="'threadActions'" [currentChannel]="currentChannel" [thread]="thread"></app-message-actions>
+        <app-message-actions *ngIf="!!thread.firstMessageID" [actionsType]="'threadActions'" [thread]="thread"></app-message-actions>
 
         <app-message *ngIf="!!thread.firstMessageID" [thread]="thread"></app-message>
         <div class="bottomRow">
@@ -19,4 +19,4 @@
     </div>
 </div>
 
-<app-inputbox *ngIf="currentChannel" [messageType]="'firstMessage'"></app-inputbox>
+<app-inputbox *ngIf="Data.currentChannel" [messageType]="'firstMessage'"></app-inputbox>

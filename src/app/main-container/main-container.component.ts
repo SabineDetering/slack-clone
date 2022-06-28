@@ -20,13 +20,10 @@ import { DataService } from 'src/services/data.service';
 })
 export class MainContainerComponent implements OnInit {
   @ViewChild('threadContainer') threadContainer: any;
-  currentChannel: CurrentChannel;
   threads: Thread[] = [];
   users: User[];
 
   constructor(public Data: DataService, private Auth: AuthService) {
-    this.getCurrentChannel();
-    this.getCurrentThreads();
     this.getLastUserSessionFromLocalStorage();
   }
 
@@ -35,18 +32,6 @@ export class MainContainerComponent implements OnInit {
 
   scrollToBottom() {
     this.threadContainer.nativeElement.scrollTop = this.threadContainer.nativeElement.scrollHeight;
-  }
-
-  getCurrentChannel() {
-    this.Data.currentChannel$.subscribe((channel) => {
-      this.currentChannel = channel;
-    });
-  }
-
-  getCurrentThreads() {
-    this.Data.currentThreads$.subscribe((threads) => {
-      this.threads = threads;
-    });
   }
 
     // checks if a current channel and thread are stored in local storage for the current user and if so, sets them in Data.currentChannel$ and Data.currentThread$
@@ -131,8 +116,8 @@ export class MainContainerComponent implements OnInit {
     this.Data.currentThread$.next(thread);
     this.Data.setUserSessionInLocalStorage(
       this.Auth.currentUserId,
-      this.currentChannel.id,
-      this.currentChannel.type,
+      this.Data.currentChannel.id,
+      this.Data.currentChannel.type,
       thread.threadID
     );
     this.Data.getMessagesFromThreadID(thread.threadID);

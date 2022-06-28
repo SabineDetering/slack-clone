@@ -1,7 +1,7 @@
 <div class="head">
   <div class="title-container">
     <span class="threadTitle">Thread</span>
-    <span class="threadDescription">{{ currentChannel.name }}</span>
+    <span class="threadDescription">{{ Data.currentChannel.name }}</span>
   </div>
   <div class="icon" (click)="closeThreadContainer()">
     <mat-icon class="close-icon">close</mat-icon>
@@ -9,14 +9,14 @@
   <!-- {{ currentChannel.directChannelMembers ? currentChannel.directChannelMembers : currentChannel.channelName }} -->
 </div>
 <div class="messagesContainer">
-  <app-message *ngIf="currentThread.firstMessageID == 'deleted'" class="first-message" [thread]="currentThread"></app-message>
+  <app-message *ngIf="Data.currentThread.firstMessageID == 'deleted'" class="first-message" [thread]="Data.currentThread"></app-message>
   <div
     class="message"
     *ngFor="let message of Data.currentMessages$ | async; index as i; trackBy:trackByIndex"
   >
-    <app-message-actions [actionsType]="'messageActions'" [currentChannel]="currentChannel" [message]="message" [thread]="currentThread"></app-message-actions>
+    <app-message-actions [actionsType]="'messageActions'" [message]="message" [thread]="Data.currentThread"></app-message-actions>
 
-    <app-message [class.first-message]="i == 0 && currentThread.firstMessageID != 'deleted'" [message]="message" [thread]="currentThread"></app-message>
+    <app-message [class.first-message]="i == 0 && Data.currentThread.firstMessageID != 'deleted'" [message]="message" [thread]="Data.currentThread"></app-message>
   </div>
 </div>
 <app-inputbox [messageType]="'answerMessage'"></app-inputbox>

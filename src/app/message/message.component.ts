@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Message } from 'src/models/message.class';
 import { Thread } from 'src/models/thread.class';
 import { DataService } from 'src/services/data.service';

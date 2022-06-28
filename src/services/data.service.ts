@@ -34,12 +34,16 @@ export class DataService {
   private threadsCollection: AngularFirestoreCollection<Thread>;
 
   public currentMessages$: BehaviorSubject<Message[]> = new BehaviorSubject([]);
+  public currentMessages!: Message[];
   private messageCollection: AngularFirestoreCollection<Message>;
 
   public currentChannel$: BehaviorSubject<CurrentChannel> = new BehaviorSubject(
     null
   );
+  public currentChannel!: CurrentChannel;
+
   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public currentThread!: Thread;
 
   private users: User[];
   public directChannels: DirectChannel[];
@@ -73,6 +77,9 @@ export class DataService {
 
     this.subscribeToUsers();
     this.subscribeToDirectChannels();
+    this.subscribeToCurrentChannel()
+    this.subscribeToCurrentThread()
+    this.subscribeToCurrentMessages()
   }
 
   subscribeToUsers() {
@@ -81,6 +88,24 @@ export class DataService {
 
   subscribeToDirectChannels() {
     this.directChannels$.subscribe((dc) => (this.directChannels = dc));
+  }
+
+  subscribeToCurrentChannel(){
+    this.currentChannel$.subscribe((channel) => {
+      this.currentChannel = channel;
+    });
+  }
+
+  subscribeToCurrentThread(){
+    this.currentThread$.subscribe((thread) => {
+      this.currentThread = thread;
+    });
+  }
+
+  subscribeToCurrentMessages(){
+    this.currentMessages$.subscribe((messages) => {
+      this.currentMessages = messages;
+    });
   }
 
   async getChannelFromChannelID(channelID: string) {

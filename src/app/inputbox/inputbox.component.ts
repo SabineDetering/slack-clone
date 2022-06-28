@@ -23,8 +23,8 @@ export class InputboxComponent implements OnInit {
   private message = new Message();
   private newThread = new Thread();
 
-  public currentChannel!: CurrentChannel;
-  private currentThread!: Thread;
+  /* public currentChannel!: CurrentChannel; */
+  /* private currentThread!: Thread; */
   public userInput: any = ''; // ngModel Input
 
   public messageFiles: any[] = []; // datatype: object
@@ -34,24 +34,12 @@ export class InputboxComponent implements OnInit {
     public Auth: AuthService,
     private storage: AngularFireStorage,
     public editor: EditorService
-  ) {
-    this.getCurrentThread();
-  }
+  ) {}
 
   ngOnInit(): void {
     if (this.editMessage) {
       this.handleEditMessage();
     }
-  }
-
-  getCurrentThread() {
-    this.Data.currentThread$.subscribe(
-      (thread) => (this.currentThread = new Thread(thread))
-    );
-  }
-
-  getCurrentChannel() {
-    this.currentChannel = this.Data.currentChannel$.getValue(); // consider relocating to onInit() ??
   }
 
   handleEditMessage() {
@@ -62,8 +50,8 @@ export class InputboxComponent implements OnInit {
 
   handleSendingMessage(): void {
     console.log('handleSendingMessage:', this.message);
-    
-    this.getCurrentChannel();
+
+    /* this.getCurrentChannel(); */
     if (this.userInput.length > 0 || this.messageFiles.length > 0) {
       if (this.editMessage) {
         console.log('add EDITED message', this.editMessage);
@@ -139,7 +127,7 @@ export class InputboxComponent implements OnInit {
 
   addNewMessage() {
     if (this.messageType == 'answerMessage') {
-      this.addMessageToThread(this.currentThread.threadID);
+      this.addMessageToThread(this.Data.currentThread.threadID);
       this.updateAnswerAmountInThread();
     } else {
       this.addMessageAndThread();
@@ -156,7 +144,7 @@ export class InputboxComponent implements OnInit {
     const currentTime = new Date().getTime();
     let uniqueThreadID = this.getUniqueID(currentTime);
     this.newThread.threadID = uniqueThreadID; // set custom ThreadID to use it for this thread and saveMessage()
-    this.newThread.channelID = this.currentChannel.id;
+    this.newThread.channelID = this.Data.currentChannel.id;
     await this.Data.saveThread(this.newThread.toJSON());
     return uniqueThreadID;
   }
@@ -171,7 +159,7 @@ export class InputboxComponent implements OnInit {
     const currentTime = new Date().getTime();
     let uniqueMessageID = this.getUniqueID(currentTime);
     this.message.threadID = threadID;
-    this.message.channelID = this.currentChannel.id;
+    this.message.channelID = this.Data.currentChannel.id;
     this.message.messageID = uniqueMessageID;
     this.message.authorID = this.Auth.currentUserId;
     this.message.timestamp = currentTime;
@@ -193,7 +181,7 @@ export class InputboxComponent implements OnInit {
 
   getUniqueID(currentTime: number) {
     return (
-      this.currentChannel.id +
+      this.Data.currentChannel.id +
       currentTime +
       '-' +
       Math.round(Math.random() * 10000).toString()
@@ -207,7 +195,7 @@ export class InputboxComponent implements OnInit {
 
   clearData() {
     console.log('clearData');
-    
+
     this.editor.messageToEdit = null;
     this.editMessage = null;
     this.userInput = '';
@@ -216,9 +204,9 @@ export class InputboxComponent implements OnInit {
   }
 
   updateAnswerAmountInThread() {
-    this.currentThread.answerAmount++;
-    this.Data.saveThread(this.currentThread.toJSON());
-    this.Data.currentThread$.next(this.currentThread);
+    this.Data.currentThread.answerAmount++;
+    this.Data.saveThread(this.Data.currentThread.toJSON());
+    this.Data.currentThread$.next(this.Data.currentThread);
   }
 
   setLoadingStatus(status: string, file: File) {
