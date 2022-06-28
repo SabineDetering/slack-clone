@@ -20,16 +20,12 @@
         (date | date: "medium") || "unknown date"
       }}</span>
     </div>
-    <app-inputbox
-      *ngIf="
-        editor.messageToEdit?.messageID == message.messageID && !isDeleted;
-        else messageText
-      "
-      [editMessage]="message"
-    ></app-inputbox>
-    <ng-template #messageText>
-      <div [innerHTML]="message.messageText"></div>
-    </ng-template>
+
+    <div
+      *ngIf="editor.messageToEdit?.messageID != message.messageID || isDeleted"
+      [innerHTML]="message.messageText"
+    ></div>
+
     <img
       #thumbnail
       class="img-thumbnail"
@@ -39,6 +35,15 @@
     />
   </div>
 </div>
+
+<app-inputbox [ngClass]="parentContainer == 'main' ? 'main-msg-input' : 'thread-msg-input'"
+*ngIf="
+  message &&
+  editor.messageToEdit?.messageID == message.messageID &&
+  !isDeleted
+"
+[editMessage]="message"
+></app-inputbox>
 
 <div *ngIf="firstAnswerMessage" class="first-message-separator">
   <span>{{ Data.currentThread.answerAmount }} answers</span>

@@ -155,3 +155,12 @@ button {
     opacity: 0.1;
   }
 }
+
+.main-msg-input{
+  width: calc(100% - 44px);
+  margin-left: 44px;
+}
+
+.thread-msg-input{
+  width: 100%;
+}

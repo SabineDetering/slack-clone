@@ -13,6 +13,7 @@ export class MessageComponent implements OnInit {
   @Input() message!: Message;
   @Input() thread!: Thread;
   @Input() firstAnswerMessage: Boolean = false;
+  @Input() parentContainer!: string;
 
   date: Date | undefined;
   messageAuthorName: string;

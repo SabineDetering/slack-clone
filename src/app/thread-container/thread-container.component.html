@@ -9,14 +9,14 @@
   <!-- {{ currentChannel.directChannelMembers ? currentChannel.directChannelMembers : currentChannel.channelName }} -->
 </div>
 <div class="messagesContainer">
-  <app-message *ngIf="Data.currentThread.firstMessageID == 'deleted'" [firstAnswerMessage]="true" [thread]="Data.currentThread"></app-message>
+  <app-message *ngIf="Data.currentThread.firstMessageID == 'deleted'" [firstAnswerMessage]="true" [thread]="Data.currentThread" [parentContainer]="'threadContainer'"></app-message>
   <div
     class="message"
     *ngFor="let message of Data.currentMessages$ | async; index as i; trackBy:trackByIndex"
   >
     <app-message-actions [actionsType]="'messageActions'" [message]="message" [thread]="Data.currentThread"></app-message-actions>
 
-    <app-message [firstAnswerMessage]="i == 0 && Data.currentThread.firstMessageID != 'deleted'" [message]="message" [thread]="Data.currentThread"></app-message>
+    <app-message [firstAnswerMessage]="i == 0 && Data.currentThread.firstMessageID != 'deleted'" [message]="message" [thread]="Data.currentThread" [parentContainer]="'threadContainer'"></app-message>
   </div>
 </div>
 <app-inputbox [messageType]="'answerMessage'"></app-inputbox>
