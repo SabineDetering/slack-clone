@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.Data.users$.subscribe((users) => {
+    let userSubscription = this.Data.users$.subscribe((users) => {
       if (this.Auth.currentUserId) {
         const user = this.Data.getUserdataFromUserID(this.Auth.currentUserId);
         if (user) {
@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
             this.setStandardAvatarAndGuestName(this.Auth.user.uid, 'avatar');
           }
         }
+        userSubscription.unsubscribe()
       }
     });
   }

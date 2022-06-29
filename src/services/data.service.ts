@@ -364,7 +364,6 @@ export class DataService {
 
   getUserSessionFromLocalStorage(userID: string) {
     const sessionData = localStorage.getItem(`session-${userID}`);
-    console.log(sessionData);
     return sessionData ? JSON.parse(sessionData) : null;
   }
 

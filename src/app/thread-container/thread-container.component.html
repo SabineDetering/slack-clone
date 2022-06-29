@@ -16,7 +16,7 @@
   >
     <app-message-actions [actionsType]="'messageActions'" [message]="message" [thread]="Data.currentThread"></app-message-actions>
 
-    <app-message [firstAnswerMessage]="i == 0 && Data.currentThread.firstMessageID != 'deleted'" [message]="message" [thread]="Data.currentThread" [parentContainer]="'threadContainer'"></app-message>
+    <app-message [firstAnswerMessage]="i == 0 && Data.currentThread.firstMessageID != 'deleted'" [message]="message" [thread]="Data.currentThread"></app-message>
   </div>
 </div>
 <app-inputbox [messageType]="'answerMessage'"></app-inputbox>
