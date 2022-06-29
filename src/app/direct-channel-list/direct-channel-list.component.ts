@@ -8,6 +8,7 @@ import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 import { ChannelService } from 'src/services/channel.service';
 import { DialogAddDirectChannelComponent } from '../dialog-add-direct-channel/dialog-add-direct-channel.component';
+import { ThreadService } from 'src/services/thread.service';
 
 @Component({
   selector: 'app-direct-channel-list',
@@ -24,7 +25,8 @@ export class DirectChannelListComponent implements OnInit {
     public dialog: MatDialog,
     public Data: DataService,
     public Auth: AuthService,
-    private cs: ChannelService
+    private cs: ChannelService,
+    private ts: ThreadService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -85,6 +87,6 @@ export class DirectChannelListComponent implements OnInit {
   }
 
   closeCurrentThread() {
-    this.Data.closeCurrentThread(true, this.Auth.currentUserId);
+    this.ts.closeCurrentThread(true, this.Auth.currentUserId);
   }
 }

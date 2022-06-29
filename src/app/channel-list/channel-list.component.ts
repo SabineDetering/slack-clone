@@ -8,6 +8,7 @@ import { DataService } from 'src/services/data.service';
 import { ChannelService } from 'src/services/channel.service';
 import { DialogChannelComponent } from '../dialog-channel/dialog-channel.component';
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
+import { ThreadService } from 'src/services/thread.service';
 @Component({
   selector: 'app-channel-list',
   templateUrl: './channel-list.component.html',
@@ -22,6 +23,7 @@ export class ChannelListComponent implements OnInit {
     private Auth: AuthService,
     public Data: DataService,
     private cs: ChannelService,
+    private ts: ThreadService,
     private _snackBar: MatSnackBar
   ) {}
 
@@ -57,6 +59,13 @@ export class ChannelListComponent implements OnInit {
     });
   }
 
+
+  deleteChannel(channelID: string){
+    this.Data.deleteThreadsInChannel(channelID);
+    this.Data.deleteMessagesInChannel(channelID);
+    this.Data.deleteChannel(channelID);
+  }
+
   setCurrentChannel(channel: Channel) {
     if (!this.sameAsStorageChannel(channel.channelID)) {
       this.cs.deleteChannelSubscription();
@@ -69,7 +78,7 @@ export class ChannelListComponent implements OnInit {
       );
       this.Data.getThreadsFromChannelID(channel.channelID);
       if (this.Data.currentThread) {
-        this.Data.closeCurrentThread(true, this.Auth.currentUserId);
+        this.ts.closeCurrentThread(true, this.Auth.currentUserId);
       }
     }
   }

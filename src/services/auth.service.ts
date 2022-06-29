@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { deleteUser } from 'firebase/auth';
 import { DataService } from './data.service';
 import { ChannelService } from './channel.service';
+import { ThreadService } from './thread.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,8 @@ export class AuthService {
     public af: AngularFireAuth,
     private router: Router,
     private Data: DataService,
-    private cs: ChannelService
+    private cs: ChannelService,
+    private ts: ThreadService
   ) {
     af.authState.subscribe((auth) => {
       this.authState = auth;
@@ -60,7 +62,7 @@ export class AuthService {
 
   closeSession(){
     console.log('closeSession')
-    this.Data.closeCurrentThread(false, this.currentUserId);
+    this.ts.closeCurrentThread(false, this.currentUserId);
     this.cs.closeCurrentChannel()
   }
 

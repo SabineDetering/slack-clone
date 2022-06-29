@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
+import { ThreadService } from 'src/services/thread.service';
 
 @Component({
   selector: 'app-thread-container',
@@ -9,13 +10,13 @@ import { DataService } from 'src/services/data.service';
 })
 export class ThreadContainerComponent implements OnInit {
 
-  constructor(public Data: DataService, private Auth: AuthService) {
+  constructor(public Data: DataService, private Auth: AuthService, private ts: ThreadService) {
   }
 
   ngOnInit(): void {}
 
   closeThreadContainer(){
-    this.Data.closeCurrentThread(true, this.Auth.currentUserId);
+    this.ts.closeCurrentThread(true, this.Auth.currentUserId);
   }
 
   trackByIndex(index: any) {

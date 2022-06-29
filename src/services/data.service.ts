@@ -49,7 +49,7 @@ export class DataService {
   public directChannels: DirectChannel[];
 
   public channelSubscription!: Subscription;
-  private threadSubscription!: Subscription;
+  public threadSubscription!: Subscription;
   /*   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(
     new Thread()
   ); */
@@ -109,6 +109,8 @@ export class DataService {
     });
   }
 
+  // ############  GET FUNCTIONS  ############
+
   async getChannelFromChannelID(channelID: string) {
     return (await firstValueFrom(
       this.channelCollection
@@ -167,21 +169,7 @@ export class DataService {
     return result;
   }
 
-  closeCurrentThread(removeFromLocalStorage: boolean, userID: string) {
-    console.log('closeCurrentThread');
-    this.currentMessages$.next([]);
-    this.currentThread$.next(null);
-    this.deleteThreadSubscription();
-    if (removeFromLocalStorage) {
-      let storageSession = this.getUserSessionFromLocalStorage(userID);
-      this.setUserSessionInLocalStorage(
-        userID,
-        storageSession.channel.channelID,
-        storageSession.channel.type,
-        null
-      );
-    }
-  }
+  // ############  SAVE FUNCTIONS  ############
 
   addChannel(channel: any) {
     this.channelCollection.add(channel);
@@ -217,6 +205,8 @@ export class DataService {
     });
   }
 
+  // ############  UPDATE FUNCTIONS  ############
+
   updateMessage(message: any) {
     console.log('updateMessage', message);
     return new Promise((resolve, reject) => {
@@ -235,12 +225,6 @@ export class DataService {
   }
 
   // ############  DELETE FUNCTIONS #############
-
-  deleteChannel(channelID: string) {
-    this.deleteThreadsInChannel(channelID);
-    this.deleteMessagesInChannel(channelID);
-    this.channelCollection.doc(channelID).delete();
-  }
 
   deleteThreadsInChannel(channelID: string) {
     this.firestore
@@ -274,23 +258,18 @@ export class DataService {
     this.threadsCollection.doc(threadID).delete();
   }
 
-  deleteThreadSubscription() {
-    console.log('deleteThreadSubscription');
-    if (this.threadSubscription) {
-      this.threadSubscription.unsubscribe();
-      console.log(this.threadSubscription);
-    } else return;
-  }
-
-  deleteUser(id: string) {
-    this.userCollection.doc(id).delete();
+  deleteChannel(channelID: string) {
+    this.channelCollection.doc(channelID).delete();
   }
 
   deleteDirectChannel(directChannelID: string) {
     console.log('deleting directChannel');
     this.directChannelCollection.doc(directChannelID).delete();
   }
-
+  
+  deleteUser(id: string) {
+    this.userCollection.doc(id).delete();
+  }
 
   // #############  LOCAL STORAGE  #############
 
