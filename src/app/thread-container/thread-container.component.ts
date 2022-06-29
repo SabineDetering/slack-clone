@@ -1,8 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Channel } from 'src/models/channel.class';
-import { CurrentChannel } from 'src/models/current-channel.class';
-import { DirectChannel } from 'src/models/direct-channel.class';
-import { Thread } from 'src/models/thread.class';
 import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 

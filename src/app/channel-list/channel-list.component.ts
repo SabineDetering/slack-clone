@@ -5,6 +5,7 @@ import { Channel } from 'src/models/channel.class';
 import { CurrentChannel } from 'src/models/current-channel.class';
 import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
+import { ChannelService } from 'src/services/channel.service';
 import { DialogChannelComponent } from '../dialog-channel/dialog-channel.component';
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 @Component({
@@ -20,6 +21,7 @@ export class ChannelListComponent implements OnInit {
     public dialog: MatDialog,
     private Auth: AuthService,
     public Data: DataService,
+    private cs: ChannelService,
     private _snackBar: MatSnackBar
   ) {}
 
@@ -57,8 +59,8 @@ export class ChannelListComponent implements OnInit {
 
   setCurrentChannel(channel: Channel) {
     if (!this.sameAsStorageChannel(channel.channelID)) {
-      this.Data.deleteChannelSubscription();
-      this.Data.setCurrentChannelFromChannel(channel);
+      this.cs.deleteChannelSubscription();
+      this.cs.setCurrentChannelFromChannel(channel);
       this.Data.setUserSessionInLocalStorage(
         this.Auth.currentUserId,
         channel.channelID,

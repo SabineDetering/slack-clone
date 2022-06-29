@@ -45,10 +45,10 @@ export class DataService {
   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(null);
   public currentThread!: Thread;
 
-  private users: User[];
+  public users: User[];
   public directChannels: DirectChannel[];
 
-  private channelSubscription!: Subscription;
+  public channelSubscription!: Subscription;
   private threadSubscription!: Subscription;
   /*   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(
     new Thread()
@@ -167,45 +167,6 @@ export class DataService {
     return result;
   }
 
-  setCurrentChannelFromChannel(channel: Channel) {
-    this.currentChannel$.next(
-      new CurrentChannel({
-        type: 'channel',
-        id: channel.channelID,
-        name: channel.channelName,
-        description: channel.channelDescription,
-      })
-    );
-  }
-
-  setCurrentChannelFromDirectChannel(directChannel: DirectChannel) {
-    this.currentChannel$.next(
-      new CurrentChannel({
-        type: 'directChannel',
-        id: directChannel.directChannelID,
-        name: directChannel.directChannelName,
-      })
-    );
-  }
-
-  setDirectChannelProperties(dc: DirectChannel, currentUserID: string) {
-    // dc = new DirectChannel(dc);
-    console.log(dc);
-    dc.directChannelName = this.users
-      .filter(
-        (user) =>
-          dc.directChannelMembers.includes(user.uid) &&
-          (user.uid != currentUserID || dc.directChannelMembers.length == 1)
-      )
-      .map((user) => user.displayName)
-      .sort()
-      .join(', ');
-    dc.directChannelAvatar = this.users.filter(
-      (user) => dc.directChannelMembers[0] == user.uid
-    )[0].photoURL;
-    return dc;
-  }
-
   closeCurrentThread(removeFromLocalStorage: boolean, userID: string) {
     console.log('closeCurrentThread');
     this.currentMessages$.next([]);
@@ -220,13 +181,6 @@ export class DataService {
         null
       );
     }
-  }
-
-  closeCurrentChannel() {
-    console.log('closeCurrentChannel');
-    this.currentChannel$.next(null);
-    this.currentThreads$.next([]);
-    this.deleteChannelSubscription();
   }
 
   addChannel(channel: any) {
@@ -245,24 +199,17 @@ export class DataService {
     this.directChannelCollection.doc().set(directChannel);
   }
 
-  saveDocWithCustomID(collection: string, obj: any, id: string) {
-    return new Promise((resolve, reject) => {
-      const collectionRef = this.firestore.collection(collection);
-      collectionRef.doc(id).set(obj);
-      resolve('document added to DB');
-      (err: any) => reject(err);
-    });
-  }
-
   saveThread(thread: any) {
+    console.log('save thread ', thread.threadID)
     return new Promise((resolve, reject) => {
       this.threadsCollection.doc(thread.threadID).set(thread);
       resolve('thread added to DB');
       (err: any) => reject(err);
     });
   }
-
+  
   saveMessage(message: any) {
+    console.log('save message ', message.messageID)
     return new Promise((resolve, reject) => {
       this.messageCollection.doc(message.messageID).set(message);
       resolve('message added to DB');
@@ -327,14 +274,6 @@ export class DataService {
     this.threadsCollection.doc(threadID).delete();
   }
 
-  deleteChannelSubscription() {
-    console.log('deleteChannelSubscription');
-    if (this.channelSubscription) {
-      this.channelSubscription.unsubscribe();
-      console.log(this.channelSubscription);
-    } else return;
-  }
-
   deleteThreadSubscription() {
     console.log('deleteThreadSubscription');
     if (this.threadSubscription) {
@@ -352,31 +291,6 @@ export class DataService {
     this.directChannelCollection.doc(directChannelID).delete();
   }
 
-  /**
-   * if User is the only member in direct channel, the channel (TODO: and all its threads and messages) is deleted
-   * if User is one of several members, userID is deleted from member list
-   * @param userID
-   */
-  deleteUserFromDirectChannels(userID: string) {
-    this.directChannels.forEach((dc) => {
-      if (dc.directChannelMembers.includes(userID)) {
-        if (dc.directChannelMembers.length == 1) {
-          this.deleteDirectChannel(dc.directChannelID);
-          this.deleteThreadsInChannel(dc.directChannelID);
-          this.deleteMessagesInChannel(dc.directChannelID);
-        } else {
-          //TODO: delete user from member list and update dc in firestore
-          dc.directChannelMembers.splice(
-            dc.directChannelMembers.indexOf(userID),
-            1
-          );
-          this.updateDirectChannel(dc.directChannelID, {
-            directChannelMembers: dc.directChannelMembers,
-          });
-        }
-      }
-    });
-  }
 
   // #############  LOCAL STORAGE  #############
 

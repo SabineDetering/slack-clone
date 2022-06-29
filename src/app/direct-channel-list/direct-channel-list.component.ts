@@ -6,6 +6,7 @@ import { DirectChannel } from 'src/models/direct-channel.class';
 import { User } from 'src/models/user.class';
 import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
+import { ChannelService } from 'src/services/channel.service';
 import { DialogAddDirectChannelComponent } from '../dialog-add-direct-channel/dialog-add-direct-channel.component';
 
 @Component({
@@ -22,7 +23,8 @@ export class DirectChannelListComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     public Data: DataService,
-    public Auth: AuthService
+    public Auth: AuthService,
+    private cs: ChannelService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -35,7 +37,7 @@ export class DirectChannelListComponent implements OnInit {
         )
         .map((dc) => {
           //get names and avatar for direct channel
-          const directChannel = this.Data.setDirectChannelProperties(
+          const directChannel = this.cs.setDirectChannelProperties(
             dc,
             this.Auth.currentUserId
           );
@@ -57,8 +59,8 @@ export class DirectChannelListComponent implements OnInit {
   async setCurrentDirectChannel(directChannel: DirectChannel) {
     // set new channel only if it's not the same as the last opened channel
     if (!this.sameAsStorageChannel(directChannel.directChannelID)) {
-      this.Data.deleteChannelSubscription();
-      this.Data.setCurrentChannelFromDirectChannel(directChannel);
+      this.cs.deleteChannelSubscription();
+      this.cs.setCurrentChannelFromDirectChannel(directChannel);
       this.Data.setUserSessionInLocalStorage(
         this.Auth.currentUserId,
         directChannel.directChannelID,

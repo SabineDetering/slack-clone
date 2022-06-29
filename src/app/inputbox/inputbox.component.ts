@@ -141,6 +141,7 @@ export class InputboxComponent implements OnInit {
   }
 
   async createNewThread() {
+    console.log('create new Thread')
     const currentTime = new Date().getTime();
     let uniqueThreadID = this.getUniqueID(currentTime);
     this.newThread.threadID = uniqueThreadID; // set custom ThreadID to use it for this thread and saveMessage()

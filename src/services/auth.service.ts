@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { deleteUser } from 'firebase/auth';
 import { DataService } from './data.service';
+import { ChannelService } from './channel.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,8 @@ export class AuthService {
   constructor(
     public af: AngularFireAuth,
     private router: Router,
-    private Data: DataService
+    private Data: DataService,
+    private cs: ChannelService
   ) {
     af.authState.subscribe((auth) => {
       this.authState = auth;
@@ -59,7 +61,7 @@ export class AuthService {
   closeSession(){
     console.log('closeSession')
     this.Data.closeCurrentThread(false, this.currentUserId);
-    this.Data.closeCurrentChannel()
+    this.cs.closeCurrentChannel()
   }
 
   /**
@@ -79,6 +81,6 @@ export class AuthService {
     //delete user from firebase collections
     this.Data.deleteUser(user.uid);
     this.Data.removeUserSessionFromLocalStorage(user.uid);
-    this.Data.deleteUserFromDirectChannels(user.uid);
+    this.cs.deleteUserFromDirectChannels(user.uid);
   }
 }

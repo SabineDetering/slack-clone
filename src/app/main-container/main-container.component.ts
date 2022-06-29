@@ -12,6 +12,7 @@ import { Thread } from 'src/models/thread.class';
 import { User } from 'src/models/user.class';
 import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
+import { ChannelService } from 'src/services/channel.service';
 
 @Component({
   selector: 'app-main-container',
@@ -23,19 +24,15 @@ export class MainContainerComponent implements OnInit {
   threads: Thread[] = [];
   users: User[];
 
-  constructor(public Data: DataService, private Auth: AuthService) {
+  constructor(public Data: DataService, private Auth: AuthService, private cs: ChannelService) {
     this.getLastUserSessionFromLocalStorage();
   }
 
   ngOnInit(): void {}
 
   scrollToBottom() {
-    /* console.log('scrollToBottom'); */
-    if (this.threadContainer) {
-/*       console.log('scrollToBottom with if condition'); */
-      this.threadContainer.nativeElement.scrollTop =
-        this.threadContainer.nativeElement.scrollHeight;
-    }
+    this.threadContainer.nativeElement.scrollTop =
+      this.threadContainer.nativeElement.scrollHeight;
   }
 
   // checks if a current channel and thread are stored in local storage for the current user and if so, sets them in Data.currentChannel$ and Data.currentThread$
@@ -67,7 +64,7 @@ export class MainContainerComponent implements OnInit {
   async setCurrentChannelToChannel(channelID: any) {
     const channel = await this.Data.getChannelFromChannelID(channelID);
     if (channel) {
-      this.Data.setCurrentChannelFromChannel(channel);
+      this.cs.setCurrentChannelFromChannel(channel);
       this.Data.getThreadsFromChannelID(channelID);
     } else {
       this.Data.removeUserSessionFromLocalStorage(this.Auth.currentUserId);
@@ -79,11 +76,11 @@ export class MainContainerComponent implements OnInit {
       directChannelID
     );
     if (directChannel) {
-      const directChannelWithProps = this.Data.setDirectChannelProperties(
+      const directChannelWithProps = this.cs.setDirectChannelProperties(
         directChannel,
         this.Auth.currentUserId
       );
-      this.Data.setCurrentChannelFromDirectChannel(directChannelWithProps);
+      this.cs.setCurrentChannelFromDirectChannel(directChannelWithProps);
       this.Data.getThreadsFromChannelID(directChannelID);
     } else {
       this.Data.removeUserSessionFromLocalStorage(this.Auth.currentUserId);
