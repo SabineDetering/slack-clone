@@ -9,6 +9,7 @@ import { DataService } from 'src/services/data.service';
 import { ChannelService } from 'src/services/channel.service';
 import { DialogAddDirectChannelComponent } from '../dialog-add-direct-channel/dialog-add-direct-channel.component';
 import { ThreadService } from 'src/services/thread.service';
+import { LocalStorageService } from 'src/services/local-storage.service';
 
 @Component({
   selector: 'app-direct-channel-list',
@@ -26,7 +27,8 @@ export class DirectChannelListComponent implements OnInit {
     public Data: DataService,
     public Auth: AuthService,
     private cs: ChannelService,
-    private ts: ThreadService
+    private ts: ThreadService,
+    private storage: LocalStorageService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -63,7 +65,7 @@ export class DirectChannelListComponent implements OnInit {
     if (!this.sameAsStorageChannel(directChannel.directChannelID)) {
       this.cs.deleteChannelSubscription();
       this.cs.setCurrentChannelFromDirectChannel(directChannel);
-      this.Data.setUserSessionInLocalStorage(
+      this.storage.setUserSessionInLocalStorage(
         this.Auth.currentUserId,
         directChannel.directChannelID,
         'directChannel',
@@ -77,10 +79,10 @@ export class DirectChannelListComponent implements OnInit {
   }
 
   sameAsStorageChannel(directChannelID: string) {
-    if (this.Data.getUserSessionFromLocalStorage(this.Auth.currentUserId))
+    if (this.storage.getUserSessionFromLocalStorage(this.Auth.currentUserId))
       return (
         directChannelID ==
-        this.Data.getUserSessionFromLocalStorage(this.Auth.currentUserId)
+        this.storage.getUserSessionFromLocalStorage(this.Auth.currentUserId)
           .channel.channelID
       );
     else return false;

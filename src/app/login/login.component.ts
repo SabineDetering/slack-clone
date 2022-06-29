@@ -67,12 +67,4 @@ export class LoginComponent implements OnInit {
   printError(event: Event) {
     console.error(event);
   }
-
-  /**
-   *
-   */
-/*   closeThreadContainer() {
-    this.Data.closeCurrentThread(false, this.Auth.currentUserId);
-    this.Data.deleteThreadSubscription();
-  } */
 }

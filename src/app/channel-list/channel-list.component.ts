@@ -9,6 +9,7 @@ import { ChannelService } from 'src/services/channel.service';
 import { DialogChannelComponent } from '../dialog-channel/dialog-channel.component';
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 import { ThreadService } from 'src/services/thread.service';
+import { LocalStorageService } from 'src/services/local-storage.service';
 @Component({
   selector: 'app-channel-list',
   templateUrl: './channel-list.component.html',
@@ -24,6 +25,7 @@ export class ChannelListComponent implements OnInit {
     public Data: DataService,
     private cs: ChannelService,
     private ts: ThreadService,
+    private storage: LocalStorageService,
     private _snackBar: MatSnackBar
   ) {}
 
@@ -70,7 +72,7 @@ export class ChannelListComponent implements OnInit {
     if (!this.sameAsStorageChannel(channel.channelID)) {
       this.cs.deleteChannelSubscription();
       this.cs.setCurrentChannelFromChannel(channel);
-      this.Data.setUserSessionInLocalStorage(
+      this.storage.setUserSessionInLocalStorage(
         this.Auth.currentUserId,
         channel.channelID,
         'channel',
@@ -84,10 +86,10 @@ export class ChannelListComponent implements OnInit {
   }
 
   sameAsStorageChannel(channelID: string) {
-    if (this.Data.getUserSessionFromLocalStorage(this.Auth.currentUserId))
+    if (this.storage.getUserSessionFromLocalStorage(this.Auth.currentUserId))
       return (
         channelID ==
-        this.Data.getUserSessionFromLocalStorage(this.Auth.currentUserId)
+        this.storage.getUserSessionFromLocalStorage(this.Auth.currentUserId)
           .channel.channelID
       );
     else return false;

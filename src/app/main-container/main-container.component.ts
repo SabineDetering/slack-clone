@@ -13,6 +13,7 @@ import { User } from 'src/models/user.class';
 import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 import { ChannelService } from 'src/services/channel.service';
+import { LocalStorageService } from 'src/services/local-storage.service';
 
 @Component({
   selector: 'app-main-container',
@@ -24,7 +25,12 @@ export class MainContainerComponent implements OnInit {
   threads: Thread[] = [];
   users: User[];
 
-  constructor(public Data: DataService, private Auth: AuthService, private cs: ChannelService) {
+  constructor(
+    public Data: DataService,
+    private Auth: AuthService,
+    private cs: ChannelService,
+    private storage: LocalStorageService
+  ) {
     this.getLastUserSessionFromLocalStorage();
   }
 
@@ -37,7 +43,7 @@ export class MainContainerComponent implements OnInit {
 
   // checks if a current channel and thread are stored in local storage for the current user and if so, sets them in Data.currentChannel$ and Data.currentThread$
   async getLastUserSessionFromLocalStorage() {
-    const storageSession = await this.Data.getUserSessionFromLocalStorage(
+    const storageSession = await this.storage.getUserSessionFromLocalStorage(
       this.Auth.currentUserId
     );
     if (!storageSession) this.showDefaultChannel();
@@ -67,7 +73,7 @@ export class MainContainerComponent implements OnInit {
       this.cs.setCurrentChannelFromChannel(channel);
       this.Data.getThreadsFromChannelID(channelID);
     } else {
-      this.Data.removeUserSessionFromLocalStorage(this.Auth.currentUserId);
+      this.storage.removeUserSessionFromLocalStorage(this.Auth.currentUserId);
     }
   }
 
@@ -83,7 +89,7 @@ export class MainContainerComponent implements OnInit {
       this.cs.setCurrentChannelFromDirectChannel(directChannelWithProps);
       this.Data.getThreadsFromChannelID(directChannelID);
     } else {
-      this.Data.removeUserSessionFromLocalStorage(this.Auth.currentUserId);
+      this.storage.removeUserSessionFromLocalStorage(this.Auth.currentUserId);
     }
   }
 
@@ -103,7 +109,7 @@ export class MainContainerComponent implements OnInit {
     if (thread) {
       this.openThread(thread);
     } else {
-      this.Data.setUserSessionInLocalStorage(
+      this.storage.setUserSessionInLocalStorage(
         this.Auth.currentUserId,
         storageSession.channel.channelID,
         storageSession.channel.type,
@@ -115,7 +121,7 @@ export class MainContainerComponent implements OnInit {
   openThread(thread: Thread) {
     console.log('open thread', thread);
     this.Data.currentThread$.next(thread);
-    this.Data.setUserSessionInLocalStorage(
+    this.storage.setUserSessionInLocalStorage(
       this.Auth.currentUserId,
       this.Data.currentChannel.id,
       this.Data.currentChannel.type,

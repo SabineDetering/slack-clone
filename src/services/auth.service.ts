@@ -5,6 +5,7 @@ import { deleteUser } from 'firebase/auth';
 import { DataService } from './data.service';
 import { ChannelService } from './channel.service';
 import { ThreadService } from './thread.service';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,8 @@ export class AuthService {
     private router: Router,
     private Data: DataService,
     private cs: ChannelService,
-    private ts: ThreadService
+    private ts: ThreadService,
+    private storage: LocalStorageService
   ) {
     af.authState.subscribe((auth) => {
       this.authState = auth;
@@ -82,7 +84,7 @@ export class AuthService {
       });
     //delete user from firebase collections
     this.Data.deleteUser(user.uid);
-    this.Data.removeUserSessionFromLocalStorage(user.uid);
+    this.storage.removeUserSessionFromLocalStorage(user.uid);
     this.cs.deleteUserFromDirectChannels(user.uid);
   }
 }

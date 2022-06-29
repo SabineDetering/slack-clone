@@ -9,13 +9,15 @@ import { ThreadService } from 'src/services/thread.service';
   styleUrls: ['./thread-container.component.scss'],
 })
 export class ThreadContainerComponent implements OnInit {
-
-  constructor(public Data: DataService, private Auth: AuthService, private ts: ThreadService) {
-  }
+  constructor(
+    public Data: DataService,
+    private Auth: AuthService,
+    private ts: ThreadService
+  ) {}
 
   ngOnInit(): void {}
 
-  closeThreadContainer(){
+  closeThreadContainer() {
     this.ts.closeCurrentThread(true, this.Auth.currentUserId);
   }
 

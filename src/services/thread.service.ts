@@ -1,13 +1,14 @@
 import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
 import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThreadService {
 
-  constructor(private Data: DataService) { }
+  constructor(private Data: DataService, private storage: LocalStorageService) { }
 
 
   closeCurrentThread(removeFromLocalStorage: boolean, userID: string) {
@@ -29,8 +30,8 @@ export class ThreadService {
   }
 
   removeThreadFromLocalStorage(userID: string){
-    let storageSession = this.Data.getUserSessionFromLocalStorage(userID);
-      this.Data.setUserSessionInLocalStorage(
+    let storageSession = this.storage.getUserSessionFromLocalStorage(userID);
+      this.storage.setUserSessionInLocalStorage(
         userID,
         storageSession.channel.channelID,
         storageSession.channel.type,

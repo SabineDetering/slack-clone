@@ -7,6 +7,7 @@ import { Thread } from 'src/models/thread.class';
 import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 import { EditorService } from 'src/services/editor.service';
+import { LocalStorageService } from 'src/services/local-storage.service';
 
 @Component({
   selector: 'app-message-actions',
@@ -25,7 +26,8 @@ export class MessageActionsComponent implements OnInit {
     public router: Router,
     private Data: DataService,
     private editor: EditorService,
-    private Auth: AuthService
+    private Auth: AuthService,
+    private storage: LocalStorageService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -38,7 +40,7 @@ export class MessageActionsComponent implements OnInit {
 
   answerInThread() {
     this.Data.currentThread$.next(this.thread);
-    this.Data.setUserSessionInLocalStorage(this.Auth.currentUserId, this.Data.currentChannel.id, this.Data.currentChannel.type,  this.thread.threadID);
+    this.storage.setUserSessionInLocalStorage(this.Auth.currentUserId, this.Data.currentChannel.id, this.Data.currentChannel.type,  this.thread.threadID);
     this.Data.getMessagesFromThreadID(this.thread.threadID);
   }
 
