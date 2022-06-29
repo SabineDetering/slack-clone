@@ -65,7 +65,9 @@ export class ChannelListComponent implements OnInit {
         null
       );
       this.Data.getThreadsFromChannelID(channel.channelID);
-      this.Data.closeCurrentThread(true, this.Auth.currentUserId);
+      if (this.Data.currentThread) {
+        this.Data.closeCurrentThread(true, this.Auth.currentUserId);
+      }
     }
   }
 

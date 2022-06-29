@@ -65,7 +65,9 @@ export class DirectChannelListComponent implements OnInit {
         null
       );
       this.Data.getThreadsFromChannelID(directChannel.directChannelID);
-      this.closeCurrentThread();
+      if (this.Data.currentThread) {
+        this.closeCurrentThread();
+      }
     }
   }
 

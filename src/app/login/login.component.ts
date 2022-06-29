@@ -71,8 +71,8 @@ export class LoginComponent implements OnInit {
   /**
    *
    */
-  closeThreadContainer() {
+/*   closeThreadContainer() {
     this.Data.closeCurrentThread(false, this.Auth.currentUserId);
     this.Data.deleteThreadSubscription();
-  }
+  } */
 }

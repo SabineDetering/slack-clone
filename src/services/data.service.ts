@@ -77,9 +77,9 @@ export class DataService {
 
     this.subscribeToUsers();
     this.subscribeToDirectChannels();
-    this.subscribeToCurrentChannel()
-    this.subscribeToCurrentThread()
-    this.subscribeToCurrentMessages()
+    this.subscribeToCurrentChannel();
+    this.subscribeToCurrentThread();
+    this.subscribeToCurrentMessages();
   }
 
   subscribeToUsers() {
@@ -90,19 +90,19 @@ export class DataService {
     this.directChannels$.subscribe((dc) => (this.directChannels = dc));
   }
 
-  subscribeToCurrentChannel(){
+  subscribeToCurrentChannel() {
     this.currentChannel$.subscribe((channel) => {
       this.currentChannel = channel;
     });
   }
 
-  subscribeToCurrentThread(){
+  subscribeToCurrentThread() {
     this.currentThread$.subscribe((thread) => {
       this.currentThread = thread;
     });
   }
 
-  subscribeToCurrentMessages(){
+  subscribeToCurrentMessages() {
     this.currentMessages$.subscribe((messages) => {
       this.currentMessages = messages;
     });
@@ -208,10 +208,17 @@ export class DataService {
   closeCurrentThread(removeFromLocalStorage: boolean, userID: string) {
     this.currentMessages$.next([]);
     this.currentThread$.next(null);
-    if (removeFromLocalStorage){ 
-      let storageSession = this.getUserSessionFromLocalStorage(userID)
-      this.setUserSessionInLocalStorage(userID, storageSession.channel.channelID, storageSession.channel.type, null);
-  }}
+    this.deleteThreadSubscription();
+    if (removeFromLocalStorage) {
+      let storageSession = this.getUserSessionFromLocalStorage(userID);
+      this.setUserSessionInLocalStorage(
+        userID,
+        storageSession.channel.channelID,
+        storageSession.channel.type,
+        null
+      );
+    }
+  }
 
   addChannel(channel: any) {
     this.channelCollection.add(channel);
@@ -312,8 +319,11 @@ export class DataService {
   }
 
   deleteThreadSubscription() {
-    if (this.threadSubscription) this.threadSubscription.unsubscribe();
-    else return;
+    console.log('deleteThreadSubscription');
+    if (this.threadSubscription) {
+      this.threadSubscription.unsubscribe();
+      console.log(this.threadSubscription);
+    } else return;
   }
 
   deleteUser(id: string) {
@@ -339,8 +349,13 @@ export class DataService {
           this.deleteMessagesInChannel(dc.directChannelID);
         } else {
           //TODO: delete user from member list and update dc in firestore
-          dc.directChannelMembers.splice(dc.directChannelMembers.indexOf(userID), 1);
-          this.updateDirectChannel(dc.directChannelID, { directChannelMembers: dc.directChannelMembers });
+          dc.directChannelMembers.splice(
+            dc.directChannelMembers.indexOf(userID),
+            1
+          );
+          this.updateDirectChannel(dc.directChannelID, {
+            directChannelMembers: dc.directChannelMembers,
+          });
         }
       }
     });

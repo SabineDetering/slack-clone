@@ -27,14 +27,18 @@ export class MainContainerComponent implements OnInit {
     this.getLastUserSessionFromLocalStorage();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   scrollToBottom() {
-    this.threadContainer.nativeElement.scrollTop = this.threadContainer.nativeElement.scrollHeight;
+    /* console.log('scrollToBottom'); */
+    if (this.threadContainer) {
+/*       console.log('scrollToBottom with if condition'); */
+      this.threadContainer.nativeElement.scrollTop =
+        this.threadContainer.nativeElement.scrollHeight;
+    }
   }
 
-    // checks if a current channel and thread are stored in local storage for the current user and if so, sets them in Data.currentChannel$ and Data.currentThread$
+  // checks if a current channel and thread are stored in local storage for the current user and if so, sets them in Data.currentChannel$ and Data.currentThread$
   async getLastUserSessionFromLocalStorage() {
     const storageSession = await this.Data.getUserSessionFromLocalStorage(
       this.Auth.currentUserId
