@@ -48,6 +48,7 @@ export class DataService {
   private users: User[];
   public directChannels: DirectChannel[];
 
+  private channelSubscription!: Subscription;
   private threadSubscription!: Subscription;
   /*   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(
     new Thread()
@@ -137,7 +138,7 @@ export class DataService {
   }
 
   getThreadsFromChannelID(channelID: string): void {
-    this.firestore
+    this.channelSubscription = this.firestore
       .collection<Thread>('threads', (ref) =>
         ref.where('channelID', '==', channelID)
       )
@@ -206,6 +207,7 @@ export class DataService {
   }
 
   closeCurrentThread(removeFromLocalStorage: boolean, userID: string) {
+    console.log('closeCurrentThread');
     this.currentMessages$.next([]);
     this.currentThread$.next(null);
     this.deleteThreadSubscription();
@@ -218,6 +220,13 @@ export class DataService {
         null
       );
     }
+  }
+
+  closeCurrentChannel() {
+    console.log('closeCurrentChannel');
+    this.currentChannel$.next(null);
+    this.currentThreads$.next([]);
+    this.deleteChannelSubscription();
   }
 
   addChannel(channel: any) {
@@ -316,6 +325,14 @@ export class DataService {
   deleteThread(threadID: string) {
     console.log('deleting thread ', threadID);
     this.threadsCollection.doc(threadID).delete();
+  }
+
+  deleteChannelSubscription() {
+    console.log('deleteChannelSubscription');
+    if (this.channelSubscription) {
+      this.channelSubscription.unsubscribe();
+      console.log(this.channelSubscription);
+    } else return;
   }
 
   deleteThreadSubscription() {

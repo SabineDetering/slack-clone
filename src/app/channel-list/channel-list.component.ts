@@ -57,6 +57,7 @@ export class ChannelListComponent implements OnInit {
 
   setCurrentChannel(channel: Channel) {
     if (!this.sameAsStorageChannel(channel.channelID)) {
+      this.Data.deleteChannelSubscription();
       this.Data.setCurrentChannelFromChannel(channel);
       this.Data.setUserSessionInLocalStorage(
         this.Auth.currentUserId,

@@ -32,7 +32,7 @@ export class AuthService {
             }
             this.user = null;
             this.router.navigate(['/login']);
-            this.Data.closeCurrentThread(false, this.currentUserId);
+            this.closeSession()
           }
         });
       }
@@ -54,6 +54,12 @@ export class AuthService {
 
   async updateProperties(json: any) {
     (await this.af.currentUser).updateProfile(json);
+  }
+
+  closeSession(){
+    console.log('closeSession')
+    this.Data.closeCurrentThread(false, this.currentUserId);
+    this.Data.closeCurrentChannel()
   }
 
   /**

@@ -57,6 +57,7 @@ export class DirectChannelListComponent implements OnInit {
   async setCurrentDirectChannel(directChannel: DirectChannel) {
     // set new channel only if it's not the same as the last opened channel
     if (!this.sameAsStorageChannel(directChannel.directChannelID)) {
+      this.Data.deleteChannelSubscription();
       this.Data.setCurrentChannelFromDirectChannel(directChannel);
       this.Data.setUserSessionInLocalStorage(
         this.Auth.currentUserId,
