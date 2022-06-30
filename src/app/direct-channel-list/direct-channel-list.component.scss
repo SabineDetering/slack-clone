@@ -11,7 +11,7 @@
         @include mix.flex();
     }
 
-    .add-btn {
+    .add-btn:not(.touch) {
         visibility: hidden;
     }
 
@@ -62,7 +62,7 @@
             }
         }
 
-        .more-btn {
+        .more-btn:not(.touch) {
             visibility: hidden;
         }
 

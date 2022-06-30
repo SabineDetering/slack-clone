@@ -10,6 +10,7 @@
       mat-icon-button
       title="Add new channel"
       class="add-btn"
+      [class.touch]="touchScreen"
       (click)="openChannelDialog(); $event.stopPropagation()"
     >
       <mat-icon>add</mat-icon>
@@ -17,15 +18,13 @@
   </div>
 
   <mat-nav-list *ngIf="channelsOpen" class="channel-list">
-    <!-- [routerLink]="['/channel/' + channel.channelID]" -->
     <a
       [routerLink]="['/channel']"
       list-item
-      (click)="setCurrentChannel(channel)"
       class="channel-list-item"
       *ngFor="let channel of Data.channels$ | async | orderBy: 'channelName'"
     >
-      <div class="left-part">
+      <div class="left-part" (click)="setCurrentChannel(channel)">
         <span class="hash"># </span>
         <span class="name" [title]="channel.channelName">{{
           channel.channelName
@@ -35,6 +34,7 @@
         mat-icon-button
         title="More"
         class="more-btn"
+        [class.touch]="touchScreen"
         [matMenuTriggerFor]="menu"
       >
         <mat-icon> more_vert</mat-icon>

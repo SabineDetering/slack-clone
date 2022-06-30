@@ -18,7 +18,8 @@ import { LocalStorageService } from 'src/services/local-storage.service';
 })
 export class DirectChannelListComponent implements OnInit {
   directChannelsOpen = true;
-  @Input() mobile: boolean;
+  @Input() mobile!: boolean;
+  @Input() touchScreen!: boolean;
   users: User[];
   directChannels: DirectChannel[];
 
@@ -29,7 +30,8 @@ export class DirectChannelListComponent implements OnInit {
     private cs: ChannelService,
     private ts: ThreadService,
     private storage: LocalStorageService
-  ) {}
+  ) { }
+
 
   async ngOnInit(): Promise<void> {
     //subscribe directChannels and merge with users to get participant names excluding logged in user
@@ -50,15 +52,28 @@ export class DirectChannelListComponent implements OnInit {
     });
   }
 
+
   toggleDirectChannels(event: Event) {
     event.stopPropagation();
     this.directChannelsOpen = !this.directChannelsOpen;
   }
 
+
   openAddDirectChannelDialog(event: Event) {
     event.stopPropagation();
-    this.dialog.open(DialogAddDirectChannelComponent);
+    const dialogRef = this.dialog.open(DialogAddDirectChannelComponent);
+    dialogRef.afterClosed().subscribe((dc) => {
+      console.log('dialog result', dc);
+      if (dc) {
+        const directChannel = this.cs.setDirectChannelProperties(
+          dc,
+          this.Auth.currentUserId
+        );
+        this.setCurrentDirectChannel(directChannel);
+      }
+    })
   }
+
 
   async setCurrentDirectChannel(directChannel: DirectChannel) {
     // set new channel only if it's not the same as the last opened channel
@@ -78,6 +93,7 @@ export class DirectChannelListComponent implements OnInit {
     }
   }
 
+
   sameAsStorageChannel(directChannelID: string) {
     if (this.storage.getUserSessionFromLocalStorage(this.Auth.currentUserId))
       return (
@@ -87,6 +103,7 @@ export class DirectChannelListComponent implements OnInit {
       );
     else return false;
   }
+
 
   closeCurrentThread() {
     this.ts.closeCurrentThread(true, this.Auth.currentUserId);

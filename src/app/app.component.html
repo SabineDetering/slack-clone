@@ -31,8 +31,8 @@
   >
     <div class="sidenav-wrapper">
       <div *ngIf="Auth.authenticated">
-        <app-channel-list [mobile]="mobileQuery.matches"></app-channel-list>
-        <app-direct-channel-list></app-direct-channel-list>
+        <app-channel-list [mobile]="mobileQuery.matches" [touchScreen]="touchScreen"></app-channel-list>
+        <app-direct-channel-list  [touchScreen]="touchScreen"></app-direct-channel-list>
       </div>
       <mat-nav-list class="legal-list">
         <a list-item [routerLink]="['legal-notice']"> Legal Notice </a> 
@@ -45,9 +45,6 @@
     <div class="outlet-main">
       <router-outlet> </router-outlet>
     </div>
-    <!-- <div class="outlet-thread">
-      <router-outlet name="thread"></router-outlet>
-    </div> -->
     <app-thread-container
       *ngIf="Data.currentMessages.length > 0"
     ></app-thread-container>

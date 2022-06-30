@@ -34,14 +34,18 @@ export class DialogAddDirectChannelComponent implements OnInit {
   }
 
 
-  saveDirectChannel() {
+  async saveDirectChannel() {
     //currentUser must always be part of member list
     if (!this.dm.directChannelMembers.includes(this.Auth.currentUserId)) {
       this.dm.directChannelMembers.push(this.Auth.currentUserId);
     }
-    console.log(this.dm);
-    this.Data.saveDirectChannel(this.dm.toJSON());
-    this.dialogRef.close('saved');
-    this.openSnackBar('New chat has been created.');
+    this.Data.saveDirectChannel(this.dm.toJSON())
+      .then(docRef => {
+        this.dm.directChannelID = docRef.id;
+        console.log('created dc', this.dm);
+        this.openSnackBar('New chat has been created.');
+        this.dialogRef.close(this.dm.toJSON());
+      })
+      .catch(error => console.error('error adding direct channel to firestore: ', error));
   }
 }

@@ -17,6 +17,7 @@ export class AppComponent {
   mobileQuery: MediaQueryList;
   userLinks: LinkMenuItem[];
   currentMessages: Message[];
+  touchScreen: boolean;
 
   private _mobileQueryListener: () => void;
 
@@ -32,6 +33,8 @@ export class AppComponent {
     this.mobileQuery = media.matchMedia('(max-width: 870px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
+    //check if screen is touch screen (no hove effects)
+    this.touchScreen = media.matchMedia('(hover:none)').matches;
   }
 
 

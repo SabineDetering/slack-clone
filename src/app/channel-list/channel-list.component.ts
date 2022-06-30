@@ -18,6 +18,7 @@ import { LocalStorageService } from 'src/services/local-storage.service';
 export class ChannelListComponent implements OnInit {
   channelsOpen = true;
   @Input() mobile!: boolean;
+  @Input() touchScreen!: boolean;
 
   constructor(
     public dialog: MatDialog,
@@ -31,18 +32,26 @@ export class ChannelListComponent implements OnInit {
 
   ngOnInit(): void {}
 
+
   toggleChannels(event: Event) {
     event.stopPropagation();
     this.channelsOpen = !this.channelsOpen;
   }
 
+
   openSnackBar(message: string, action?: string) {
     this._snackBar.open(message, action, { duration: 3000 });
   }
 
+
+  /**
+   * opens dialog to create new channel or edit existing channel 
+   * @param channel - channel to be edited; if null, new channel is created
+   */
   openChannelDialog(channel?: Channel) {
     this.dialog.open(DialogChannelComponent, { data: channel });
   }
+
 
   openDeleteConfirmation(channel: Channel) {
     const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
@@ -68,6 +77,7 @@ export class ChannelListComponent implements OnInit {
     this.Data.deleteChannel(channelID);
   }
 
+
   setCurrentChannel(channel: Channel) {
     if (!this.sameAsStorageChannel(channel.channelID)) {
       this.cs.deleteChannelSubscription();
@@ -85,6 +95,7 @@ export class ChannelListComponent implements OnInit {
     }
   }
 
+  
   sameAsStorageChannel(channelID: string) {
     if (this.storage.getUserSessionFromLocalStorage(this.Auth.currentUserId))
       return (

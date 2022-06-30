@@ -186,7 +186,7 @@ export class DataService {
   }
 
   saveDirectChannel(directChannel: any) {
-    this.directChannelCollection.doc().set(directChannel);
+    return this.directChannelCollection.add(directChannel);
   }
 
   saveThread(thread: any) {

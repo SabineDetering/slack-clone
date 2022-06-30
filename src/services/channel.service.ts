@@ -52,6 +52,7 @@ export class ChannelService {
     return dc;
   }
 
+
   closeCurrentChannel() {
     console.log('closeCurrentChannel');
     this.Data.currentChannel$.next(null);
@@ -70,7 +71,7 @@ export class ChannelService {
 
 
     /**
-   * if User is the only member in direct channel, the channel (TODO: and all its threads and messages) is deleted
+   * if User is the only member in direct channel, the channel  is deleted
    * if User is one of several members, userID is deleted from member list
    * @param userID
    */
@@ -82,7 +83,6 @@ export class ChannelService {
             this.Data.deleteThreadsInChannel(dc.directChannelID);
             this.Data.deleteMessagesInChannel(dc.directChannelID);
           } else {
-            //TODO: delete user from member list and update dc in firestore
             dc.directChannelMembers.splice(
               dc.directChannelMembers.indexOf(userID),
               1
