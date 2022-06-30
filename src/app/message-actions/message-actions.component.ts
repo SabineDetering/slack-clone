@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Channel } from 'src/models/channel.class';
 import { CurrentChannel } from 'src/models/current-channel.class';
 import { Message } from 'src/models/message.class';
@@ -19,6 +20,7 @@ export class MessageActionsComponent implements OnInit {
   @Input() thread!: Thread;
   @Input() message!: Message;
   @Input() actionsType!: string;
+  message$: Observable<Message>;
   // currentChannel!: Channel;
   /*   currentChannel: CurrentChannel;
    */
@@ -30,11 +32,12 @@ export class MessageActionsComponent implements OnInit {
     private storage: LocalStorageService
   ) {}
 
-  async ngOnInit(): Promise<void> {
+   ngOnInit(): void {
     if (!this.message) {
-      this.message = await this.Data.getMessageFromMessageId(
+      this.message$ = this.Data.getMessageFromMessageId(
         this.thread.firstMessageID
       );
+      this.message$.subscribe(message => this.message = message)
     }
   }
 

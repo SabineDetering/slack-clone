@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { firstValueFrom, Observable, Subscription } from 'rxjs';
 import { Message } from 'src/models/message.class';
 import { Thread } from 'src/models/thread.class';
+import { User } from 'src/models/user.class';
 import { DataService } from 'src/services/data.service';
 import { EditorService } from 'src/services/editor.service';
 
@@ -14,6 +16,10 @@ export class MessageComponent implements OnInit {
   @Input() thread!: Thread;
   @Input() firstAnswerMessage: Boolean = false;
   @Input() parentContainer!: string;
+  message$!: Observable<Message>;
+  messageSubscription!: Subscription;
+  user$!: Observable<User>;
+  user!: User;
 
   date: Date | undefined;
   messageAuthorName: string;
@@ -52,13 +58,24 @@ export class MessageComponent implements OnInit {
     this.getAuthorAvatar();
   }
 
-  async setFirstThreadMessage() {
-    this.message = await this.Data.getMessageFromMessageId(
+  setFirstThreadMessage() {
+    this.message$ = this.Data.getMessageFromMessageId(
       this.thread.firstMessageID
     );
+    this.messageSubscription = this.message$.subscribe((message) => {
+      this.message = message;
+      this.getMessageProperties();
+    });
+  }
+
+  getMessageProperties() {
+    this.user$ =  this.Data.getUserdataFromUserID(this.message.authorID);
+    this.user$.subscribe((user) => {
+      this.user = user;
+      this.getMessageAuthorName();
+      this.getAuthorAvatar();
+    });
     this.getMessageTime();
-    this.getMessageAuthorName();
-    this.getAuthorAvatar();
   }
 
   setDeletedMessage() {
@@ -76,10 +93,8 @@ export class MessageComponent implements OnInit {
   // always get up to date Displayname from authors ID
   getMessageAuthorName() {
     if (this.message) {
-      this.Data.getUserdataFromUserID(this.message.authorID).then((user) => {
-        if (user) this.messageAuthorName = user.displayName;
-        else this.messageAuthorName = 'user deleted';
-      });
+      if (this.user) this.messageAuthorName = this.user.displayName;
+      else this.messageAuthorName = 'user deleted';
     }
   }
 
@@ -88,13 +103,11 @@ export class MessageComponent implements OnInit {
       this.messageAuthorAvatar = 'assets/img/avatar-deletedMessage.png';
       return;
     } else {
-      this.Data.getUserdataFromUserID(this.message.authorID).then((user) => {
-        if (user)
-          this.messageAuthorAvatar =
-            user.photoURL || 'assets/img/avatar-neutral.png';
-        // neutral Avatar is used for guests --> no photoURL
-        else this.messageAuthorAvatar = 'assets/img/avatar-unknown.png';
-      });
+      if (this.user)
+        this.messageAuthorAvatar =
+          this.user.photoURL || 'assets/img/avatar-neutral.png';
+      // neutral Avatar is used for guests --> no photoURL
+      else this.messageAuthorAvatar = 'assets/img/avatar-unknown.png';
     }
   }
 }

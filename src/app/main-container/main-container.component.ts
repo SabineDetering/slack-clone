@@ -2,6 +2,7 @@ import {
   AfterViewChecked,
   AfterViewInit,
   Component,
+  ElementRef,
   OnInit,
   ViewChild,
 } from '@angular/core';

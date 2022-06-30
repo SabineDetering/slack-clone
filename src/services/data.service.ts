@@ -133,10 +133,8 @@ export class DataService {
     )) as Thread;
   }
 
-  async getMessageFromMessageId(messageId: string) {
-    return (await firstValueFrom(
-      this.messageCollection.doc(messageId).valueChanges()
-    )) as Message;
+  getMessageFromMessageId(messageId: string) {
+    return this.messageCollection.doc(messageId).valueChanges();
   }
 
   getThreadsFromChannelID(channelID: string): void {
@@ -161,13 +159,17 @@ export class DataService {
       });
   }
 
-  async getUserdataFromUserID(userID: string) {
+  getUserdataFromUserID(userID: string) {
+    // userId is identical with Doc-Id
+   return this.userCollection.doc(userID).valueChanges()
+  }
+/*   async getUserdataFromUserID(userID: string) {
     // userId is identical with Doc-Id
     let result = await firstValueFrom(
       this.userCollection.doc(userID).valueChanges()
     );
     return result;
-  }
+  } */
 
   // ############  SAVE FUNCTIONS  ############
 
@@ -188,16 +190,16 @@ export class DataService {
   }
 
   saveThread(thread: any) {
-    console.log('save thread ', thread.threadID)
+    console.log('save thread ', thread.threadID);
     return new Promise((resolve, reject) => {
       this.threadsCollection.doc(thread.threadID).set(thread);
       resolve('thread added to DB');
       (err: any) => reject(err);
     });
   }
-  
+
   saveMessage(message: any) {
-    console.log('save message ', message.messageID)
+    console.log('save message ', message.messageID);
     return new Promise((resolve, reject) => {
       this.messageCollection.doc(message.messageID).set(message);
       resolve('message added to DB');
@@ -266,7 +268,7 @@ export class DataService {
     console.log('deleting directChannel');
     this.directChannelCollection.doc(directChannelID).delete();
   }
-  
+
   deleteUser(id: string) {
     this.userCollection.doc(id).delete();
   }
