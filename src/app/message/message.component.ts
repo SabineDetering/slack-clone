@@ -12,7 +12,7 @@ import { EditorService } from 'src/services/editor.service';
   styleUrls: ['./message.component.scss'],
 })
 export class MessageComponent implements OnInit {
-  @Input() message!: Message;
+  @Input() message!: Message; // gets Input message variable only in ThreadContainer
   @Input() thread!: Thread;
   @Input() firstAnswerMessage: Boolean = false;
   @Input() parentContainer!: string;
@@ -32,20 +32,20 @@ export class MessageComponent implements OnInit {
   constructor(public Data: DataService, public editor: EditorService) {}
 
   ngOnInit(): void {
-    if (this.isAnswerMessage()) {
-      this.setAnswerMessage();
-    } else if (this.isFirstThreadMessage()) {
+    if (this.MessageInThreadContainer()) {
+      this.getMessageProperties();
+    } else if (this.isFirstThreadMessageInMain()) {
       this.setFirstThreadMessage();
     } else {
       this.setDeletedMessage();
     }
   }
 
-  isAnswerMessage() {
+  MessageInThreadContainer() {
     return this.message;
   }
 
-  isFirstThreadMessage() {
+  isFirstThreadMessageInMain() {
     return (
       this.thread.firstMessageID != '' &&
       this.thread.firstMessageID != 'deleted'
