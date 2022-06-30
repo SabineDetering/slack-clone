@@ -12,7 +12,7 @@
   <app-message *ngIf="Data.currentThread.firstMessageID == 'deleted'" [firstAnswerMessage]="true" [thread]="Data.currentThread" [parentContainer]="'threadContainer'"></app-message>
   <div
     class="message"
-    *ngFor="let message of Data.currentMessages$ | async; index as i; trackBy:trackByIndex"
+    *ngFor="let message of Data.currentMessages$ | async; index as i;"
   >
     <app-message-actions [actionsType]="'messageActions'" [message]="message" [thread]="Data.currentThread"></app-message-actions>
 

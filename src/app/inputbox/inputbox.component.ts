@@ -136,7 +136,6 @@ export class InputboxComponent implements OnInit {
   }
 
   async addMessageAndThread() {
-    console.log('addMessageAndThread')
     await this.createNewThread();
     await this.addMessageToThread(this.newThread.threadID);
     this.setFirstMessageInThread();
@@ -144,7 +143,6 @@ export class InputboxComponent implements OnInit {
 
 
   async createNewThread() {
-    console.log('create new Thread')
     this.newThread.threadID = this.getUniqueID(new Date().getTime());
     this.newThread.channelID = this.Data.currentChannel.id;
     await this.Data.saveThread(this.newThread.toJSON());
@@ -158,7 +156,6 @@ export class InputboxComponent implements OnInit {
 
   async addMessageToThread(threadID: string) {
     this.setMessageProperties(threadID)
-    console.log('addMessageToThread, message ready to save:', this.message);
     await this.Data.saveMessage(this.message.toJSON());
     this.ts.updateAnswerAmountInThread(true);
     this.clearData();
@@ -199,8 +196,6 @@ export class InputboxComponent implements OnInit {
   }
 
   clearData() {
-    console.log('clearData');
-
     this.editor.messageToEdit = null;
     this.editMessage = null;
     this.userInput = '';

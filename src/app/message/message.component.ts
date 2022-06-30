@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterContentChecked, Component, DoCheck, Input, OnDestroy, OnInit } from '@angular/core';
 import { firstValueFrom, Observable, Subscription } from 'rxjs';
 import { Message } from 'src/models/message.class';
 import { Thread } from 'src/models/thread.class';
@@ -11,7 +11,7 @@ import { EditorService } from 'src/services/editor.service';
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss'],
 })
-export class MessageComponent implements OnInit {
+export class MessageComponent implements OnInit, OnDestroy {
   @Input() message!: Message; // gets Input message variable only in ThreadContainer
   @Input() thread!: Thread;
   @Input() firstAnswerMessage: Boolean = false;
@@ -20,6 +20,7 @@ export class MessageComponent implements OnInit {
   messageSubscription!: Subscription;
   user$!: Observable<User>;
   user!: User;
+  userSubscription!: Subscription;
 
   date: Date | undefined;
   messageAuthorName: string;
@@ -32,7 +33,7 @@ export class MessageComponent implements OnInit {
   constructor(public Data: DataService, public editor: EditorService) {}
 
   ngOnInit(): void {
-    if (this.MessageInThreadContainer()) {
+    if (this.isMessageInThreadContainer()) {
       this.getMessageProperties();
     } else if (this.isFirstThreadMessageInMain()) {
       this.setFirstThreadMessage();
@@ -41,7 +42,16 @@ export class MessageComponent implements OnInit {
     }
   }
 
-  MessageInThreadContainer() {
+  ngOnDestroy(): void {
+    if (this.messageSubscription) {
+      this.messageSubscription.unsubscribe();
+    }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
+
+  isMessageInThreadContainer() {
     return this.message;
   }
 
@@ -69,8 +79,8 @@ export class MessageComponent implements OnInit {
   }
 
   getMessageProperties() {
-    this.user$ =  this.Data.getUserdataFromUserID(this.message.authorID);
-    this.user$.subscribe((user) => {
+    this.user$ = this.Data.getUserdataFromUserID(this.message.authorID);
+    this.userSubscription = this.user$.subscribe((user) => {
       this.user = user;
       this.getMessageAuthorName();
       this.getAuthorAvatar();

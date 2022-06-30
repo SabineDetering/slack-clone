@@ -36,7 +36,6 @@ export class ChannelService {
 
   setDirectChannelProperties(dc: DirectChannel, currentUserID: string) {
     // dc = new DirectChannel(dc);
-    console.log(dc);
     dc.directChannelName = this.Data.users
       .filter(
         (user) =>
@@ -65,7 +64,6 @@ export class ChannelService {
     console.log('deleteChannelSubscription');
     if (this.Data.channelSubscription) {
       this.Data.channelSubscription.unsubscribe();
-      console.log(this.Data.channelSubscription);
     } else return;
   }
 

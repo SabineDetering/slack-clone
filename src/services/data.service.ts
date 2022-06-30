@@ -155,6 +155,7 @@ export class DataService {
       )
       .valueChanges({ idField: 'messageID' })
       .subscribe((messages) => {
+        this.currentMessages$.next([]);
         this.currentMessages$.next(messages);
       });
   }

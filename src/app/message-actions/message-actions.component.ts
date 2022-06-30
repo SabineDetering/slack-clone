@@ -50,7 +50,6 @@ export class MessageActionsComponent implements OnInit {
   }
 
   async deleteMessage() {
-    console.log(this.thread);
     this.Data.deleteMessage(this.message.messageID);
     if (this.isLastMessageInThread()) {
       this.deleteThread();
