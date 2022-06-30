@@ -50,13 +50,18 @@ mat-toolbar {
 // }
 
 mat-sidenav {
-    height: calc(100vh - 64px - 73px);
+    // height: calc(100vh - 64px - 73px);
     // min-width: 200px;
     // max-width: min(25vw,250px) ;
     width: 251px; // 1px border-right from material
     overflow: auto;
     background-color: mix.$primary-color;
     color: white;
+
+    @media screen and (max-width: 350px) {
+        width: 100%;
+    }
+    }
 
     .sidenav-wrapper {
         height: 100%;
@@ -73,6 +78,10 @@ mat-sidenav {
         font-size: 14px;
         padding-bottom: mix.$padding-main;
 
+        @media screen and (max-width: 350px) {
+            width: 100%;
+        }
+
         a {
             padding: mix.$padding-small mix.$padding-main;
             width: 250px;
@@ -82,7 +91,7 @@ mat-sidenav {
             }
         }
     }
-}
+
 
 
 .mat-drawer-content {
