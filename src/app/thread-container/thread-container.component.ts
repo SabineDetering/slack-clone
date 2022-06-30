@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Message } from 'src/models/message.class';
 import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 import { ThreadService } from 'src/services/thread.service';
@@ -21,7 +22,7 @@ export class ThreadContainerComponent implements OnInit {
     this.ts.closeCurrentThread(true, this.Auth.currentUserId);
   }
 
-  trackByIndex(index: any) {
-    return index;
+  getTrackByCondition(index: any, message: Message) {
+    return index + message.messageID;
   }
 }
