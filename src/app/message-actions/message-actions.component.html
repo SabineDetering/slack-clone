@@ -1,9 +1,9 @@
 <button class="icon" title="Answer in Thread" *ngIf="actionsType == 'threadActions'" (click)="answerInThread()">
   <mat-icon aria-hidden="false" aria-label="answer-icon">question_answer</mat-icon>
 </button>
-<button class="icon" title="Edit message" (click)="setEditmode()">
+<button *ngIf="deletedFirstMessage()" class="icon" title="Edit message" (click)="setEditmode()">
   <mat-icon aria-hidden="false" aria-label="delete">edit</mat-icon>
 </button>
-<button class="icon" title="Delete message" (click)="deleteMessage()">
+<button *ngIf="deletedFirstMessage()" class="icon" title="Delete message" (click)="deleteMessage()">
   <mat-icon aria-hidden="false" aria-label="delete">delete</mat-icon>
 </button>

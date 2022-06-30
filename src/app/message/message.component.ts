@@ -1,5 +1,5 @@
-import { AfterContentChecked, Component, DoCheck, Input, OnDestroy, OnInit } from '@angular/core';
-import { firstValueFrom, Observable, Subscription } from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { Message } from 'src/models/message.class';
 import { Thread } from 'src/models/thread.class';
 import { User } from 'src/models/user.class';

@@ -1,14 +1,8 @@
 import {
-  AfterViewChecked,
-  AfterViewInit,
   Component,
-  ElementRef,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
-import { Channel } from 'src/models/channel.class';
-import { CurrentChannel } from 'src/models/current-channel.class';
 import { Thread } from 'src/models/thread.class';
 import { User } from 'src/models/user.class';
 import { AuthService } from 'src/services/auth.service';

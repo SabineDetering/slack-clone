@@ -82,4 +82,8 @@ export class MessageActionsComponent implements OnInit {
   setEditmode() {
     this.editor.messageToEdit = this.message;
   }
+
+  deletedFirstMessage(){
+    return !(this.thread.firstMessageID == 'deleted' && this.actionsType == 'threadActions')
+  }
 }
