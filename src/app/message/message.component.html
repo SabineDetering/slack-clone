@@ -24,6 +24,7 @@
     <div
       *ngIf="editor.messageToEdit?.messageID != message.messageID || isDeleted"
       [innerHTML]="message.messageText"
+      class="message-text"
     ></div>
 
     <img
@@ -46,7 +47,7 @@
 ></app-inputbox>
 
 <div *ngIf="firstAnswerMessage" class="first-message-separator">
-  <span>{{ Data.currentThread.answerAmount }} answers</span>
+  <span>{{ Data.currentThread.answerAmount }} Answers</span>
   <hr />
 </div>
 

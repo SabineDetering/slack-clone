@@ -6,10 +6,12 @@
   position: relative;
   padding: mix.$padding-medium;
   border-radius: 12px;
+  word-break: break-word;
 }
 
+
 .message-container{
-    @include mix.flex(center, flex-start, row, 12px);
+    @include mix.flex(center, flex-start, row, 12px)
 }
 
 .d-none {
@@ -49,6 +51,10 @@
     opacity: 0.5;
     border: solid 1px lightgrey;
   }
+}
+
+.message-text{
+  margin-top: 6px;
 }
 
 .first-message-separator {
@@ -159,7 +165,14 @@ button {
 .main-msg-input{
   width: calc(100% - 44px);
   margin-left: 44px;
-}
+
+  @media screen and (max-width: 500px) {
+    width: 100%;
+    margin-left: 0px;
+  }
+    
+  }
+
 
 .thread-msg-input{
   width: 100%;

@@ -12,7 +12,7 @@
 
         <app-message *ngIf="!!thread.firstMessageID" [thread]="thread" [parentContainer]="'main'"></app-message>
         <div class="bottomRow">
-            <p>{{ thread.answerAmount}} answers</p> 
+            <p>{{ thread.answerAmount}} Answers</p> 
             <button (click)="openThread(thread)">Open Thread</button>
         </div>
         {{last ? scrollToBottom() : ''}}
