@@ -25,7 +25,7 @@ export class AuthService {
     af.authState.subscribe((auth) => {
       this.authState = auth;
       if (auth) {
-        this.af.onAuthStateChanged((user) => {
+        this.af.onAuthStateChanged( async (user) => {
           if (user) {
             //login
             this.user = user;
@@ -37,8 +37,8 @@ export class AuthService {
               this.deleteAnonymousUser(this.user);
             }
             this.user = null;
+            await this.closeSession()
             this.router.navigate(['/login']);
-            this.closeSession()
           }
         });
       }
@@ -63,9 +63,12 @@ export class AuthService {
   }
 
   closeSession(){
-    console.log('closeSession')
-    this.ts.closeCurrentThread(false, this.currentUserId);
-    this.cs.closeCurrentChannel()
+    return new Promise((resolve, reject) => {
+      this.ts.closeCurrentThread(false, this.currentUserId);
+      this.cs.closeCurrentChannel()
+      resolve('session closed')
+      reject((err: any) => reject(err))
+    })
   }
 
   /**
