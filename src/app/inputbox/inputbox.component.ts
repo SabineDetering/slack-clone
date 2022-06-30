@@ -130,6 +130,7 @@ export class InputboxComponent implements OnInit {
   addNewMessage() {
     if (this.messageType == 'answerMessage') {
       this.addMessageToThread(this.Data.currentThread.threadID);
+      this.ts.updateAnswerAmountInThread(true);
     } else {
       this.addMessageAndThread();
     }
@@ -157,7 +158,6 @@ export class InputboxComponent implements OnInit {
   async addMessageToThread(threadID: string) {
     this.setMessageProperties(threadID)
     await this.Data.saveMessage(this.message.toJSON());
-    this.ts.updateAnswerAmountInThread(true);
     this.clearData();
   }
 

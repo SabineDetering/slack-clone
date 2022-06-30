@@ -1,14 +1,11 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Thread } from 'src/models/thread.class';
 import { User } from 'src/models/user.class';
 import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 import { ChannelService } from 'src/services/channel.service';
 import { LocalStorageService } from 'src/services/local-storage.service';
+import { ThreadService } from 'src/services/thread.service';
 
 @Component({
   selector: 'app-main-container',
@@ -24,6 +21,7 @@ export class MainContainerComponent implements OnInit {
     public Data: DataService,
     private Auth: AuthService,
     private cs: ChannelService,
+    private ts: ThreadService,
     private storage: LocalStorageService
   ) {
     this.getLastUserSessionFromLocalStorage();
@@ -115,6 +113,9 @@ export class MainContainerComponent implements OnInit {
 
   openThread(thread: Thread) {
     console.log('open thread', thread);
+    if (this.Data.messagesSubscription) this.ts.deleteMessagesSubscription();
+    if(this.Data.currentMessages.length > 0) this.Data.currentMessages$.next([])
+    this.Data.getMessagesFromThreadID(thread.threadID);
     this.Data.currentThread$.next(thread);
     this.storage.setUserSessionInLocalStorage(
       this.Auth.currentUserId,
@@ -122,7 +123,6 @@ export class MainContainerComponent implements OnInit {
       this.Data.currentChannel.type,
       thread.threadID
     );
-    this.Data.getMessagesFromThreadID(thread.threadID);
   }
 
   getTrackByCondition(index: any, thread: Thread) {

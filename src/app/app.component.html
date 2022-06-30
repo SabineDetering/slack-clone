@@ -46,7 +46,7 @@
       <router-outlet> </router-outlet>
     </div>
     <app-thread-container
-      *ngIf="Data.currentMessages.length > 0"
+      *ngIf="Data.currentThread"
     ></app-thread-container>
   </mat-sidenav-content>
 </mat-sidenav-container>

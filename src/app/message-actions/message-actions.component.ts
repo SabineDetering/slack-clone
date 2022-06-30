@@ -34,19 +34,26 @@ export class MessageActionsComponent implements OnInit {
     private ts: ThreadService
   ) {}
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     if (!this.message) {
       this.message$ = this.Data.getMessageFromMessageId(
         this.thread.firstMessageID
       );
-      this.message$.subscribe(message => this.message = message)
+      this.message$.subscribe((message) => (this.message = message));
     }
   }
 
   answerInThread() {
+    if (this.Data.messagesSubscription) this.ts.deleteMessagesSubscription();
+    if(this.Data.currentMessages.length > 0) this.Data.currentMessages$.next([])
     this.Data.currentThread$.next(this.thread);
-    this.storage.setUserSessionInLocalStorage(this.Auth.currentUserId, this.Data.currentChannel.id, this.Data.currentChannel.type,  this.thread.threadID);
     this.Data.getMessagesFromThreadID(this.thread.threadID);
+    this.storage.setUserSessionInLocalStorage(
+      this.Auth.currentUserId,
+      this.Data.currentChannel.id,
+      this.Data.currentChannel.type,
+      this.thread.threadID
+    );
   }
 
   async deleteMessage() {
@@ -83,7 +90,10 @@ export class MessageActionsComponent implements OnInit {
     this.editor.messageToEdit = this.message;
   }
 
-  deletedFirstMessage(){
-    return !(this.thread.firstMessageID == 'deleted' && this.actionsType == 'threadActions')
+  deletedFirstMessage() {
+    return !(
+      this.thread.firstMessageID == 'deleted' &&
+      this.actionsType == 'threadActions'
+    );
   }
 }

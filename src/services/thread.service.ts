@@ -20,21 +20,21 @@ export class ThreadService {
     this.Data.currentThread$.next(thread);
   }
 
-  closeCurrentThread(removeFromLocalStorage: boolean, userID: string) {
+  closeCurrentThread(removeFromLocalStorage?: boolean, userID?: string) {
     console.log('closeCurrentThread');
     this.Data.currentMessages$.next([]);
     this.Data.currentThread$.next(null);
-    this.deleteThreadSubscription();
+    this.deleteMessagesSubscription();
     if (removeFromLocalStorage) {
       this.removeThreadFromLocalStorage(userID)
     }
   }
 
-  deleteThreadSubscription() {
-    console.log('deleteThreadSubscription');
-    if (this.Data.threadSubscription) {
-      this.Data.threadSubscription.unsubscribe();
-      console.log(this.Data.threadSubscription);
+  deleteMessagesSubscription() {
+    console.log('deletemessagesSubscription');
+    if (this.Data.messagesSubscription) {
+      this.Data.messagesSubscription.unsubscribe();
+      console.log(this.Data.messagesSubscription);
     } else return;
   }
 

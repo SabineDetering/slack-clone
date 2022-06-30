@@ -49,7 +49,7 @@ export class DataService {
   public directChannels: DirectChannel[];
 
   public channelSubscription!: Subscription;
-  public threadSubscription!: Subscription;
+  public messagesSubscription!: Subscription;
   /*   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(
     new Thread()
   ); */
@@ -149,7 +149,7 @@ export class DataService {
   }
 
   getMessagesFromThreadID(threadID: string): void {
-    this.threadSubscription = this.firestore
+    this.messagesSubscription = this.firestore
       .collection<Message>('messages', (ref) =>
         ref.where('threadID', '==', threadID)
       )

@@ -64,7 +64,7 @@ export class AuthService {
 
   closeSession(){
     return new Promise((resolve, reject) => {
-      this.ts.closeCurrentThread(false, this.currentUserId);
+      this.ts.closeCurrentThread();
       this.cs.closeCurrentChannel()
       resolve('session closed')
       reject((err: any) => reject(err))
