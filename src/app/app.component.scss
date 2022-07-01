@@ -1,5 +1,71 @@
 @use "../styles/mixins" as mix; //also imports _variables.scss
 
+// new Avatar (manual build)
+
+.avatar{
+    position: relative;
+    @include mix.flex(center, center);
+
+    img{
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+    }
+}
+
+
+
+.userMenu{
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    transform: translate(50%, 100%);
+    padding: 8px;
+    border-radius: 8px;
+    background-color: red;
+    z-index: 100;
+
+    .userActions{
+        @include mix.flex(space-evenly, center);
+
+        button{
+            @include mix.flex(center, center);
+            max-width: 45%;
+            border: none;
+            background-color: white;
+            cursor: pointer;
+            color: black;
+    
+            &:hover{
+                opacity: 0.7;
+            }
+        }
+    }
+
+    .userInfo{
+        @include mix.flex(center, center,column); 
+
+        span:first-child{
+            font-size: 14px;
+            color: black;
+            line-height: 1.4em!important;
+        }
+
+        span:last-child{
+            margin-bottom: 12px;
+            font-size: 12px;
+            font-style: italic;
+            color: black;
+            line-height: 1.4em!important;
+        }
+    }
+
+
+}
+
+
+
+
 mat-toolbar {
     @include mix.flex($justify: space-between, $align: center);
 

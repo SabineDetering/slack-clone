@@ -18,6 +18,7 @@ export class AppComponent {
   userLinks: LinkMenuItem[];
   currentMessages: Message[];
   touchScreen: boolean;
+  public showUserMenu: boolean =false;
 
   private _mobileQueryListener: () => void;
 

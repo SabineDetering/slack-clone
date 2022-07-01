@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Thread } from 'src/models/thread.class';
 import { User } from 'src/models/user.class';
 import { AuthService } from 'src/services/auth.service';
@@ -12,7 +12,7 @@ import { ThreadService } from 'src/services/thread.service';
   templateUrl: './main-container.component.html',
   styleUrls: ['./main-container.component.scss'],
 })
-export class MainContainerComponent implements OnInit {
+export class MainContainerComponent implements OnInit, AfterViewInit {
   @ViewChild('threadContainer') threadContainer: any;
   threads: Thread[] = [];
   users: User[];
@@ -30,9 +30,15 @@ export class MainContainerComponent implements OnInit {
   ngOnInit(): void {}
 
   scrollToBottom() {
+    console.log('scroll to bottom');
     this.threadContainer.nativeElement.scrollTop =
       this.threadContainer.nativeElement.scrollHeight;
   }
+
+  ngAfterViewInit() {
+    this.scrollToBottom();
+  }
+
 
   // checks if a current channel and thread are stored in local storage for the current user and if so, sets them in Data.currentChannel$ and Data.currentThread$
   async getLastUserSessionFromLocalStorage() {
