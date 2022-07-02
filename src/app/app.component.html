@@ -6,39 +6,46 @@
     <a [routerLink]="['login']"> Slacky</a>
   </div>
 
-  <div (click)="toggleUserMenu($event)"  class="avatar">
+  <!--  Avatar Img triggers userMenu -->
+  <div [matMenuTriggerFor]="menu" #menuTrigger class="avatar">
     <img src="assets/img/avatar-neutral.png" alt="userAvatar">
+  </div>
 
-    <div *ngIf="userMenuOpen" #userMenu class="userMenu">
+  <!--  userMenu -->
+  <mat-menu #menu="matMenu" class="matMenu">
+    <div class="userMenu">
+
       <div class="userInfo">
-        <!-- <img src="assets/img/avatar-neutral.png" alt="userAvatar"> -->
         <span class="text">CurrentUserName</span>
         <span class="text">CurrentUserEmail</span>
       </div>
+
       <div class="userActions">
         <button mat-button (click)="openAvatarDialog()">
           <mat-icon><span class="material-icons">
-            account_circle
+              account_circle
             </span></mat-icon>
           Edit Avatar
         </button>
+
         <button mat-button>
           <mat-icon>edit</mat-icon>
           Edit Profile
         </button>
-        <button mat-button>
+
+        <button  mat-button>
           <mat-icon>logout</mat-icon>
           Logout
         </button>
+
       </div>
-
     </div>
+  </mat-menu>
 
-  </div>
 
 
+<!-- old Avatar  -->
   <div class="avatar-with-btn">
-
     <ngx-auth-firebaseui-avatar [canLogout]="true" [canViewAccount]="true" [canDeleteAccount]="true"
       [canEditAccount]="true"></ngx-auth-firebaseui-avatar>
     <button *ngIf="Auth.authenticated" mat-icon-button class="edit-btn" matTooltip="change avatar"

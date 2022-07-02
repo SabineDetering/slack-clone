@@ -49,6 +49,7 @@ import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { PrivacyNoticeComponent } from './privacy-notice/privacy-notice.component';
 import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-change-avatar.component';
 import { PERSISTENCE } from '@angular/fire/compat/auth';
+import { DialogUsermenuComponent } from './dialog-usermenu/dialog-usermenu.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { PERSISTENCE } from '@angular/fire/compat/auth';
     LegalNoticeComponent,
     PrivacyNoticeComponent,
     DialogChangeAvatarComponent,
+    DialogUsermenuComponent,
   ],
   imports: [
     BrowserModule,

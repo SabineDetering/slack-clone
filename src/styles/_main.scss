@@ -64,3 +64,11 @@ pre{
 
 
  @include mix.scrollbar(mix.$primary-color, mix.$primary-hover, mix.$primary-hover);
+
+
+
+//  MATERIAL DESIGN
+
+.mat-menu-panel{
+  padding: 8px 12px!important;
+}

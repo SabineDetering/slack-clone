@@ -1,5 +1,5 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, Inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, ViewChild } from '@angular/core';
 import { Message } from 'src/models/message.class';
 import { DataService } from 'src/services/data.service';
 import { LinkMenuItem } from 'ngx-auth-firebaseui';
@@ -9,6 +9,7 @@ import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-chang
 import { AuthService } from 'src/services/auth.service';
 import { fromEvent, Observable, observable } from 'rxjs';
 import { ThreadService } from 'src/services/thread.service';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,7 @@ export class AppComponent {
   userLinks: LinkMenuItem[];
   currentMessages: Message[];
   touchScreen: boolean;
-  public userMenuOpen: boolean = false;
+  @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
 
   private _mobileQueryListener: () => void;
 
@@ -42,25 +43,6 @@ export class AppComponent {
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
     //check if screen is touch screen (no hove effects)
     this.touchScreen = media.matchMedia('(hover:none)').matches;
-    this.listenClickEventsToCloseMenu();
-  }
-
-  toggleUserMenu(event: Event) {
-    event.stopPropagation();
-    this.userMenuOpen = !this.userMenuOpen;
-    if (this.userMenuOpen) {
-      this.listenClickEventsToCloseMenu();
-    }
-  }
-
-  // observe clickevents with rxjs observable
-  listenClickEventsToCloseMenu() {
-    let source = fromEvent(document, 'click'); 
-    source.subscribe((event: Event | any) => {
-      if (event.target.id !== 'userMenu') {
-        this.userMenuOpen = false;
-      }
-    });
   }
 
   openAvatarDialog() {
