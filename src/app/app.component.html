@@ -7,7 +7,7 @@
   </div>
 
   <!--  Avatar Img triggers userMenu -->
-  <!-- <div > -->
+
   <ng-container *ngIf="!!Auth.currentUser">
     <img
       [src]="Auth.currentUser.currentUser.photoURL"
@@ -17,15 +17,12 @@
       #menuTrigger
       class="avatar"
     />
-    <!-- </div> -->
 
     <!--  userMenu -->
     <mat-menu #menu="matMenu" class="matMenu">
-      <!-- <div class="userMenu"> -->
-
       <div class="userInfo">
-        <span class="text">{{ Auth.currentUser.currentUser.displayName }}</span>
-        <span class="text">{{ Auth.currentUser.currentUser.email }}</span>
+        <span>{{ Auth.currentUser?.currentUser?.displayName }}</span>
+        <span>{{ Auth.currentUser?.currentUser?.email }}</span>
       </div>
 
       <div class="userActions">
@@ -48,31 +45,9 @@
           Logout
         </button>
       </div>
-      <!-- </div> -->
     </mat-menu>
   </ng-container>
-
-
-  <!-- old Avatar  -->
-  <!-- <div class="avatar-with-btn">
-    <ngx-auth-firebaseui-avatar
-      [canLogout]="true"
-      [canViewAccount]="true"
-      [canDeleteAccount]="true"
-      [canEditAccount]="true"
-    ></ngx-auth-firebaseui-avatar>
-    <button
-      *ngIf="Auth.authenticated"
-      mat-icon-button
-      class="edit-btn"
-      matTooltip="change avatar"
-      (click)="openAvatarDialog()"
-    >
-      <mat-icon class="edit-icon">edit</mat-icon>
-    </button>
-  </div> -->
 </mat-toolbar>
-
 
 <!-- mobile view: sidenav closed by default, open in mode 'over' with backdrop, closes on click on sidenav (or menu button) -->
 <!-- desktop view: sidenav open by default in mode 'side'-->
