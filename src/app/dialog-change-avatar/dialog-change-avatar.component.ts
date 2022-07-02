@@ -5,7 +5,6 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { DataService } from 'src/services/data.service';
-import { Observable } from 'tinymce';
 
 @Component({
   selector: 'app-dialog-change-avatar',
@@ -41,11 +40,13 @@ export class DialogChangeAvatarComponent implements OnInit {
         console.log('URL', this.downloadURL);        
       })
     )
-      .subscribe({
-        next: (data) => console.log("Next data: ", data),
-        error: (err) => console.error("Error : ", err),
-        complete: () => console.log("Complete")
-      });
+      .subscribe(
+        // {
+        // next: (data) => console.log("Next data: ", data),
+        // error: (err) => console.error("Error : ", err),
+        // complete: () => console.log("Complete")
+        // }
+      );
 
   }
 

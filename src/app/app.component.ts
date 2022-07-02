@@ -10,6 +10,7 @@ import { AuthService } from 'src/services/auth.service';
 import { fromEvent, Observable, observable } from 'rxjs';
 import { ThreadService } from 'src/services/thread.service';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { DialogEditProfileComponent } from './dialog-edit-profile/dialog-edit-profile.component';
 
 @Component({
   selector: 'app-root',
@@ -36,6 +37,7 @@ export class AppComponent {
     this.checkUserScreen(media, changeDetectorRef);
   }
 
+
   checkUserScreen(media: any, changeDetectorRef: any) {
     //check if screen width is too small for showing sidenav
     this.mobileQuery = media.matchMedia('(max-width: 870px)');
@@ -45,7 +47,18 @@ export class AppComponent {
     this.touchScreen = media.matchMedia('(hover:none)').matches;
   }
 
+
   openAvatarDialog() {
     const dialogRef = this.dialog.open(DialogChangeAvatarComponent);
+  }
+
+
+  openEditProfileDialog() {
+    const dialogRef = this.dialog.open(DialogEditProfileComponent);
+  }
+
+
+  logout() {
+    this.Auth.af.signOut();
   }
 }

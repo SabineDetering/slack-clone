@@ -29,6 +29,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { LayoutModule } from '@angular/cdk/layout';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
@@ -49,6 +50,7 @@ import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { PrivacyNoticeComponent } from './privacy-notice/privacy-notice.component';
 import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-change-avatar.component';
 import { PERSISTENCE } from '@angular/fire/compat/auth';
+import { DialogEditProfileComponent } from './dialog-edit-profile/dialog-edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,7 @@ import { PERSISTENCE } from '@angular/fire/compat/auth';
     LegalNoticeComponent,
     PrivacyNoticeComponent,
     DialogChangeAvatarComponent,
+    DialogEditProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -126,6 +129,7 @@ import { PERSISTENCE } from '@angular/fire/compat/auth';
     MatMenuModule,
     MatTooltipModule,
     MatProgressBarModule,
+    MatDividerModule,
     LayoutModule,
   ],
   providers: [

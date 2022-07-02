@@ -7,63 +7,92 @@
   </div>
 
   <!--  Avatar Img triggers userMenu -->
-  <div [matMenuTriggerFor]="menu" #menuTrigger class="avatar">
-    <img src="assets/img/avatar-neutral.png" alt="userAvatar">
-  </div>
+  <!-- <div > -->
+  <ng-container *ngIf="!!Auth.currentUser">
+    <img
+      [src]="Auth.currentUser.currentUser.photoURL"
+      alt="userAvatar"
+      [title]="Auth.currentUser.currentUser.displayName"
+      [matMenuTriggerFor]="menu"
+      #menuTrigger
+      class="avatar"
+    />
+    <!-- </div> -->
 
-  <!--  userMenu -->
-  <mat-menu #menu="matMenu" class="matMenu">
-    <div class="userMenu">
+    <!--  userMenu -->
+    <mat-menu #menu="matMenu" class="matMenu">
+      <!-- <div class="userMenu"> -->
 
       <div class="userInfo">
-        <span class="text">CurrentUserName</span>
-        <span class="text">CurrentUserEmail</span>
+        <span class="text">{{ Auth.currentUser.currentUser.displayName }}</span>
+        <span class="text">{{ Auth.currentUser.currentUser.email }}</span>
       </div>
 
       <div class="userActions">
         <button mat-button (click)="openAvatarDialog()">
-          <mat-icon><span class="material-icons">
-              account_circle
-            </span></mat-icon>
+          <mat-icon
+            ><span class="material-icons"> account_circle </span></mat-icon
+          >
           Edit Avatar
         </button>
 
-        <button mat-button>
+        <button mat-button (click)="openEditProfileDialog()">
           <mat-icon>edit</mat-icon>
           Edit Profile
         </button>
 
-        <button  mat-button>
+        <mat-divider></mat-divider>
+
+        <button mat-button (click)="logout()">
           <mat-icon>logout</mat-icon>
           Logout
         </button>
-
       </div>
-    </div>
-  </mat-menu>
+      <!-- </div> -->
+    </mat-menu>
+  </ng-container>
 
 
-
-<!-- old Avatar  -->
-  <div class="avatar-with-btn">
-    <ngx-auth-firebaseui-avatar [canLogout]="true" [canViewAccount]="true" [canDeleteAccount]="true"
-      [canEditAccount]="true"></ngx-auth-firebaseui-avatar>
-    <button *ngIf="Auth.authenticated" mat-icon-button class="edit-btn" matTooltip="change avatar"
-      (click)="openAvatarDialog()">
+  <!-- old Avatar  -->
+  <!-- <div class="avatar-with-btn">
+    <ngx-auth-firebaseui-avatar
+      [canLogout]="true"
+      [canViewAccount]="true"
+      [canDeleteAccount]="true"
+      [canEditAccount]="true"
+    ></ngx-auth-firebaseui-avatar>
+    <button
+      *ngIf="Auth.authenticated"
+      mat-icon-button
+      class="edit-btn"
+      matTooltip="change avatar"
+      (click)="openAvatarDialog()"
+    >
       <mat-icon class="edit-icon">edit</mat-icon>
     </button>
-  </div>
+  </div> -->
 </mat-toolbar>
+
 
 <!-- mobile view: sidenav closed by default, open in mode 'over' with backdrop, closes on click on sidenav (or menu button) -->
 <!-- desktop view: sidenav open by default in mode 'side'-->
 <mat-sidenav-container [hasBackdrop]="mobileQuery.matches">
-  <mat-sidenav mode="side" #sidenav [mode]="mobileQuery.matches ? 'over' : 'side'" [opened]="!mobileQuery.matches"
-    (click)="mobileQuery.matches ? sidenav.toggle() : null">
+  <mat-sidenav
+    mode="side"
+    #sidenav
+    [mode]="mobileQuery.matches ? 'over' : 'side'"
+    [opened]="!mobileQuery.matches"
+    (click)="mobileQuery.matches ? sidenav.toggle() : null"
+  >
     <div class="sidenav-wrapper">
       <div *ngIf="Auth.authenticated">
-        <app-channel-list [mobile]="mobileQuery.matches" [touchScreen]="touchScreen"></app-channel-list>
-        <app-direct-channel-list [touchScreen]="touchScreen"></app-direct-channel-list>
+        <app-channel-list
+          [mobile]="mobileQuery.matches"
+          [touchScreen]="touchScreen"
+        ></app-channel-list>
+        <app-direct-channel-list
+          [touchScreen]="touchScreen"
+        ></app-direct-channel-list>
       </div>
       <mat-nav-list class="legal-list">
         <a list-item [routerLink]="['legal-notice']"> Legal Notice </a>
