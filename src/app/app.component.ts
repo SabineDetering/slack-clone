@@ -53,8 +53,9 @@ export class AppComponent {
     }
   }
 
+  // observe clickevents with rxjs observable
   listenClickEventsToCloseMenu() {
-    let source = fromEvent(document, 'click');
+    let source = fromEvent(document, 'click'); 
     source.subscribe((event: Event | any) => {
       if (event.target.id !== 'userMenu') {
         this.userMenuOpen = false;
