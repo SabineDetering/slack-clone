@@ -18,7 +18,7 @@ export class AppComponent {
   userLinks: LinkMenuItem[];
   currentMessages: Message[];
   touchScreen: boolean;
-  public showUserMenu: boolean =false;
+  public userMenuOpen: boolean =false;
 
   private _mobileQueryListener: () => void;
 
@@ -38,6 +38,9 @@ export class AppComponent {
     this.touchScreen = media.matchMedia('(hover:none)').matches;
   }
 
+  toggleUserMenu(){
+    this.userMenuOpen = !this.userMenuOpen
+  }
 
   openAvatarDialog() {
     const dialogRef = this.dialog.open(DialogChangeAvatarComponent);

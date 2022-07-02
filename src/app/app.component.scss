@@ -13,26 +13,26 @@
     }
 }
 
-
-
 .userMenu{
     position: absolute;
     bottom: 0;
-    right: 50%;
-    transform: translate(50%, 100%);
+    right: 0;
+    transform: translate(0%, 100%);
     padding: 8px;
     border-radius: 8px;
-    background-color: red;
+    background-color:white;
     z-index: 100;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
 
     .userActions{
-        @include mix.flex(space-evenly, center);
+        @include mix.flex(space-evenly, center, column, 4px);
 
         button{
-            @include mix.flex(center, center);
-            max-width: 45%;
+            @include mix.flex(space-evenly, center);
+            width: 100%;
             border: none;
-            background-color: white;
+            background-color:white;
             cursor: pointer;
             color: black;
     
@@ -40,18 +40,50 @@
                 opacity: 0.7;
             }
         }
+
+        button:last-child{
+            &:hover{
+                background-color: rgb(255, 129, 129); 
+                opacity: 1;
+                color: white;
+            }
+            
+            &::after{
+                position: absolute;
+                top: 0px;
+                left: 50%;
+                transform: translate(-50%);
+                content: '';
+                width: 85%;
+                height: 1px;
+                background-color: lightgrey;
+            }
+        }
     }
 
     .userInfo{
+        position: relative;
         @include mix.flex(center, center,column); 
 
+        // &::after{
+        //     position: absolute;
+        //     bottom: 4px;
+        //     left: 50%;
+        //     transform: translate(-50%);
+        //     content: '';
+        //     width: 85%;
+        //     height: 1px;
+        //     background-color: lightgrey;
+        // }
+
         span:first-child{
-            font-size: 14px;
+            font-size: 16px;
             color: black;
             line-height: 1.4em!important;
         }
 
         span:last-child{
+            position: relative;
             margin-bottom: 12px;
             font-size: 12px;
             font-style: italic;
@@ -59,8 +91,6 @@
             line-height: 1.4em!important;
         }
     }
-
-
 }
 
 

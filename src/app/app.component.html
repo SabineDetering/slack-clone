@@ -6,18 +6,30 @@
     <a [routerLink]="['login']"> Slacky</a>
   </div>
 
-  <div class="avatar">
+  <div (click)="toggleUserMenu()"  class="avatar">
     <img src="assets/img/avatar-neutral.png" alt="userAvatar">
 
-    <div  class="userMenu">
-      <div  class="userInfo">
+    <div *ngIf="userMenuOpen" (onpointerleave)="toggleUserMenu()" class="userMenu">
+      <div class="userInfo">
         <!-- <img src="assets/img/avatar-neutral.png" alt="userAvatar"> -->
-          <span class="text">CurrentUserName</span>
-          <span class="text">CurrentUserEmail</span>
+        <span class="text">CurrentUserName</span>
+        <span class="text">CurrentUserEmail</span>
       </div>
       <div class="userActions">
-        <button mat-button>Edit Profile</button>
-        <button mat-button>Logout</button>
+        <button mat-button (click)="openAvatarDialog()">
+          <mat-icon><span class="material-icons">
+            account_circle
+            </span></mat-icon>
+          Edit Avatar
+        </button>
+        <button mat-button>
+          <mat-icon>edit</mat-icon>
+          Edit Profile
+        </button>
+        <button mat-button>
+          <mat-icon>logout</mat-icon>
+          Logout
+        </button>
       </div>
 
     </div>
