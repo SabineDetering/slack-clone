@@ -30,13 +30,13 @@ export class MainContainerComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {}
 
   scrollToBottom() {
-    console.log('scroll to bottom');
+    // console.log('scroll to bottom');
     this.threadContainer.nativeElement.scrollTop =
       this.threadContainer.nativeElement.scrollHeight;
   }
 
   ngAfterViewInit() {
-    this.scrollToBottom();
+    // this.scrollToBottom();
   }
 
 

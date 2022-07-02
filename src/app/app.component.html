@@ -6,10 +6,10 @@
     <a [routerLink]="['login']"> Slacky</a>
   </div>
 
-  <div (click)="toggleUserMenu()"  class="avatar">
+  <div (click)="toggleUserMenu($event)"  class="avatar">
     <img src="assets/img/avatar-neutral.png" alt="userAvatar">
 
-    <div *ngIf="userMenuOpen" (onpointerleave)="toggleUserMenu()" class="userMenu">
+    <div *ngIf="userMenuOpen" #userMenu class="userMenu">
       <div class="userInfo">
         <!-- <img src="assets/img/avatar-neutral.png" alt="userAvatar"> -->
         <span class="text">CurrentUserName</span>
