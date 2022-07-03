@@ -27,9 +27,9 @@ export class ChannelListComponent implements OnInit {
     private ts: ThreadService,
     private storage: LocalStorageService,
     private _snackBar: MatSnackBar
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
 
   toggleChannels(event: Event) {
@@ -44,33 +44,77 @@ export class ChannelListComponent implements OnInit {
 
 
   /**
-   * opens dialog to create new channel or edit existing channel 
+   * if user is registered:opens dialog to create new channel or edit existing channel 
+   * otherwise: info dialog
    * @param channel - channel to be edited; if null, new channel is created
    */
   openChannelDialog(channel?: Channel) {
-    this.dialog.open(DialogChannelComponent, { data: channel });
+    if (this.Auth.currentUser.currentUser.isAnonymous && !!channel) {
+      this.refuseChannelEdit(channel);
+    } else {//registered user
+      this.dialog.open(DialogChannelComponent, { data: channel });
+    }
   }
 
 
   openDeleteConfirmation(channel: Channel) {
-    const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
+    if (this.Auth.currentUser.currentUser.isAnonymous) {
+      this.refuseDeletion(channel);
+    } else {//registered user
+      const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
+        data: {
+          title: 'Delete Channel ' + channel.channelName,
+          text: "This will completely delete the channel and its contents for all users and can't be undone. Do you really want to proceed?",
+          discardText: 'No',
+          confirmText: 'Yes',
+        },
+      });
+      confirmationRef.afterClosed().subscribe((result) => {
+        if (result == 'confirm') {
+          this.deleteChannel(channel.channelID);
+          this.openSnackBar('Channel has been deleted.');
+        }
+      });
+    }
+  }
+
+
+  /**
+   * inform (anonymous) user that he is not eligible for editing channels
+   * @param channel 
+   */
+  refuseChannelEdit(channel: Channel) {
+    this.dialog.open(DialogConfirmationComponent, {
       data: {
-        title: 'Delete Channel',
-        text: "This will completely delete the channel and its contents for all users and can't be undone. Do you really want to proceed?",
-        discardText: 'No',
-        confirmText: 'Yes',
-      },
+        title: 'Editing channel ' + channel.channelName,
+        text: "Editing channels is only eligible for registered users.You are currently logged in as guest. To proceed, please register or log in with a registered email address.",
+        confirmText: 'Ok'
+      }
     });
-    confirmationRef.afterClosed().subscribe((result) => {
-      if (result == 'confirm') {
-        this.deleteChannel(channel.channelID);
-        this.openSnackBar('Channel has been deleted.');
+
+  }
+
+
+  /**
+   * inform (anonymous) user that he is not eligible for deleting channels
+   * @param channel 
+   */
+  refuseDeletion(channel: Channel) {
+    this.dialog.open(DialogConfirmationComponent, {
+      data: {
+        title: 'Deleting channel ' + channel.channelName,
+        text: "Deleting channels is only eligible for registered users.You are currently logged in as guest. To proceed, please register or log in with a registered email address.",
+        confirmText: 'Ok'
       }
     });
   }
 
 
-  deleteChannel(channelID: string){
+  /**
+   * deletes a channel and all corresponding threads and messages
+   * @param channelID 
+   */
+  deleteChannel(channelID: string) {
     this.Data.deleteThreadsInChannel(channelID);
     this.Data.deleteMessagesInChannel(channelID);
     this.Data.deleteChannel(channelID);
@@ -95,7 +139,7 @@ export class ChannelListComponent implements OnInit {
     }
   }
 
-  
+
   sameAsStorageChannel(channelID: string) {
     if (this.storage.getUserSessionFromLocalStorage(this.Auth.currentUserId))
       return (

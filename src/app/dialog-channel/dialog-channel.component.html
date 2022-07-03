@@ -1,4 +1,9 @@
-<h2 mat-dialog-title>Create a new channel</h2>
+<h2 *ngIf="!!channel.channelID; else newChannel" mat-dialog-title>
+  Edit channel
+</h2>
+<ng-template #newChannel>
+  <h2 mat-dialog-title>Create a new channel</h2>
+</ng-template>
 
 <button
   class="close-btn"
