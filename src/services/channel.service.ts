@@ -9,8 +9,9 @@ import { DataService } from './data.service';
 })
 export class ChannelService {
 
-  constructor(private Data: DataService) { }
+  scrollMain = true;
 
+  constructor(private Data: DataService) { }
 
   setCurrentChannelFromChannel(channel: Channel) {
     this.Data.currentChannel$.next(

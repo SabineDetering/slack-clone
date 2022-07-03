@@ -6,7 +6,6 @@ import {
 import {
   BehaviorSubject,
   firstValueFrom,
-  map,
   Observable,
   Subscription,
 } from 'rxjs';

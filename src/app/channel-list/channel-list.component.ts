@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Channel } from 'src/models/channel.class';
-import { CurrentChannel } from 'src/models/current-channel.class';
 import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 import { ChannelService } from 'src/services/channel.service';
@@ -89,6 +88,7 @@ export class ChannelListComponent implements OnInit {
         null
       );
       this.Data.getThreadsFromChannelID(channel.channelID);
+      this.cs.scrollMain = true;
       if (this.Data.currentThread) {
         this.ts.closeCurrentThread(true, this.Auth.currentUserId);
       }

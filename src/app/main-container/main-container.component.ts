@@ -1,4 +1,8 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Thread } from 'src/models/thread.class';
 import { User } from 'src/models/user.class';
 import { AuthService } from 'src/services/auth.service';
@@ -12,10 +16,13 @@ import { ThreadService } from 'src/services/thread.service';
   templateUrl: './main-container.component.html',
   styleUrls: ['./main-container.component.scss'],
 })
-export class MainContainerComponent implements OnInit, AfterViewInit {
+export class MainContainerComponent
+  implements OnInit
+{
   @ViewChild('threadContainer') threadContainer: any;
   threads: Thread[] = [];
-  users: User[];
+  users!: User[];
+  scrollTimer!: any;
 
   constructor(
     public Data: DataService,
@@ -27,18 +34,18 @@ export class MainContainerComponent implements OnInit, AfterViewInit {
     this.getLastUserSessionFromLocalStorage();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   scrollToBottom() {
-    // console.log('scroll to bottom');
-    this.threadContainer.nativeElement.scrollTop =
-      this.threadContainer.nativeElement.scrollHeight;
+    if (this.cs.scrollMain) {
+      this.threadContainer.nativeElement.scrollTop =
+        this.threadContainer.nativeElement.scrollHeight;
+      this.scrollTimer = setTimeout(() => {
+        this.cs.scrollMain = false;
+      }, 5000);
+    }
   }
-
-  ngAfterViewInit() {
-    // this.scrollToBottom();
-  }
-
 
   // checks if a current channel and thread are stored in local storage for the current user and if so, sets them in Data.currentChannel$ and Data.currentThread$
   async getLastUserSessionFromLocalStorage() {
@@ -120,7 +127,8 @@ export class MainContainerComponent implements OnInit, AfterViewInit {
   openThread(thread: Thread) {
     console.log('open thread', thread);
     if (this.Data.messagesSubscription) this.ts.deleteMessagesSubscription();
-    if(this.Data.currentMessages.length > 0) this.Data.currentMessages$.next([])
+    if (this.Data.currentMessages.length > 0)
+      this.Data.currentMessages$.next([]);
     this.Data.getMessagesFromThreadID(thread.threadID);
     this.Data.currentThread$.next(thread);
     this.storage.setUserSessionInLocalStorage(
