@@ -39,7 +39,7 @@
 
         .left-part {
             @include mix.flex($align: center, $gap: 8px);
-            // width: 100%;
+            flex:1;
 
             .hash {
                 width: 32px;
