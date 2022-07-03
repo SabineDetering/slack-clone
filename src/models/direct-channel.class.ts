@@ -12,7 +12,7 @@ export class DirectChannel {
 
     toJSON() {
         return {
-            directChannelID: this.directChannelID,
+            // directChannelID: this.directChannelID,
             directChannelMembers: this.directChannelMembers
         }
     }
