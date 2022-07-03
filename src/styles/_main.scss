@@ -72,3 +72,11 @@ pre{
 .mat-menu-panel{
   padding: 8px 12px!important;
 }
+
+// login-component
+mat-card.mat-card.mat-focus-indicator._mat-animation-noopable.ng-star-inserted{
+  @media screen and (max-width: 400px){
+    margin: 0rem!important;
+    height: 100vh;
+  }
+}
