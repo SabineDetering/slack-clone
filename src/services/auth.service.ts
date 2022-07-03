@@ -16,14 +16,11 @@ export class AuthService {
 
   constructor(
     public af: AngularFireAuth,
-    private router: Router,
     private Data: DataService,
-    private cs: ChannelService,
-    private ts: ThreadService,
-    private storage: LocalStorageService
   ) {
     af.authState.subscribe((auth) => {
       this.authState = auth;
+      console.log(this.currentUserId)
     })
   }
   // if (auth) {
@@ -65,15 +62,6 @@ export class AuthService {
     (await this.af.currentUser).updateProfile(json);
   }
 
-  closeSession() {
-    return new Promise((resolve, reject) => {
-      this.ts.closeCurrentThread();
-      this.cs.closeCurrentChannel()
-      resolve('session closed')
-      reject((err: any) => reject(err))
-    })
-  }
-
   /**
    * deletes anonymous users from authentication and firestore collections after logout   *
    * @param user  - user to be deleted
@@ -90,8 +78,6 @@ export class AuthService {
       });
     //delete user from firebase collections
     this.Data.deleteUser(user.uid);
-    this.storage.removeUserSessionFromLocalStorage(user.uid);
-    this.cs.deleteUserFromDirectChannels(user.uid);
   }
 
 
@@ -109,8 +95,6 @@ export class AuthService {
         console.log('is deleted from auth', user);
         //delete user from firebase collections
         this.Data.deleteUser(user.uid);
-        this.storage.removeUserSessionFromLocalStorage(user.uid);
-        this.cs.deleteUserFromDirectChannels(user.uid);
         result = 'success';
       })
       .catch((error) => {

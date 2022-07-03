@@ -93,6 +93,7 @@ export class DataService {
   subscribeToCurrentChannel() {
     this.currentChannel$.subscribe((channel) => {
       this.currentChannel = channel;
+      console.log('subscribeToCurrentChannel ', this.currentChannel)
     });
   }
 
@@ -110,12 +111,12 @@ export class DataService {
 
   // ############  GET FUNCTIONS  ############
 
-  async getChannelFromChannelID(channelID: string) {
+  async getChannelFromChannelID(channelId: string) {
     return (await firstValueFrom(
       this.channelCollection
-        .doc(channelID)
+        .doc(channelId)
         .valueChanges({ idField: 'channelID' })
-    )) as Channel;
+    ));
   }
 
   async getChannelFromDirectChannelID(channelID: string) {
@@ -248,6 +249,7 @@ export class DataService {
       )
       .valueChanges()
       .subscribe((messages) => {
+
         messages.forEach((message) => this.deleteMessage(message.messageID));
       });
   }

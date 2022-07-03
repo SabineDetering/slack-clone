@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Channel } from 'src/models/channel.class';
 import { CurrentChannel } from 'src/models/current-channel.class';
 import { DirectChannel } from 'src/models/direct-channel.class';
+import { AuthService } from './auth.service';
 import { DataService } from './data.service';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +13,10 @@ export class ChannelService {
 
   scrollMain = true;
 
-  constructor(private Data: DataService) { }
+  constructor(private Data: DataService, private storage: LocalStorageService, private Auth: AuthService) { }
 
   setCurrentChannelFromChannel(channel: Channel) {
+    console.log('setCurrentChannelFromChannel')
     this.Data.currentChannel$.next(
       new CurrentChannel({
         type: 'channel',
@@ -50,6 +53,61 @@ export class ChannelService {
       (user) => dc.directChannelMembers[0] == user.uid
     )[0].photoURL;
     return dc;
+  }
+
+    showDefaultChannel() {
+      console.log('showDefaultChannel')
+    const showDefaultChannelSubscription = this.Data.channels$.subscribe(
+      (channels) => {
+        this.setCurrentChannelToChannel(channels[0].channelID);
+        showDefaultChannelSubscription.unsubscribe();
+      }
+    );
+  }
+
+  setCurrentChannel(storageSession: any) {
+    console.log('setCurrentChannel')
+    return new Promise((resolve, reject) => {
+      if (storageSession.channel.type == 'channel')
+        this.setCurrentChannelToChannel(storageSession.channel.channelID);
+      // is of type 'directChannel'
+      else
+        this.setCurrentChannelToDirectChannel(storageSession.channel.channelID);
+      resolve('current channel has been restored');
+      (err: any) => reject(err);
+    });
+  }
+
+  async setCurrentChannelToChannel(channelID: any) {
+    console.log('setCurrentChannelToChannel')
+    console.log('setCurrentChannelToChannel ', channelID)
+
+    const channel = await this.Data.getChannelFromChannelID(channelID);
+    console.log(channel)
+    if (channel) {
+      this.setCurrentChannelFromChannel(channel);
+      this.Data.getThreadsFromChannelID(channelID);
+    } else {
+      this.storage.removeUserSessionFromLocalStorage(this.Auth.currentUserId);
+    }
+  }
+
+  async setCurrentChannelToDirectChannel(directChannelID: any) {
+    console.log('setCurrentChannelToDirectChannel')
+
+    const directChannel = await this.Data.getChannelFromDirectChannelID(
+      directChannelID
+    );
+    if (directChannel) {
+      const directChannelWithProps = this.setDirectChannelProperties(
+        directChannel,
+        this.Auth.currentUserId
+      );
+      this.setCurrentChannelFromDirectChannel(directChannelWithProps);
+      this.Data.getThreadsFromChannelID(directChannelID);
+    } else {
+      this.storage.removeUserSessionFromLocalStorage(this.Auth.currentUserId);
+    }
   }
 
 

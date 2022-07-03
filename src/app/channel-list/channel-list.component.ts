@@ -31,17 +31,14 @@ export class ChannelListComponent implements OnInit {
 
   ngOnInit(): void { }
 
-
   toggleChannels(event: Event) {
     event.stopPropagation();
     this.channelsOpen = !this.channelsOpen;
   }
 
-
   openSnackBar(message: string, action?: string) {
     this._snackBar.open(message, action, { duration: 3000 });
   }
-
 
   /**
    * if user is registered:opens dialog to create new channel or edit existing channel 
@@ -55,7 +52,6 @@ export class ChannelListComponent implements OnInit {
       this.dialog.open(DialogChannelComponent, { data: channel });
     }
   }
-
 
   openDeleteConfirmation(channel: Channel) {
     if (this.Auth.currentUser.currentUser.isAnonymous) {
@@ -109,17 +105,24 @@ export class ChannelListComponent implements OnInit {
     });
   }
 
-
-  /**
-   * deletes a channel and all corresponding threads and messages
-   * @param channelID 
-   */
   deleteChannel(channelID: string) {
+    this.updateObservables(channelID);
     this.Data.deleteThreadsInChannel(channelID);
     this.Data.deleteMessagesInChannel(channelID);
     this.Data.deleteChannel(channelID);
+    this.storage.removeUserSessionFromLocalStorage(this.Auth.currentUserId)
+    this.cs.showDefaultChannel();
   }
 
+  updateObservables(channelID: string) {
+    if (this.Data.currentChannel.id != channelID) return;
+    else {
+      if (this.Data.currentThread) {
+        this.ts.closeCurrentThread();
+      }
+      this.Data.currentChannel$.next(null);
+    }
+  }
 
   setCurrentChannel(channel: Channel) {
     if (!this.sameAsStorageChannel(channel.channelID)) {

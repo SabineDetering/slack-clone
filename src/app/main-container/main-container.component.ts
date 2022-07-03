@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Thread } from 'src/models/thread.class';
 import { User } from 'src/models/user.class';
 import { AuthService } from 'src/services/auth.service';
@@ -16,9 +12,7 @@ import { ThreadService } from 'src/services/thread.service';
   templateUrl: './main-container.component.html',
   styleUrls: ['./main-container.component.scss'],
 })
-export class MainContainerComponent
-  implements OnInit
-{
+export class MainContainerComponent implements OnInit {
   @ViewChild('threadContainer') threadContainer: any;
   threads: Thread[] = [];
   users!: User[];
@@ -34,8 +28,7 @@ export class MainContainerComponent
     this.getLastUserSessionFromLocalStorage();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   scrollToBottom() {
     if (this.cs.scrollMain) {
@@ -49,63 +42,20 @@ export class MainContainerComponent
 
   // checks if a current channel and thread are stored in local storage for the current user and if so, sets them in Data.currentChannel$ and Data.currentThread$
   async getLastUserSessionFromLocalStorage() {
+    console.log('getLastUserSessionFromLocalStorage');
     const storageSession = await this.storage.getUserSessionFromLocalStorage(
       this.Auth.currentUserId
     );
-    if (!storageSession) this.showDefaultChannel();
+    console.log(storageSession);
+    if (!storageSession) this.cs.showDefaultChannel();
     else {
-      await this.setCurrentChannel(storageSession);
+      console.log('else');
+
+      await this.cs.setCurrentChannel(storageSession);
       if (!!storageSession.threadID) {
         this.setCurrentThread(storageSession);
       }
     }
-  }
-
-  setCurrentChannel(storageSession: any) {
-    return new Promise((resolve, reject) => {
-      if (storageSession.channel.type == 'channel')
-        this.setCurrentChannelToChannel(storageSession.channel.channelID);
-      // is of type 'directChannel'
-      else
-        this.setCurrentChannelToDirectChannel(storageSession.channel.channelID);
-      resolve('current channel has been restored');
-      (err: any) => reject(err);
-    });
-  }
-
-  async setCurrentChannelToChannel(channelID: any) {
-    const channel = await this.Data.getChannelFromChannelID(channelID);
-    if (channel) {
-      this.cs.setCurrentChannelFromChannel(channel);
-      this.Data.getThreadsFromChannelID(channelID);
-    } else {
-      this.storage.removeUserSessionFromLocalStorage(this.Auth.currentUserId);
-    }
-  }
-
-  async setCurrentChannelToDirectChannel(directChannelID: any) {
-    const directChannel = await this.Data.getChannelFromDirectChannelID(
-      directChannelID
-    );
-    if (directChannel) {
-      const directChannelWithProps = this.cs.setDirectChannelProperties(
-        directChannel,
-        this.Auth.currentUserId
-      );
-      this.cs.setCurrentChannelFromDirectChannel(directChannelWithProps);
-      this.Data.getThreadsFromChannelID(directChannelID);
-    } else {
-      this.storage.removeUserSessionFromLocalStorage(this.Auth.currentUserId);
-    }
-  }
-
-  showDefaultChannel() {
-    const showDefaultChannelSubscription = this.Data.channels$.subscribe(
-      (channels) => {
-        this.setCurrentChannelToChannel(channels[0].channelID);
-        showDefaultChannelSubscription.unsubscribe();
-      }
-    );
   }
 
   async setCurrentThread(storageSession: any) {

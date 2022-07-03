@@ -7,13 +7,13 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-change-avatar.component';
 import { AuthService } from 'src/services/auth.service';
-import { fromEvent, Observable, observable } from 'rxjs';
 import { ThreadService } from 'src/services/thread.service';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { DialogEditProfileComponent } from './dialog-edit-profile/dialog-edit-profile.component';
 import { ChannelService } from 'src/services/channel.service';
 import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LocalStorageService } from 'src/services/local-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -38,7 +38,8 @@ export class AppComponent {
     public Auth: AuthService,
     private ts: ThreadService,
     private cs: ChannelService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private storage: LocalStorageService
   ) {
     this.checkUserScreen(media, changeDetectorRef);
   }
@@ -93,6 +94,8 @@ export class AppComponent {
     if (userToDelete.isAnonymous) {
       this.Auth.deleteAnonymousUser(userToDelete);
     } else {
+      this.storage.removeUserSessionFromLocalStorage(userToDelete.uid);
+      this.cs.deleteUserFromDirectChannels(userToDelete.uid);
       const result = await this.Auth.deleteRegisteredUser(userToDelete);
       if (result == 'success') {
         this.openSnackBar('Your account has been deleted.');
@@ -105,8 +108,11 @@ export class AppComponent {
 
 
   async logout() {
-    console.log('logged out user', this.Auth.currentUser);
-    if (this.Auth.currentUser.currentUser.isAnonymous) {
+    const user = this.Auth.currentUser
+    console.log('logged out user', user);
+    if (user.currentUser.isAnonymous) {
+      this.storage.removeUserSessionFromLocalStorage(user.uid);
+      this.cs.deleteUserFromDirectChannels(user.uid);
       this.Auth.deleteAnonymousUser(this.Auth.currentUser.currentUser);
     }
     await this.closeSession();
