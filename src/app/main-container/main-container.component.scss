@@ -2,7 +2,7 @@
 
 :host{
     @include mix.flex(flex-start, center, column);    
-    padding-left: mix.$padding-medium;
+    // padding-left: mix.$padding-medium;
     position: relative;
     height: calc(100vh - 64px);
     border-right: 1px solid #e0e0e0;
