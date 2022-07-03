@@ -11,6 +11,7 @@ import { fromEvent, Observable, observable } from 'rxjs';
 import { ThreadService } from 'src/services/thread.service';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { DialogEditProfileComponent } from './dialog-edit-profile/dialog-edit-profile.component';
+import { ChannelService } from 'src/services/channel.service';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +33,9 @@ export class AppComponent {
     public Data: DataService,
     public router: Router,
     public dialog: MatDialog,
-    public Auth: AuthService
+    public Auth: AuthService,
+    private ts: ThreadService,
+    private cs:ChannelService
   ) {
     this.checkUserScreen(media, changeDetectorRef);
   }
@@ -58,7 +61,23 @@ export class AppComponent {
   }
 
 
-  logout() {
+  async logout() {
+    console.log('logged out user', this.Auth.currentUser);
+    if (this.Auth.currentUser.currentUser.isAnonymous) {
+      this.Auth.deleteAnonymousUser(this.Auth.currentUser.currentUser);
+    }
+    await this.closeSession();
     this.Auth.af.signOut();
+    this.router.navigate(['/login']);
+  } 
+
+
+  closeSession() {
+    return new Promise((resolve, reject) => {
+      this.ts.closeCurrentThread();
+      this.cs.closeCurrentChannel();
+      resolve('session closed')
+      reject((err: any) => reject(err))
+    })
   }
 }
