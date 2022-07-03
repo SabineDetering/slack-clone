@@ -22,6 +22,8 @@
         <ng-container
           *ngFor="let user of Data.users$ | async | orderBy: 'displayName'"
         >
+        <!-- if currentUser is registered, all registered users (=users with email) can be selected 
+          if currentUser is anonymous, only user himself can be selected -->
           <mat-option
             *ngIf="
               (!Auth.currentUser.currentUser.isAnonymous && !!user.email) ||
