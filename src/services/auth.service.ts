@@ -24,27 +24,30 @@ export class AuthService {
   ) {
     af.authState.subscribe((auth) => {
       this.authState = auth;
-      if (auth) {
-        this.af.onAuthStateChanged( async (user) => {
-          if (user) {
-            //login
-            this.user = user;
-            this.router.navigate(['/channel']);
-          } else {
-            //logout
-            console.log('logged out user', this.user);
-            if (this.user.isAnonymous) {
-              this.deleteAnonymousUser(this.user);
-            }
-            this.user = null;
-            await this.closeSession()
-            this.router.navigate(['/login']);
-          }
-        });
-      }
-      console.log('currentUser', this.currentUser);
-    });
+    })
   }
+      // if (auth) {
+      //   this.af.onAuthStateChanged( async (user) => {
+      //     if (user) {
+      //       //login
+      //       this.user = user;
+      //       this.router.navigate(['/channel']);
+      //     }
+          // else {
+          //   //logout
+          //   console.log('logged out user', this.user);
+          //   if (this.user.isAnonymous) {
+          //     this.deleteAnonymousUser(this.user);
+          //   }
+          //   this.user = null;
+          //   await this.closeSession()
+          //   this.router.navigate(['/login']);
+          // }
+  //       });
+  //     }
+  //     console.log('currentUser', this.currentUser);
+  //   });
+  // }
 
   get authenticated(): boolean {
     return this.authState !== null;

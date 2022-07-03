@@ -24,13 +24,14 @@ export class LoginComponent implements OnInit {
       if (this.Auth.currentUserId) {
         const user = this.Data.getUserdataFromUserID(this.Auth.currentUserId);
         if (user) {
-          if (this.Auth.user.isAnonymous) {
-            this.setStandardAvatarAndGuestName(this.Auth.user.uid, 'guest');
-          } else if (this.Auth.currentUser.photoURL) {
-            this.setStandardAvatarAndGuestName(this.Auth.user.uid, 'avatar');
+          if (this.Auth.currentUser.currentUser.isAnonymous) {
+            this.setStandardAvatarAndGuestName(this.Auth.currentUser.currentUser.uid, 'guest');
+          } else if (!this.Auth.currentUser.currentUser.photoURL) {
+            this.setStandardAvatarAndGuestName(this.Auth.currentUser.currentUser.uid, 'avatar');
           }
         }
-        userSubscription.unsubscribe()
+        userSubscription.unsubscribe();
+        this.router.navigate(['/channel']);
       }
     });
   }
