@@ -1,8 +1,9 @@
 @use "../../styles/mixins" as mix; //also imports _variables.scss
 
 .privacy {
-    padding: mix.$padding-main;
+    padding: 24px 5%;
     max-height: calc(100vh - 64px);
+    word-break: break-all;
     overflow-y: auto;
 
     h3 {
