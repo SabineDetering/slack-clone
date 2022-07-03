@@ -63,7 +63,7 @@ export class ChannelListComponent implements OnInit {
     });
     confirmationRef.afterClosed().subscribe((result) => {
       if (result == 'confirm') {
-        this.Data.deleteChannel(channel.channelID);
+        this.deleteChannel(channel.channelID);
         this.openSnackBar('Channel has been deleted.');
       }
     });

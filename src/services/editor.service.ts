@@ -14,6 +14,7 @@ export class EditorService {
       onAction: (_) => {
         let selectionNode = editor.selection.getNode();
         let selection = editor.selection.getContent() || ' ';
+        console.log(selection)
         if (selectionNode.nodeName != 'CODE') {
           editor.insertContent(
             `<code style="color: #e01e5a; background-color: #eee; border: 1px solid #ddd">${selection}</code>`
