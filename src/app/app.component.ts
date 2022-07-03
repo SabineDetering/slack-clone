@@ -12,6 +12,8 @@ import { ThreadService } from 'src/services/thread.service';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { DialogEditProfileComponent } from './dialog-edit-profile/dialog-edit-profile.component';
 import { ChannelService } from 'src/services/channel.service';
+import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -35,7 +37,8 @@ export class AppComponent {
     public dialog: MatDialog,
     public Auth: AuthService,
     private ts: ThreadService,
-    private cs: ChannelService
+    private cs: ChannelService,
+    private _snackBar: MatSnackBar
   ) {
     this.checkUserScreen(media, changeDetectorRef);
   }
@@ -46,8 +49,13 @@ export class AppComponent {
     this.mobileQuery = media.matchMedia('(max-width: 870px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
-    //check if screen is touch screen (no hove effects)
+    //check if screen is touch screen (no hover effects)
     this.touchScreen = media.matchMedia('(hover:none)').matches;
+  }
+
+
+  openSnackBar(message: string, action?: string) {
+    this._snackBar.open(message, action, { duration: 3000 });
   }
 
 
@@ -58,6 +66,41 @@ export class AppComponent {
 
   openEditProfileDialog() {
     const dialogRef = this.dialog.open(DialogEditProfileComponent);
+  }
+
+
+  deleteAccount() {
+    const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
+      data: {
+        title: 'Delete account of ' + this.Auth.currentUser.currentUser.displayName,
+        text: "This will completely delete your account and can't be undone. Any messages you have posted in channels or direct channels will still be visible but without your name as author. Do you really want to proceed?",
+        discardText: 'No',
+        confirmText: 'Yes',
+      },
+    });
+    confirmationRef.afterClosed().subscribe((result) => {
+      if (result == 'confirm') {
+        this.deleteUser();
+      } else {
+        this.openSnackBar('Delete has been discarded.');
+      }
+    });
+  }
+
+
+  async deleteUser() {
+    const userToDelete = this.Auth.currentUser.currentUser;
+    if (userToDelete.isAnonymous) {
+      this.Auth.deleteAnonymousUser(userToDelete);
+    } else {
+      const result = await this.Auth.deleteRegisteredUser(userToDelete);
+      if (result == 'success') {
+        this.openSnackBar('Your account has been deleted.');
+      } else {
+        this.openSnackBar("Your account couldn't be deleted.", result);
+      }
+    }
+    this.router.navigate(['/login']);
   }
 
 

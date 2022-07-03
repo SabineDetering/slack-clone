@@ -9,7 +9,7 @@
   <!--  Avatar Img triggers userMenu -->
 
   <ng-container *ngIf="!!Auth.currentUser?.currentUser">
-    <img 
+    <img
       [src]="Auth.currentUser.currentUser.photoURL"
       alt="userAvatar"
       [title]="Auth.currentUser.currentUser.displayName"
@@ -27,15 +27,18 @@
 
       <div class="userActions">
         <button mat-button (click)="openAvatarDialog()">
-          <mat-icon
-            ><span class="material-icons"> account_circle </span></mat-icon
-          >
+          <mat-icon> account_circle</mat-icon>
           Edit Avatar
         </button>
 
         <button mat-button (click)="openEditProfileDialog()">
           <mat-icon>edit</mat-icon>
           Edit Profile
+        </button>
+
+        <button mat-button (click)="deleteAccount()">
+          <mat-icon> delete </mat-icon>
+          Delete Account
         </button>
 
         <mat-divider></mat-divider>
@@ -80,6 +83,12 @@
     <div class="outlet-main">
       <router-outlet> </router-outlet>
     </div>
-    <app-thread-container *ngIf="Data.currentThread && !router.url.includes('legal-notice') && !router.url.includes('privacy-notice' )"></app-thread-container>
+    <app-thread-container
+      *ngIf="
+        Data.currentThread &&
+        !router.url.includes('legal-notice') &&
+        !router.url.includes('privacy-notice')
+      "
+    ></app-thread-container>
   </mat-sidenav-content>
 </mat-sidenav-container>

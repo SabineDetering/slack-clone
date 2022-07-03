@@ -26,23 +26,23 @@ export class AuthService {
       this.authState = auth;
     })
   }
-      // if (auth) {
-      //   this.af.onAuthStateChanged( async (user) => {
-      //     if (user) {
-      //       //login
-      //       this.user = user;
-      //       this.router.navigate(['/channel']);
-      //     }
-          // else {
-          //   //logout
-          //   console.log('logged out user', this.user);
-          //   if (this.user.isAnonymous) {
-          //     this.deleteAnonymousUser(this.user);
-          //   }
-          //   this.user = null;
-          //   await this.closeSession()
-          //   this.router.navigate(['/login']);
-          // }
+  // if (auth) {
+  //   this.af.onAuthStateChanged( async (user) => {
+  //     if (user) {
+  //       //login
+  //       this.user = user;
+  //       this.router.navigate(['/channel']);
+  //     }
+  // else {
+  //   //logout
+  //   console.log('logged out user', this.user);
+  //   if (this.user.isAnonymous) {
+  //     this.deleteAnonymousUser(this.user);
+  //   }
+  //   this.user = null;
+  //   await this.closeSession()
+  //   this.router.navigate(['/login']);
+  // }
   //       });
   //     }
   //     console.log('currentUser', this.currentUser);
@@ -65,7 +65,7 @@ export class AuthService {
     (await this.af.currentUser).updateProfile(json);
   }
 
-  closeSession(){
+  closeSession() {
     return new Promise((resolve, reject) => {
       this.ts.closeCurrentThread();
       this.cs.closeCurrentChannel()
@@ -92,5 +92,31 @@ export class AuthService {
     this.Data.deleteUser(user.uid);
     this.storage.removeUserSessionFromLocalStorage(user.uid);
     this.cs.deleteUserFromDirectChannels(user.uid);
+  }
+
+
+  /**
+   * deletes registered user from authentication and firestore collections 
+   * @param user  - user to be deleted
+   * @returns - string to indicate success or error
+   */
+  async deleteRegisteredUser(user): Promise<string> {
+    console.log(user);
+    let result = '';
+    //delete user from firebase authentication
+    await deleteUser(user)
+      .then(() => {
+        console.log('is deleted from auth', user);
+        //delete user from firebase collections
+        this.Data.deleteUser(user.uid);
+        this.storage.removeUserSessionFromLocalStorage(user.uid);
+        this.cs.deleteUserFromDirectChannels(user.uid);
+        result = 'success';
+      })
+      .catch((error) => {
+        console.log('error deleting registered user: ', error);
+        result = error;
+      });
+    return result;
   }
 }
