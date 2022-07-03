@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthProvider } from 'ngx-auth-firebaseui';
+import { firstValueFrom } from 'rxjs';
 import { AuthService } from 'src/services/auth.service';
 import { DataService } from 'src/services/data.service';
 
@@ -21,9 +22,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     let userSubscription = this.Data.users$.subscribe((users) => {
-      if (this.Auth.currentUserId) {
-        const user = this.Data.getUserdataFromUserID(this.Auth.currentUserId);
-        if (user) {
+      if (!!this.Auth.currentUserId) {
+        if (this.Auth.currentUser.currentUser) {
           if (this.Auth.currentUser.currentUser.isAnonymous) {
             this.setStandardAvatarAndGuestName(this.Auth.currentUser.currentUser.uid, 'guest');
           } else if (!this.Auth.currentUser.currentUser.photoURL) {
