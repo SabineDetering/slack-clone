@@ -20,12 +20,17 @@ export class LoginComponent implements OnInit {
     private Auth: AuthService
   ) {}
 
+
+  /**
+   * when loggedin user is available on Auth and on firestore
+   * anonymous users get name and standard avatar and
+   * new users get standard avatar
+   */
   async ngOnInit(): Promise<void> {
     let userSubscription = this.Data.users$.subscribe((users) => {
       const user = users.filter(user => user.uid == this.Auth.currentUserId)[0];
       console.log('onInit user', user);
-      console.log('onInit Auth.currentUserId', this.Auth.currentUserId);
-      if (user) {
+      if (user) {//currentUser exists on Auth and on firestore  
         console.log('user exists');
         if (!!this.Auth.currentUser.currentUser) {
           if (this.Auth.currentUser.currentUser.isAnonymous) {
@@ -40,10 +45,17 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  getUserChange(event: any) {
+
+  printSuccess(event: any) {
     console.log('login event', event);
     console.log('login event', event.user.uid);
   }
+
+
+  printError(event: Event) {
+    console.error(event);
+  }
+
 
   /**
    * sets avatar to standard avatar
@@ -69,7 +81,4 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  printError(event: Event) {
-    console.error(event);
-  }
 }

@@ -229,6 +229,7 @@ export class DataService {
   // ############  DELETE FUNCTIONS #############
 
   deleteThreadsInChannel(channelID: string) {
+    console.log('deleting threads from channel ',channelID);
     this.firestore
       .collection<Thread>('threads', (ref) =>
         ref.where('channelID', '==', channelID)
@@ -240,6 +241,7 @@ export class DataService {
   }
 
   deleteMessagesInChannel(channelID: string) {
+    console.log('deleting messages from channel ', channelID);
     this.firestore
       .collection<Message>('messages', (ref) =>
         ref.where('channelID', '==', channelID)
@@ -261,15 +263,17 @@ export class DataService {
   }
 
   deleteChannel(channelID: string) {
+    console.log('deleting channel ', channelID)
     this.channelCollection.doc(channelID).delete();
   }
 
   deleteDirectChannel(directChannelID: string) {
-    console.log('deleting directChannel');
+    console.log('deleting directChannel ', directChannelID);
     this.directChannelCollection.doc(directChannelID).delete();
   }
 
   deleteUser(id: string) {
+    console.log('deleting user ', id);
     this.userCollection.doc(id).delete();
   }
 }
