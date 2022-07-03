@@ -116,7 +116,7 @@ export class DataService {
       this.channelCollection
         .doc(channelId)
         .valueChanges({ idField: 'channelID' })
-    ));
+    )) as Channel;
   }
 
   async getChannelFromDirectChannelID(channelID: string) {

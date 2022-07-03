@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Router } from '@angular/router';
 import { deleteUser } from 'firebase/auth';
 import { DataService } from './data.service';
-import { ChannelService } from './channel.service';
-import { ThreadService } from './thread.service';
-import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +16,6 @@ export class AuthService {
   ) {
     af.authState.subscribe((auth) => {
       this.authState = auth;
-      console.log(this.currentUserId)
     })
   }
   // if (auth) {

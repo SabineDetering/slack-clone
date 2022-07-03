@@ -16,7 +16,6 @@ export class ChannelService {
   constructor(private Data: DataService, private storage: LocalStorageService, private Auth: AuthService) { }
 
   setCurrentChannelFromChannel(channel: Channel) {
-    console.log('setCurrentChannelFromChannel')
     this.Data.currentChannel$.next(
       new CurrentChannel({
         type: 'channel',
@@ -56,7 +55,6 @@ export class ChannelService {
   }
 
     showDefaultChannel() {
-      console.log('showDefaultChannel')
     const showDefaultChannelSubscription = this.Data.channels$.subscribe(
       (channels) => {
         this.setCurrentChannelToChannel(channels[0].channelID);
@@ -66,7 +64,6 @@ export class ChannelService {
   }
 
   setCurrentChannel(storageSession: any) {
-    console.log('setCurrentChannel')
     return new Promise((resolve, reject) => {
       if (storageSession.channel.type == 'channel')
         this.setCurrentChannelToChannel(storageSession.channel.channelID);
@@ -79,11 +76,8 @@ export class ChannelService {
   }
 
   async setCurrentChannelToChannel(channelID: any) {
-    console.log('setCurrentChannelToChannel')
-    console.log('setCurrentChannelToChannel ', channelID)
 
     const channel = await this.Data.getChannelFromChannelID(channelID);
-    console.log(channel)
     if (channel) {
       this.setCurrentChannelFromChannel(channel);
       this.Data.getThreadsFromChannelID(channelID);
@@ -93,7 +87,6 @@ export class ChannelService {
   }
 
   async setCurrentChannelToDirectChannel(directChannelID: any) {
-    console.log('setCurrentChannelToDirectChannel')
 
     const directChannel = await this.Data.getChannelFromDirectChannelID(
       directChannelID
@@ -112,7 +105,6 @@ export class ChannelService {
 
 
   closeCurrentChannel() {
-    console.log('closeCurrentChannel');
     this.Data.currentChannel$.next(null);
     this.Data.currentThreads$.next([]);
     this.deleteChannelSubscription();
@@ -120,7 +112,6 @@ export class ChannelService {
 
 
   deleteChannelSubscription() {
-    console.log('deleteChannelSubscription');
     if (this.Data.channelSubscription) {
       this.Data.channelSubscription.unsubscribe();
     } else return;
