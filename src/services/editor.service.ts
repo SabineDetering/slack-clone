@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { Message } from 'src/models/message.class';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EditorService {
-
   public messageToEdit!: Message;
 
   private editorSetup = (editor) => {
@@ -14,7 +13,7 @@ export class EditorService {
       onAction: (_) => {
         let selectionNode = editor.selection.getNode();
         let selection = editor.selection.getContent() || ' ';
-        console.log(selection)
+        console.log(selection);
         if (selectionNode.nodeName != 'CODE') {
           editor.insertContent(
             `<code style="color: #e01e5a; background-color: #eee; border: 1px solid #ddd">${selection}</code>`
@@ -49,7 +48,7 @@ export class EditorService {
     statusbar: false,
     setup: this.editorSetup,
     toolbar:
-      'undo redo | emoticons | bold italic underline | inline-code code-block blockquote | link | aligning lists',
+      'undo redo | styles | emoticons | bold italic underline | inline-code code-block blockquote | link | aligning lists',
     toolbar_groups: {
       aligning: {
         icon: 'align-left',
@@ -81,8 +80,11 @@ export class EditorService {
         },
       },
     },
-    style_formats_merge: true,
+    style_formats: [
+      { title: 'Code', format: 'code' },
+      { title: 'Pre', format: 'pre' },
+    ],
   };
-  
-  constructor() { }
+
+  constructor() {}
 }
