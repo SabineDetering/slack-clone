@@ -8,8 +8,8 @@
 
   <!--  Avatar Img triggers userMenu -->
 
-  <ng-container *ngIf="!!Auth.currentUser">
-    <img
+  <ng-container *ngIf="!!Auth.currentUser?.currentUser">
+    <img 
       [src]="Auth.currentUser.currentUser.photoURL"
       alt="userAvatar"
       [title]="Auth.currentUser.currentUser.displayName"
@@ -21,8 +21,8 @@
     <!--  userMenu -->
     <mat-menu #menu="matMenu" class="matMenu">
       <div class="userInfo">
-        <span>{{ Auth.currentUser?.currentUser?.displayName }}</span>
-        <span>{{ Auth.currentUser?.currentUser?.email }}</span>
+        <span>{{ Auth.currentUser.currentUser.displayName }}</span>
+        <span>{{ Auth.currentUser.currentUser.email }}</span>
       </div>
 
       <div class="userActions">
