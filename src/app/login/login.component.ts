@@ -20,10 +20,14 @@ export class LoginComponent implements OnInit {
     private Auth: AuthService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     let userSubscription = this.Data.users$.subscribe((users) => {
-      if (!!this.Auth.currentUserId) {
-        if (this.Auth.currentUser.currentUser) {
+      const user = users.filter(user => user.uid == this.Auth.currentUserId)[0];
+      console.log('onInit user', user);
+      console.log('onInit Auth.currentUserId', this.Auth.currentUserId);
+      if (user) {
+        console.log('user exists');
+        if (!!this.Auth.currentUser.currentUser) {
           if (this.Auth.currentUser.currentUser.isAnonymous) {
             this.setStandardAvatarAndGuestName(this.Auth.currentUser.currentUser.uid, 'guest');
           } else if (!this.Auth.currentUser.currentUser.photoURL) {

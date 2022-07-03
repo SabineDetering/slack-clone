@@ -35,7 +35,7 @@ export class AppComponent {
     public dialog: MatDialog,
     public Auth: AuthService,
     private ts: ThreadService,
-    private cs:ChannelService
+    private cs: ChannelService
   ) {
     this.checkUserScreen(media, changeDetectorRef);
   }
@@ -67,9 +67,9 @@ export class AppComponent {
       this.Auth.deleteAnonymousUser(this.Auth.currentUser.currentUser);
     }
     await this.closeSession();
-    this.Auth.af.signOut();
+    await this.Auth.af.signOut();
     this.router.navigate(['/login']);
-  } 
+  }
 
 
   closeSession() {
