@@ -29,10 +29,12 @@ export class MainContainerComponent implements OnInit {
     this.getLastUserSessionFromLocalStorage();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.cs.scrollMain = true;  // initial scroll to bottom after login
+  }
 
   scrollToBottom() {
-    if (this.cs.scrollMain) {      
+    if (this.cs.scrollMain) {   
       this.threadContainer.nativeElement.scrollTop =
         this.threadContainer.nativeElement.scrollHeight;
       this.scrollTimer = setTimeout(() => {
