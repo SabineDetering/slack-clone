@@ -37,8 +37,16 @@ export class ChannelService {
   }
 
 
+/**
+ * creates directChannelName by listing the names of the members 
+ * currentUser is only listed if he is the only member
+ * sets directChannelAvatar to the avatar of the first element in the member array
+ * @param dc - directChannel
+ * @param currentUserID 
+ * @returns directChannel with name and avatar
+ */
+
   setDirectChannelProperties(dc: DirectChannel, currentUserID: string) {
-    // dc = new DirectChannel(dc);
     dc.directChannelName = this.Data.users
       .filter(
         (user) =>
@@ -54,7 +62,7 @@ export class ChannelService {
     return dc;
   }
 
-    showDefaultChannel() {
+  showDefaultChannel() {
     const showDefaultChannelSubscription = this.Data.channels$.subscribe(
       (channels) => {
         this.setCurrentChannelToChannel(channels[0].channelID);
@@ -67,7 +75,6 @@ export class ChannelService {
     return new Promise((resolve, reject) => {
       if (storageSession.channel.type == 'channel')
         this.setCurrentChannelToChannel(storageSession.channel.channelID);
-      // is of type 'directChannel'
       else
         this.setCurrentChannelToDirectChannel(storageSession.channel.channelID);
       resolve('current channel has been restored');
@@ -87,7 +94,6 @@ export class ChannelService {
   }
 
   async setCurrentChannelToDirectChannel(directChannelID: any) {
-
     const directChannel = await this.Data.getChannelFromDirectChannelID(
       directChannelID
     );
@@ -118,29 +124,29 @@ export class ChannelService {
   }
 
 
-    /**
-   * if User is the only member in direct channel, the channel  is deleted
-   * if User is one of several members, userID is deleted from member list
-   * @param userID
-   */
-     deleteUserFromDirectChannels(userID: string) {
-      this.Data.directChannels.forEach((dc) => {
-        if (dc.directChannelMembers.includes(userID)) {
-          if (dc.directChannelMembers.length == 1) {
-            this.Data.deleteDirectChannel(dc.directChannelID);
-            this.Data.deleteThreadsInChannel(dc.directChannelID);
-            this.Data.deleteMessagesInChannel(dc.directChannelID);
-          } else {
-            dc.directChannelMembers.splice(
-              dc.directChannelMembers.indexOf(userID),
-              1
-            );
-            this.Data.updateDirectChannel(dc.directChannelID, {
-              directChannelMembers: dc.directChannelMembers,
-            });
-          }
+  /**
+ * if User is the only member in direct channel, the channel  is deleted
+ * if User is one of several members, userID is deleted from member list
+ * @param userID
+ */
+  deleteUserFromDirectChannels(userID: string) {
+    this.Data.directChannels.forEach((dc) => {
+      if (dc.directChannelMembers.includes(userID)) {
+        if (dc.directChannelMembers.length == 1) {
+          this.Data.deleteDirectChannel(dc.directChannelID);
+          this.Data.deleteThreadsInChannel(dc.directChannelID);
+          this.Data.deleteMessagesInChannel(dc.directChannelID);
+        } else {
+          dc.directChannelMembers.splice(
+            dc.directChannelMembers.indexOf(userID),
+            1
+          );
+          this.Data.updateDirectChannel(dc.directChannelID, {
+            directChannelMembers: dc.directChannelMembers,
+          });
         }
-      });
-    }
+      }
+    });
+  }
 
 }
