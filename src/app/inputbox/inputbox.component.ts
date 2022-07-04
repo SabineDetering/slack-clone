@@ -10,6 +10,7 @@ import { finalize } from 'rxjs/operators';
 import { EditorService } from 'src/services/editor.service';
 import { Editor } from 'tinymce';
 import { ThreadService } from 'src/services/thread.service';
+import { ChannelService } from 'src/services/channel.service';
 
 @Component({
   selector: 'app-inputbox',
@@ -37,7 +38,8 @@ export class InputboxComponent implements OnInit {
     public Auth: AuthService,
     private storage: AngularFireStorage,
     public editor: EditorService,
-    private ts: ThreadService
+    private ts: ThreadService, 
+    private cs: ChannelService
   ) {}
 
   ngOnInit(): void {
@@ -160,13 +162,9 @@ export class InputboxComponent implements OnInit {
     this.setMessageProperties(threadID);
     await this.Data.saveMessage(this.message.toJSON());
     this.clearData();
-    this.triggerScrollToBottom();
+    this.cs.scrollMain = true;
   }
 
-  triggerScrollToBottom() {
-    // emits trigger to main component to scroll to bottom
-    this.messageSending.emit('messageWasSent');
-  }
 
   setMessageProperties(threadID: string) {
     const currentTime = new Date().getTime();

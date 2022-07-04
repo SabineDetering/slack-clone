@@ -31,12 +31,8 @@ export class MainContainerComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onMessageSent(event: Event) {
-    setTimeout(() => {this.scrollToBottom('user added Message')}, 200);
-  }
-
-  scrollToBottom(trigger?: string) {
-    if (this.cs.scrollMain || trigger == 'user added Message') {      
+  scrollToBottom() {
+    if (this.cs.scrollMain) {      
       this.threadContainer.nativeElement.scrollTop =
         this.threadContainer.nativeElement.scrollHeight;
       this.scrollTimer = setTimeout(() => {
