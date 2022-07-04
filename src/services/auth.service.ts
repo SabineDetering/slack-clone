@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { deleteUser } from 'firebase/auth';
-import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,35 +10,12 @@ export class AuthService {
   user: any;
 
   constructor(
-    public af: AngularFireAuth,
-    private Data: DataService,
+    public af: AngularFireAuth
   ) {
     af.authState.subscribe((auth) => {
       this.authState = auth;
     })
   }
-  // if (auth) {
-  //   this.af.onAuthStateChanged( async (user) => {
-  //     if (user) {
-  //       //login
-  //       this.user = user;
-  //       this.router.navigate(['/channel']);
-  //     }
-  // else {
-  //   //logout
-  //   console.log('logged out user', this.user);
-  //   if (this.user.isAnonymous) {
-  //     this.deleteAnonymousUser(this.user);
-  //   }
-  //   this.user = null;
-  //   await this.closeSession()
-  //   this.router.navigate(['/login']);
-  // }
-  //       });
-  //     }
-  //     console.log('currentUser', this.currentUser);
-  //   });
-  // }
 
   get authenticated(): boolean {
     return this.authState !== null;
@@ -57,39 +33,18 @@ export class AuthService {
     (await this.af.currentUser).updateProfile(json);
   }
 
-  /**
-   * deletes anonymous users from authentication and firestore collections after logout   *
-   * @param user  - user to be deleted
-   */
-  async deleteAnonymousUser(user) {
-    console.log(user);
-    //delete user from firebase authentication
-    deleteUser(user)
-      .then(() => {
-        console.log('is deleted from auth', user);
-      })
-      .catch((error) => {
-        console.log('error deleting anonymous user: ', error);
-      });
-    //delete user from firebase collections
-    this.Data.deleteUser(user.uid);
-  }
-
 
   /**
-   * deletes registered user from authentication and firestore collections 
+   * deletes registered user from authentication 
    * @param user  - user to be deleted
    * @returns - string to indicate success or error
    */
-  async deleteRegisteredUser(user): Promise<string> {
+  async deleteUserFromAuth(user): Promise<string> {
     console.log(user);
     let result = '';
-    //delete user from firebase authentication
     await deleteUser(user)
       .then(() => {
         console.log('is deleted from auth', user);
-        //delete user from firebase collections
-        this.Data.deleteUser(user.uid);
         result = 'success';
       })
       .catch((error) => {

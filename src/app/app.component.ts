@@ -70,6 +70,9 @@ export class AppComponent {
   }
 
 
+  /**
+   * user is deleted after confirmation
+   */
   deleteAccount() {
     const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
       data: {
@@ -89,31 +92,38 @@ export class AppComponent {
   }
 
 
+ /**
+  * delete user from authentication,firebase and local storage
+  */
   async deleteUser() {
     const userToDelete = this.Auth.currentUser.currentUser;
-    if (userToDelete.isAnonymous) {
-      this.Auth.deleteAnonymousUser(userToDelete);
-    } else {
-      this.storage.removeUserSessionFromLocalStorage(userToDelete.uid);
+    const result = await this.Auth.deleteUserFromAuth(userToDelete);
+    if (result == 'success') {
+      //delete user from firebase collections
       this.cs.deleteUserFromDirectChannels(userToDelete.uid);
-      const result = await this.Auth.deleteRegisteredUser(userToDelete);
-      if (result == 'success') {
-        this.openSnackBar('Your account has been deleted.');
-      } else {
-        this.openSnackBar("Your account couldn't be deleted.", result);
-      }
+      this.Data.deleteUser(userToDelete.uid);
+      //delete user session from local storage
+      this.storage.removeUserSessionFromLocalStorage(userToDelete.uid);
+      this.openSnackBar('Your account has been deleted.');
+    } else {
+      this.openSnackBar("Your account couldn't be deleted.", result);
     }
     this.router.navigate(['/login']);
   }
 
 
+  /**
+   * signout of currentUser
+   * anonymous users are deleted from authentication, firestore and local storage
+   */
   async logout() {
-    const user = this.Auth.currentUser
+    const user = this.Auth.currentUser.currentUser;
     console.log('logged out user', user);
-    if (user.currentUser.isAnonymous) {
-      this.storage.removeUserSessionFromLocalStorage(user.uid);
+    if (user.isAnonymous) {
+      this.Auth.deleteUserFromAuth(user);
       this.cs.deleteUserFromDirectChannels(user.uid);
-      this.Auth.deleteAnonymousUser(this.Auth.currentUser.currentUser);
+      this.Data.deleteUser(user.uid);
+      this.storage.removeUserSessionFromLocalStorage(user.uid);
     }
     await this.closeSession();
     await this.Auth.af.signOut();
@@ -121,6 +131,10 @@ export class AppComponent {
   }
 
 
+  /**
+   * empties BehaviorSubjects and deletes subscriptions
+   * @returns Promise
+   */
   closeSession() {
     return new Promise((resolve, reject) => {
       this.ts.closeCurrentThread();
