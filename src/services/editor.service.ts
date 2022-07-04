@@ -1,4 +1,11 @@
-import { Injectable } from '@angular/core';
+import {
+  ElementRef,
+  Injectable,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
+import { toArray } from 'rxjs';
 import { Message } from 'src/models/message.class';
 
 @Injectable({
@@ -6,35 +13,26 @@ import { Message } from 'src/models/message.class';
 })
 export class EditorService {
   public messageToEdit!: Message;
+  /* @ViewChildren */
 
   private editorSetup = (editor) => {
     editor.ui.registry.addButton('inline-code', {
       icon: 'sourcecode',
       onAction: (_) => {
         let selectionNode = editor.selection.getNode();
-        let selection = editor.selection.getContent() || ' ';
-        console.log(selection);
-        if (selectionNode.nodeName != 'CODE') {
-          editor.insertContent(
-            `<code style="color: #e01e5a; background-color: #eee; border: 1px solid #ddd">${selection}</code>`
-          );
-        } else {
-          editor.setContent(`${selection}`);
-        }
+        let selection: string = editor.selection.getContent();
+        if (!!selection && selectionNode.nodeName == 'CODE') return;
+        else editor.execCommand('mceToggleFormat', false, 'code');
       },
     });
     editor.ui.registry.addButton('code-block', {
       text: '[...]',
       onAction: (_) => {
         let selectionNode = editor.selection.getNode();
-        let selection = editor.selection.getNode().innerHTML || ' ';
-        if (selectionNode.nodeName != 'PRE') {
-          editor.setContent(
-            `<pre style="background-color: #eee; border: 1px solid #ddd; padding: 5px">${selection}</pre>`
-          );
-        } else {
+        let selection = editor.selection.getNode().innerHTML;
+        if (selectionNode.nodeName == 'PRE') {
           editor.setContent(`<p>${selection}</p>`);
-        }
+        } else editor.execCommand('mceToggleFormat', false, 'pre');
       },
     });
   };
