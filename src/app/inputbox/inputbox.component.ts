@@ -21,6 +21,8 @@ export class InputboxComponent implements OnInit {
   @Input('messageType') messageType!: string;
   @Input('editMessage') editMessage: Message = null; // transferred from app-message
 
+  @Output() messageSending: EventEmitter<any> = new EventEmitter();
+
   private message = new Message();
   private newThread = new Thread();
 
@@ -142,7 +144,6 @@ export class InputboxComponent implements OnInit {
     this.setFirstMessageInThread();
   }
 
-
   async createNewThread() {
     this.newThread.threadID = this.getUniqueID(new Date().getTime());
     this.newThread.channelID = this.Data.currentChannel.id;
@@ -156,12 +157,18 @@ export class InputboxComponent implements OnInit {
   }
 
   async addMessageToThread(threadID: string) {
-    this.setMessageProperties(threadID)
+    this.setMessageProperties(threadID);
     await this.Data.saveMessage(this.message.toJSON());
     this.clearData();
+    this.triggerScrollToBottom();
   }
 
-  setMessageProperties(threadID: string){
+  triggerScrollToBottom() {
+    // emits trigger to main component to scroll to bottom
+    this.messageSending.emit('messageWasSent');
+  }
+
+  setMessageProperties(threadID: string) {
     const currentTime = new Date().getTime();
     this.message.messageID = this.getUniqueID(currentTime);
     this.message.threadID = threadID;
@@ -184,7 +191,6 @@ export class InputboxComponent implements OnInit {
     this.newThread.firstMessageID = this.message.messageID;
     this.Data.saveThread(this.newThread.toJSON());
   }
-
 
   getUniqueID(currentTime: number) {
     return (

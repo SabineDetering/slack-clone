@@ -13,6 +13,7 @@ import { ThreadService } from 'src/services/thread.service';
   styleUrls: ['./main-container.component.scss'],
 })
 export class MainContainerComponent implements OnInit {
+
   @ViewChild('threadContainer') threadContainer: any;
   threads: Thread[] = [];
   users!: User[];
@@ -30,8 +31,12 @@ export class MainContainerComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  scrollToBottom() {
-    if (this.cs.scrollMain) {
+  onMessageSent(event: Event) {
+    setTimeout(() => {this.scrollToBottom('user added Message')}, 200);
+  }
+
+  scrollToBottom(trigger?: string) {
+    if (this.cs.scrollMain || trigger == 'user added Message') {      
       this.threadContainer.nativeElement.scrollTop =
         this.threadContainer.nativeElement.scrollHeight;
       this.scrollTimer = setTimeout(() => {
