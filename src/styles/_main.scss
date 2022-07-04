@@ -63,7 +63,7 @@ pre{
 }
 
 
- @include mix.scrollbar(mix.$primary-color, mix.$primary-hover, mix.$primary-hover);
+ @include mix.scrollbar(rgba(255, 255, 255, 0.107), mix.$primary-hover, mix.$primary-hover);
 
 
 
