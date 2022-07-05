@@ -22,7 +22,7 @@
       [routerLink]="['/channel']"
       list-item
       class="channel-list-item"
-      [class.current-channel]="channel.channelID == Data.currentChannel.id"
+      [class.current-channel]="Data.currentChannel && channel.channelID == Data.currentChannel.id"
       *ngFor="let channel of Data.channels$ | async | orderBy: 'channelName'"
     >
       <div class="left-part" (click)="setCurrentChannel(channel)">

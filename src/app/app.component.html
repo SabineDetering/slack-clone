@@ -54,18 +54,18 @@
 
 <!-- mobile view: sidenav closed by default, open in mode 'over' with backdrop, closes on click on sidenav (or menu button) -->
 <!-- desktop view: sidenav open by default in mode 'side'-->
-<mat-sidenav-container [hasBackdrop]="(mobileQueryWithoutThread.matches && !Data.currentThread || mobileQueryWithThread.matches && !!Data.currentThread )">
+<mat-sidenav-container [hasBackdrop]="sidenavIsClosed()">
   <mat-sidenav
     mode="side"
     #sidenav
-    [mode]="(mobileQueryWithoutThread.matches && !Data.currentThread || mobileQueryWithThread.matches && !!Data.currentThread ) ? 'over' : 'side'"
-    [opened]="!(mobileQueryWithoutThread.matches && !Data.currentThread || mobileQueryWithThread.matches && !!Data.currentThread )"
-    (click)="(mobileQueryWithoutThread.matches && !Data.currentThread || mobileQueryWithThread.matches && !!Data.currentThread ) ? sidenav.toggle() : null"
+    [mode]="sidenavIsClosed() ? 'over' : 'side'"
+    [opened]="!sidenavIsClosed()"
+    (click)="sidenavIsClosed() ? sidenav.toggle() : null"
   >
     <div class="sidenav-wrapper">
       <div *ngIf="Auth.authenticated">
         <app-channel-list
-          [mobile]="(mobileQueryWithoutThread.matches && !Data.currentThread || mobileQueryWithThread.matches && !!Data.currentThread )"
+          [mobile]="sidenavIsClosed()"
           [touchScreen]="touchScreen"
         ></app-channel-list>
         <app-direct-channel-list
