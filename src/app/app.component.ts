@@ -21,7 +21,9 @@ import { LocalStorageService } from 'src/services/local-storage.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  mobileQuery: MediaQueryList;
+  mobileQueryWithThread: MediaQueryList;
+  mobileQueryWithoutThread: MediaQueryList;
+  // hideNavbar: boolean;
   userLinks: LinkMenuItem[];
   currentMessages: Message[];
   touchScreen: boolean;
@@ -47,9 +49,15 @@ export class AppComponent {
 
   checkUserScreen(media: any, changeDetectorRef: any) {
     //check if screen width is too small for showing sidenav
-    this.mobileQuery = media.matchMedia('(max-width: 1000px)');
+    this.mobileQueryWithThread = media.matchMedia('(max-width: 1000px)');
+    this.mobileQueryWithoutThread = media.matchMedia('(max-width: 870px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addEventListener('change', this._mobileQueryListener);
+    this.mobileQueryWithThread.addEventListener('change', this._mobileQueryListener);
+    this.mobileQueryWithoutThread.addEventListener('change', this._mobileQueryListener);
+    
+    // this.hideNavbar = this.mobileQueryWithoutThread.matches && !this.Data.currentThread
+    //   || this.mobileQueryWithThread.matches && !!this.Data.currentThread;
+
     //check if screen is touch screen (no hover effects)
     this.touchScreen = media.matchMedia('(hover:none)').matches;
   }
