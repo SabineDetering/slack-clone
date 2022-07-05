@@ -23,7 +23,12 @@
         let directChannel of directChannels | orderBy: 'directChannelName'
       "
     >
-      <a [routerLink]="['/channel']" list-item class="direct-channel-list-item">
+      <a
+        [routerLink]="['/channel']"
+        [class.current-channel]="Data.currentChannel && directChannel.directChannelID == Data.currentChannel.id"
+        list-item
+        class="direct-channel-list-item"
+      >
         <div class="left-part" (click)="setCurrentDirectChannel(directChannel)">
           <div class="avatar-with-number">
             <img [src]="directChannel.directChannelAvatar" />
@@ -35,7 +40,7 @@
             {{ directChannel.directChannelName }}</span
           >
         </div>
-             </a>
+      </a>
     </ng-container>
   </mat-nav-list>
 </div>
