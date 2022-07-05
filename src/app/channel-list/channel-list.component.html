@@ -36,6 +36,7 @@
         class="more-btn"
         [class.touch]="touchScreen"
         [matMenuTriggerFor]="menu"
+        (click)="$event.stopPropagation();false"
       >
         <mat-icon> more_vert</mat-icon>
       </button>
