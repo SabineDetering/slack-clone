@@ -64,19 +64,19 @@ export class LoginComponent implements OnInit {
   setStandardAvatarAndGuestName(id: string, type: string) {
     if (type == 'avatar') {
       // registered user without avatar
-      this.Auth.updateProperties({ photoURL: 'assets/img/avatar-neutral.png' });
+      this.Auth.updateProperties({ photoURL: 'assets/img/avatar-neutral-light-grey.png' });
       this.Data.updateUserProperties(id, {
-        photoURL: 'assets/img/avatar-neutral.png',
+        photoURL: 'assets/img/avatar-neutral-light-grey.png',
       });
     } else {
       //anonymous user
       this.Auth.updateProperties({
         displayName: 'Guest',
-        photoURL: 'assets/img/avatar-neutral.png',
+        photoURL: 'assets/img/avatar-neutral-light-grey.png',
       });
       this.Data.updateUserProperties(id, {
         displayName: 'Guest',
-        photoURL: 'assets/img/avatar-neutral.png',
+        photoURL: 'assets/img/avatar-neutral-light-grey.png',
       });
     }
   }

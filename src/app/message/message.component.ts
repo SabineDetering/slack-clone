@@ -113,9 +113,11 @@ export class MessageComponent implements OnInit, OnDestroy {
       this.messageAuthorAvatar = 'assets/img/avatar-deletedMessage.png';
       return;
     } else {
-      if (this.user)
+      if (this.user){
         this.messageAuthorAvatar =
-          this.user.photoURL || 'assets/img/avatar-neutral.png';
+          this.user.photoURL || 'assets/img/avatar-neutral-grey.png';
+        if(this.messageAuthorAvatar == 'assets/img/avatar-neutral-light-grey.png') this.messageAuthorAvatar = 'assets/img/avatar-neutral-grey.png'
+        }
       // neutral Avatar is used for guests --> no photoURL
       else this.messageAuthorAvatar = 'assets/img/avatar-unknown.png';
     }
