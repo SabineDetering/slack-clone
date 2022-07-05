@@ -10,9 +10,9 @@
 }
 
 
-.message-container{
-    @include mix.flex(center, flex-start, row, 12px);
-    max-width: 100%;
+.message-container {
+  @include mix.flex(center, flex-start, row, 12px);
+  max-width: 100%;
 }
 
 .d-none {
@@ -32,7 +32,7 @@
 .mainContainer {
   @include mix.flex(flex-start, flex-start, column);
   width: 100%;
-  max-width: 100%;
+  max-width: calc(100% - 32px - 12px);
 }
 
 .img-avatar {
@@ -55,7 +55,7 @@
   }
 }
 
-.message-text{
+.message-text {
   margin-top: 6px;
   max-width: 100%;
 }
@@ -64,14 +64,15 @@
   @include mix.flex(center, center, row, 8px);
   width: 100%;
 
-  span{
+  span {
     font-size: 12px;
     color: #555;
   }
 
-  hr{
+  hr {
     flex: 1;
-    border: none;;
+    border: none;
+    ;
     border-bottom: 0.5px solid #aaa;
   }
 }
@@ -158,6 +159,7 @@ button {
   0% {
     color: mix.$primary-hover;
   }
+
   50%,
   100% {
     color: mix.$primary-color;
@@ -165,7 +167,7 @@ button {
   }
 }
 
-.main-msg-input{
+.main-msg-input {
   width: calc(100% - 44px);
   margin-left: 44px;
 
@@ -173,8 +175,8 @@ button {
     width: 100%;
     margin-left: 0px;
   }
-  }
+}
 
-.thread-msg-input{
+.thread-msg-input {
   width: 100%;
 }

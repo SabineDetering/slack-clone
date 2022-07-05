@@ -47,7 +47,7 @@ export class AppComponent {
 
   checkUserScreen(media: any, changeDetectorRef: any) {
     //check if screen width is too small for showing sidenav
-    this.mobileQuery = media.matchMedia('(max-width: 870px)');
+    this.mobileQuery = media.matchMedia('(max-width: 1000px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
     //check if screen is touch screen (no hover effects)
