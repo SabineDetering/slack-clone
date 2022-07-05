@@ -55,6 +55,9 @@
 
 mat-toolbar {
     justify-content: space-between;
+    box-shadow: 0 0 6px rgba(0,0,0,0.5);
+    position: relative;
+    z-index: 2;
 
     .left-part {
         @include mix.flex($align: center);
