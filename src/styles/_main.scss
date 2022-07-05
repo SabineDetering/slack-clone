@@ -30,11 +30,11 @@ body {
   color: white;
 }
 
-.full-width{
-  width:100%;
+.full-width {
+  width: 100%;
 }
 
-.icon{
+.icon {
   @include mix.flex(center, center);
   width: 35px;
   height: 35px;
@@ -43,40 +43,42 @@ body {
   background-color: #fff;
   cursor: pointer;
 
-  &:hover{
+  &:hover {
     background-color: rgba(106, 104, 104, 0.1);
   }
 }
 
-code{
+code {
   color: #e01e5a;
   background-color: #eee;
   border: 1px solid #ddd;
   padding: 2px;
 }
 
-pre{
+pre {
   background-color: #eee;
   border-radius: 5px;
   border: 1px solid #ddd;
   padding: 5px;
+  max-width: 100%;
+  overflow: auto;
 }
 
 
- @include mix.scrollbar(rgba(255, 255, 255, 0.107), mix.$primary-hover, mix.$primary-hover);
+@include mix.scrollbar(rgba(255, 255, 255, 0.107), mix.$primary-hover, mix.$primary-hover);
 
 
 
 //  MATERIAL DESIGN
 
-.mat-menu-panel{
-  padding: 8px 12px!important;
+.mat-menu-panel {
+  padding: 8px 12px !important;
 }
 
 // login-component
-mat-card.mat-card.mat-focus-indicator._mat-animation-noopable.ng-star-inserted{
-  @media screen and (max-width: 400px){
-    margin: 0rem!important;
+mat-card.mat-card.mat-focus-indicator._mat-animation-noopable.ng-star-inserted {
+  @media screen and (max-width: 400px) {
+    margin: 0rem !important;
     height: 100vh;
   }
 }
