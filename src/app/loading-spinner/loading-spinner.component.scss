@@ -1,57 +1,66 @@
+@use "../../styles/mixins" as mix; //also imports _variables.scss
 
-@use '../../styles/mixins' as mix; //also imports _variables.scss
+.fullscreen {
+  @include mix.flex(center, center);
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  background-color: white;
+  z-index: 2;
 
-.fullscreen{
- @include mix.flex(center, center);
- width: 100%;
- height: 100vh;
- position: fixed;
- background-color: white;
- z-index: 2;
+  .loadingSpinnerContainer {
+    width: 100px !important;
+    min-width: 100px !important;
+    height: 100px !important;
+  }
+
+  .loadingSpinner-dot {
+    font-size: 74px !important;
+  }
 }
 
-.reduced-width{
- width: calc(100% - 251px) !important;
+.reduced-width {
+  width: calc(100% - 251px) !important;
 }
 
 .loadingSpinnerContainer {
- @include mix.flex(center, center);
- width: 100px;
- min-width: 100px;
- height: 100px;
- border-radius: 100%;
+  @include mix.flex(center, center);
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  border-radius: 100%;
 
- .loadingSpinner-dot {
-   font-size: 74px;
+  .loadingSpinner-dot {
+    font-size: 28px;
 
-   &:first-child {
-     color: mix.$primary-hover;
-     animation: dotFlashing 0.8s infinite alternate;
-     animation-delay: 0s;
-   }
+    &:first-child {
+      color: mix.$primary-hover;
+      animation: dotFlashing 0.8s infinite alternate;
+      animation-delay: 0s;
+    }
 
-   &:nth-child(2) {
-     color: mix.$primary-hover;
-     animation: dotFlashing 0.8s infinite alternate;
-     animation-delay: 0.5s;
-   }
+    &:nth-child(2) {
+      color: mix.$primary-hover;
+      animation: dotFlashing 0.8s infinite alternate;
+      animation-delay: 0.5s;
+    }
 
-   &:last-child {
-     color: mix.$primary-hover;
-     animation: dotFlashing 0.8s infinite alternate;
-     animation-delay: 1s;
-   }
- }
+    &:last-child {
+      color: mix.$primary-hover;
+      animation: dotFlashing 0.8s infinite alternate;
+      animation-delay: 1s;
+    }
+  }
 }
 
 @keyframes dotFlashing {
- 0% {
-   color: mix.$primary-hover;
- }
+  0% {
+    color: mix.$primary-hover;
+  }
 
- 50%,
- 100% {
-   color: mix.$primary-color;
-   opacity: 0.1;
- }
+  50%,
+  100% {
+    color: mix.$primary-color;
+    opacity: 0.1;
+  }
 }

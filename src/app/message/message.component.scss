@@ -125,48 +125,6 @@ button {
   background: none;
 }
 
-.loadingSpinnerContainer {
-  @include mix.flex(center, center);
-  width: 32px;
-  min-width: 32px;
-  height: 32px;
-  border-radius: 100%;
-
-  .loadingSpinner-dot {
-    font-size: 28px;
-
-    &:first-child {
-      color: mix.$primary-hover;
-      animation: dotFlashing 0.8s infinite alternate;
-      animation-delay: 0s;
-    }
-
-    &:nth-child(2) {
-      color: mix.$primary-hover;
-      animation: dotFlashing 0.8s infinite alternate;
-      animation-delay: 0.5s;
-    }
-
-    &:last-child {
-      color: mix.$primary-hover;
-      animation: dotFlashing 0.8s infinite alternate;
-      animation-delay: 1s;
-    }
-  }
-}
-
-@keyframes dotFlashing {
-  0% {
-    color: mix.$primary-hover;
-  }
-
-  50%,
-  100% {
-    color: mix.$primary-color;
-    opacity: 0.1;
-  }
-}
-
 .main-msg-input {
   width: calc(100% - 44px);
   margin-left: 44px;

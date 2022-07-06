@@ -6,11 +6,7 @@
     alt="author"
   />
   <ng-template #loadingSpinner>
-    <div class="loadingSpinnerContainer">
-      <span class="loadingSpinner-dot">.</span>
-      <span class="loadingSpinner-dot">.</span>
-      <span class="loadingSpinner-dot">.</span>
-    </div>
+    <app-loading-spinner></app-loading-spinner>
   </ng-template>
 
   <div class="mainContainer" *ngIf="message">
