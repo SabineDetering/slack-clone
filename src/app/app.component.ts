@@ -62,9 +62,10 @@ export class AppComponent {
     this.touchScreen = media.matchMedia('(hover:none)').matches;
   }
 
-  sidenavIsClosed(){
-    return this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread;
-  }
+  // sidenavIsClosed() {
+  //   console.log('checkSideNav');
+  //   return this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread;
+  // }
 
 
   openSnackBar(message: string, action?: string) {
