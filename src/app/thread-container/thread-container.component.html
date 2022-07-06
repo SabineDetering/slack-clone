@@ -14,7 +14,7 @@
     class="message"
     *ngFor="let message of Data.currentMessages$ | async; index as i; trackBy: getTrackByCondition"
   >
-    <app-message-actions [actionsType]="'messageActions'" [message]="message" [thread]="Data.currentThread"></app-message-actions>
+    <app-message-actions *ngIf="userHasEditRights(message)" [actionsType]="'messageActions'" [message]="message" [thread]="Data.currentThread"></app-message-actions>
 
     <app-message [firstAnswerMessage]="i == 0 && Data.currentThread.firstMessageID != 'deleted'" [message]="message" [thread]="Data.currentThread"></app-message>
   </div>

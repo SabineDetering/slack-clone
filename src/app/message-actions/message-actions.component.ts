@@ -68,6 +68,10 @@ export class MessageActionsComponent implements OnInit {
     }
   }
 
+  userHasEditRights(){
+    return this.Auth?.currentUserId == this.message?.authorID;
+  };
+
   isLastMessageInThread() {
     return (
       this.thread.answerAmount == 0 ||

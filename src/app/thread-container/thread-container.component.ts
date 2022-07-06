@@ -22,6 +22,10 @@ export class ThreadContainerComponent implements OnInit {
     this.ts.closeCurrentThread(true, this.Auth.currentUserId);
   }
 
+  userHasEditRights(message: Message){
+    return this.Auth?.currentUserId == message?.authorID;
+  };
+
   getTrackByCondition(index: any, message: Message) {
     return index + message.messageID;
   }
