@@ -223,8 +223,8 @@ export class DataService {
     this.userCollection.doc(id).update(json);
   }
 
-  updateDirectChannel(id: string, json: any) {
-    this.directChannelCollection.doc(id).update(json);
+  async updateDirectChannel(id: string, json: any) {
+    await this.directChannelCollection.doc(id).update(json);
   }
 
   // ############  DELETE FUNCTIONS #############
@@ -269,13 +269,13 @@ export class DataService {
     this.channelCollection.doc(channelID).delete();
   }
 
-  deleteDirectChannel(directChannelID: string) {
+  async deleteDirectChannel(directChannelID: string) {
     console.log('deleting directChannel ', directChannelID);
-    this.directChannelCollection.doc(directChannelID).delete();
+    await this.directChannelCollection.doc(directChannelID).delete();
   }
 
-  deleteUser(id: string) {
+  async deleteUser(id: string) {
     console.log('deleting user ', id);
-    this.userCollection.doc(id).delete();
+   await this.userCollection.doc(id).delete();
   }
 }

@@ -134,7 +134,7 @@ export class AppComponent {
     if (user.isAnonymous) {
       this.Auth.deleteUserFromAuth(user);
       this.cs.deleteUserFromDirectChannels(user.uid);
-      this.Data.deleteUser(user.uid);
+      await this.Data.deleteUser(user.uid);
       this.storage.removeUserSessionFromLocalStorage(user.uid);
     }
     await this.closeSession();
