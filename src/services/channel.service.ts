@@ -66,6 +66,7 @@ export class ChannelService {
     const showDefaultChannelSubscription = this.Data.channels$.subscribe(
       (channels) => {
         this.setCurrentChannelToChannel(channels[0].channelID);
+        this.Auth.showLoadingSpinner = false;
         showDefaultChannelSubscription.unsubscribe();
       }
     );

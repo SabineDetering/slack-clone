@@ -93,7 +93,7 @@ export class DataService {
   subscribeToCurrentChannel() {
     this.currentChannel$.subscribe((channel) => {
       this.currentChannel = channel;
-      console.log('subscribeToCurrentChannel ', this.currentChannel)
+      console.log('subscribeToCurrentChannel ', this.currentChannel);
     });
   }
 
@@ -162,9 +162,9 @@ export class DataService {
 
   getUserdataFromUserID(userID: string) {
     // userId is identical with Doc-Id
-   return this.userCollection.doc(userID).valueChanges()
+    return this.userCollection.doc(userID).valueChanges();
   }
-/*   async getUserdataFromUserID(userID: string) {
+  /*   async getUserdataFromUserID(userID: string) {
     // userId is identical with Doc-Id
     let result = await firstValueFrom(
       this.userCollection.doc(userID).valueChanges()
@@ -230,7 +230,7 @@ export class DataService {
   // ############  DELETE FUNCTIONS #############
 
   deleteThreadsInChannel(channelID: string) {
-    console.log('deleting threads from channel ',channelID);
+    console.log('deleting threads from channel ', channelID);
     this.firestore
       .collection<Thread>('threads', (ref) =>
         ref.where('channelID', '==', channelID)
@@ -249,7 +249,6 @@ export class DataService {
       )
       .valueChanges()
       .subscribe((messages) => {
-
         messages.forEach((message) => this.deleteMessage(message.messageID));
       });
   }
@@ -265,7 +264,7 @@ export class DataService {
   }
 
   deleteChannel(channelID: string) {
-    console.log('deleting channel ', channelID)
+    console.log('deleting channel ', channelID);
     this.channelCollection.doc(channelID).delete();
   }
 
@@ -276,6 +275,10 @@ export class DataService {
 
   async deleteUser(id: string) {
     console.log('deleting user ', id);
-   await this.userCollection.doc(id).delete();
+    try {
+      await this.userCollection.doc(id).delete();
+    } catch (err) {
+      return err;
+    }
   }
 }

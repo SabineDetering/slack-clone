@@ -8,6 +8,7 @@ import { deleteUser } from 'firebase/auth';
 export class AuthService {
   authState = null;
   user: any;
+  showLoadingSpinner = false;
 
   constructor(
     public af: AngularFireAuth

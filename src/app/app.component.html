@@ -80,6 +80,9 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
+
+    <app-loading-spinner *ngIf="Auth.showLoadingSpinner" [fullscreen]="true" [sidenavIsOpen]="!sidenavIsClosed()"></app-loading-spinner>
+
     <div class="outlet-main">
       <router-outlet> </router-outlet>
     </div>

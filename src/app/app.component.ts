@@ -129,13 +129,19 @@ export class AppComponent {
    * anonymous users are deleted from authentication, firestore and local storage
    */
   async logout() {
+    this.Auth.showLoadingSpinner = true;
     const user = this.Auth.currentUser.currentUser;
     console.log('logged out user', user);
     if (user.isAnonymous) {
       this.Auth.deleteUserFromAuth(user);
       this.cs.deleteUserFromDirectChannels(user.uid);
-      await this.Data.deleteUser(user.uid);
+      try{
+        await this.Data.deleteUser(user.uid);
+      } catch(err){
+        console.log(err)
+      }
       this.storage.removeUserSessionFromLocalStorage(user.uid);
+      console.log('user deleted')
     }
     await this.closeSession();
     await this.Auth.af.signOut();

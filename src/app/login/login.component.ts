@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
    * new users get standard avatar
    */
   async ngOnInit(): Promise<void> {
+    this.hideLoadingSpinner()
     let userSubscription = this.Data.users$.subscribe((users) => {
       const user = users.filter(user => user.uid == this.Auth.currentUserId)[0];
       console.log('onInit user', user);
@@ -45,8 +46,15 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  hideLoadingSpinner(){
+    setTimeout(() => {
+      this.Auth.showLoadingSpinner = false;
+    }, 100);
+  }
+
 
   printSuccess(event: any) {
+    this.Auth.showLoadingSpinner = true;
     console.log('login event', event);
     console.log('login event', event.user.uid);
   }

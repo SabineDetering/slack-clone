@@ -27,6 +27,8 @@ export class LocalStorageService {
   }
 
   removeUserSessionFromLocalStorage(userID: string) {
+    console.log('removeUserSessionFromLocalStorage')
+    /* if(this.getUserSessionFromLocalStorage()) */
     localStorage.removeItem(`session-${userID}`);
   }
 }

@@ -51,6 +51,7 @@ import { PrivacyNoticeComponent } from './privacy-notice/privacy-notice.componen
 import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-change-avatar.component';
 import { PERSISTENCE } from '@angular/fire/compat/auth';
 import { DialogEditProfileComponent } from './dialog-edit-profile/dialog-edit-profile.component';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { DialogEditProfileComponent } from './dialog-edit-profile/dialog-edit-pr
     PrivacyNoticeComponent,
     DialogChangeAvatarComponent,
     DialogEditProfileComponent,
+    LoadingSpinnerComponent,
   ],
   imports: [
     BrowserModule,

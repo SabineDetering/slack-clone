@@ -57,7 +57,7 @@ export class MainContainerComponent implements OnInit {
       await this.cs.setCurrentChannel(storageSession);
       if (!!storageSession.threadID) {
         this.setCurrentThread(storageSession);
-      }
+      } else this.Auth.showLoadingSpinner = false;
     }
   }
 
@@ -74,6 +74,7 @@ export class MainContainerComponent implements OnInit {
         storageSession.channel.type,
         null
       );
+      this.Auth.showLoadingSpinner = false;
     }
   }
 
@@ -90,6 +91,7 @@ export class MainContainerComponent implements OnInit {
       this.Data.currentChannel.type,
       thread.threadID
     );
+    this.Auth.showLoadingSpinner = false;
   }
 
   getTrackByCondition(index: any, thread: Thread) {
