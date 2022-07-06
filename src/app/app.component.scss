@@ -11,6 +11,11 @@
     }
 }
 
+.toolbar-avatar{
+    font-size: 16px;
+    color: mix.$primary-color;
+}
+
 .userInfo {
     @include mix.flex(center, flex-start, column);
     padding:0 16px;
@@ -122,4 +127,12 @@ mat-sidenav-content {
     &:hover mat-icon {
         filter: drop-shadow(0 0 8px white);
     }
+}
+
+.loading-spinner-container{
+    @include mix.flex(center, center);
+    background-color: rgba(white, .8);
+    height: 44px;
+    width: 44px;
+    border-radius: 50%;
 }

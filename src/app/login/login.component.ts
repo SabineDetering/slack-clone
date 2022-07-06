@@ -13,6 +13,7 @@ import { DataService } from 'src/services/data.service';
 export class LoginComponent implements OnInit {
   providers = AuthProvider;
   user: any;
+  showLoginScreen = true;
 
   constructor(
     private router: Router,
@@ -27,7 +28,7 @@ export class LoginComponent implements OnInit {
    * new users get standard avatar
    */
   async ngOnInit(): Promise<void> {
-    this.hideLoadingSpinner()
+    this.hideLoadingSpinner();
     let userSubscription = this.Data.users$.subscribe((users) => {
       const user = users.filter(user => user.uid == this.Auth.currentUserId)[0];
       console.log('onInit user', user);
@@ -49,11 +50,13 @@ export class LoginComponent implements OnInit {
   hideLoadingSpinner(){
     setTimeout(() => {
       this.Auth.showLoadingSpinner = false;
+      this.showLoginScreen = true;
     }, 100);
   }
 
 
   printSuccess(event: any) {
+    this.showLoginScreen = false;
     this.Auth.showLoadingSpinner = true;
     console.log('login event', event);
     console.log('login event', event.user.uid);

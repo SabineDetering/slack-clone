@@ -8,15 +8,20 @@
 
   <!--  Avatar Img triggers userMenu -->
 
-  <ng-container *ngIf="!!Auth.currentUser?.currentUser">
-    <img
+  <ng-container class="toolbar-avatar-container" *ngIf="!!Auth.currentUser?.currentUser">
+    <img *ngIf="!!Auth.currentUser.currentUser.photoURL ; else loadingSpinner"
       [src]="Auth.currentUser.currentUser.photoURL"
-      alt="userAvatar"
+      alt="user"
       [title]="Auth.currentUser.currentUser.displayName"
       [matMenuTriggerFor]="menu"
       #menuTrigger
-      class="avatar"
+      class="avatar toolbar-avatar"
     />
+    <ng-template #loadingSpinner>
+      <div  class="loading-spinner-container">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+    </ng-template>
 
     <!--  userMenu -->
     <mat-menu #menu="matMenu" class="matMenu">
