@@ -79,13 +79,15 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   getMessageProperties() {
-    this.user$ = this.Data.getUserdataFromUserID(this.message.authorID);
-    this.userSubscription = this.user$.subscribe((user) => {
-      this.user = user;
-      this.getMessageAuthorName();
-      this.getAuthorAvatar();
-    });
-    this.getMessageTime();
+    if(this.message){
+      this.user$ = this.Data.getUserdataFromUserID(this.message.authorID);
+      this.userSubscription = this.user$.subscribe((user) => {
+        this.user = user;
+        this.getMessageAuthorName();
+        this.getAuthorAvatar();
+      });
+      this.getMessageTime();
+    }
   }
 
   setDeletedMessage() {
