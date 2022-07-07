@@ -6,7 +6,6 @@
     display: block;
     padding: 0px 5% 34px 5%;
     max-height: calc(100vh - 64px);
-    word-break: break-all;
     overflow-y: auto;
 
     h3 {
@@ -24,17 +23,20 @@
         padding: mix.$padding-main;
     }
 
-    li {
+    mat-list {
         padding-left: mix.$padding-main;
         padding-right: mix.$padding-main;
+        text-indent: -20px;
+        margin-left: 20px;
     }
+
 }
 
-h2{
+h2 {
     margin-top: 32px;
     margin-bottom: 24px;
-    }
-    
-    hr{
-        margin: 12px 0px;
-    }
+}
+
+hr {
+    margin: 12px 0px;
+}
