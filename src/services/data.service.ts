@@ -281,4 +281,15 @@ export class DataService {
       return err;
     }
   }
+
+  deleteAllOldGuests() {
+    this.firestore
+      .collection<User>('users', (ref) =>
+        ref.where('displayName', '==', 'Guest')
+      )
+      .valueChanges()
+      .subscribe((users) => {
+        users.forEach((user) => this.deleteUser(user.uid));
+      });
+  }
 }

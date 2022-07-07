@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
    * new users get standard avatar
    */
   async ngOnInit(): Promise<void> {
+    /* this.Data.deleteAllOldGuests() */
     this.hideLoadingSpinner();
     let userSubscription = this.Data.users$.subscribe((users) => {
       const user = users.filter(user => user.uid == this.Auth.currentUserId)[0];
