@@ -9,7 +9,7 @@
 }
 
 .head{
-    @include mix.flex(flex-start,flex-start, column);  
+    @include mix.flex(center,flex-start, column);  
     padding: mix.$padding-medium 5%;
     width: 100%;
     min-height: 60px;

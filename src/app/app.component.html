@@ -3,24 +3,19 @@
     <button class="menu-btn" mat-icon-button (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
-    <span> Slacky</span>
+    <!-- <span> Slacky</span> -->
   </div>
 
   <!--  Avatar Img triggers userMenu -->
 
   <ng-container class="toolbar-avatar-container" *ngIf="!!Auth.currentUser?.currentUser">
     <img *ngIf="!!Auth.currentUser.currentUser.photoURL ; else loadingSpinner"
-      [src]="Auth.currentUser.currentUser.photoURL"
-      alt="user"
-      [title]="Auth.currentUser.currentUser.displayName"
-      [matMenuTriggerFor]="menu"
-      #menuTrigger
-      class="avatar toolbar-avatar"
-    />
+      [src]="Auth.currentUser.currentUser.photoURL" alt="user" [title]="Auth.currentUser.currentUser.displayName"
+      [matMenuTriggerFor]="menu" #menuTrigger class="avatar toolbar-avatar" />
     <ng-template #loadingSpinner>
-      <div  class="loading-spinner-container">
-      <app-loading-spinner></app-loading-spinner>
-    </div>
+      <div class="loading-spinner-container">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
     </ng-template>
 
     <!--  userMenu -->
@@ -59,44 +54,41 @@
 
 <!-- mobile view: sidenav closed by default, open in mode 'over' with backdrop, closes on click on sidenav (or menu button) -->
 <!-- desktop view: sidenav open by default in mode 'side'-->
-<mat-sidenav-container [hasBackdrop]="( this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread)">
-  <mat-sidenav
-    mode="side"
-    #sidenav
+<mat-sidenav-container
+  [hasBackdrop]="( this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread)">
+  <mat-sidenav mode="side" #sidenav
     [mode]=" (this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread) ? 'over' : 'side'"
     [opened]="!( this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread)"
-    (click)="( this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread) ? sidenav.toggle() : null"
-  >
+    (click)="( this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread) ? sidenav.toggle() : null">
     <div class="sidenav-wrapper">
       <div *ngIf="Auth.authenticated">
         <app-channel-list
           [mobile]="( this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread)"
-          [touchScreen]="touchScreen"
-        ></app-channel-list>
-        <app-direct-channel-list
-          [touchScreen]="touchScreen"
-        ></app-direct-channel-list>
+          [touchScreen]="touchScreen"></app-channel-list>
+        <app-direct-channel-list [touchScreen]="touchScreen"></app-direct-channel-list>
       </div>
+      
       <mat-nav-list class="legal-list">
-        <a list-item [routerLink]="['legal-notice']"> Legal Notice </a>
-        <a list-item [routerLink]="['privacy-notice']"> Privacy Notice </a>
+        <img class="logo" src="assets/img/SLACK-white.png" alt="logo">
+        <a list-item [routerLink]="['legal-notice']"> Legal & Privacy Notice</a>
+        <!-- <a list-item [routerLink]="['privacy-notice']"> Privacy Notice </a> -->
       </mat-nav-list>
     </div>
   </mat-sidenav>
 
   <mat-sidenav-content>
 
-    <app-loading-spinner *ngIf="Auth.showLoadingSpinner" [fullscreen]="true" [sidenavIsOpen]="!( this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread)"></app-loading-spinner>
+    <app-loading-spinner *ngIf="Auth.showLoadingSpinner" [fullscreen]="true"
+      [sidenavIsOpen]="!( this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread)">
+    </app-loading-spinner>
 
     <div class="outlet-main">
       <router-outlet> </router-outlet>
     </div>
-    <app-thread-container
-      *ngIf="
+    <app-thread-container *ngIf="
         Data.currentThread &&
         !router.url.includes('legal-notice') &&
         !router.url.includes('privacy-notice')
-      "
-    ></app-thread-container>
+      "></app-thread-container>
   </mat-sidenav-content>
 </mat-sidenav-container>

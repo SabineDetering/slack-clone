@@ -5,20 +5,20 @@
     height: 44px;
     border-radius: 50%;
     cursor: pointer;
-    
-    &:hover{
+
+    &:hover {
         filter: brightness(1.1);
     }
 }
 
-.toolbar-avatar{
+.toolbar-avatar {
     font-size: 16px;
     color: mix.$primary-color;
 }
 
 .userInfo {
     @include mix.flex(center, flex-start, column);
-    padding:0 16px;
+    padding: 0 16px;
     line-height: 1.4em !important;
 
     span:last-child {
@@ -49,7 +49,6 @@
     }
 
     button:last-child {
-
         &:hover {
             background-color: rgb(255, 129, 129);
             color: white;
@@ -57,10 +56,9 @@
     }
 }
 
-
 mat-toolbar {
     justify-content: space-between;
-    box-shadow: 0 0 6px rgba(0,0,0,0.5);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
     position: relative;
     z-index: 2;
 
@@ -74,9 +72,8 @@ mat-toolbar {
     }
 }
 
-
 mat-sidenav {
-    height: calc(100vh - 54px - 73px);
+    height: calc(100vh - 196px);
     width: 251px; // 1px border-right from material
     overflow: auto;
     background-color: mix.$primary-color;
@@ -96,16 +93,22 @@ mat-sidenav {
     background-color: mix.$primary-color;
     @include mix.flex($dir: column);
     font-size: 14px;
-    padding-bottom: mix.$padding-main;
 
     a {
-        padding: mix.$padding-small mix.$padding-main;
+        border-top: 1px solid rgba(255, 255, 255, 0.463);
+        padding: mix.$padding-main mix.$padding-main;
         width: 250px;
 
         &:hover {
             background-color: mix.$primary-hover;
         }
     }
+}
+
+.logo {
+    padding-bottom: 34px;
+    padding-left: 16px;
+    height: 78px;
 }
 
 .mat-drawer-content {
@@ -123,15 +126,15 @@ mat-sidenav-content {
     max-width: 100%;
 }
 
-.menu-btn{
+.menu-btn {
     &:hover mat-icon {
         filter: drop-shadow(0 0 8px white);
     }
 }
 
-.loading-spinner-container{
+.loading-spinner-container {
     @include mix.flex(center, center);
-    background-color: rgba(white, .8);
+    background-color: rgba(white, 0.8);
     height: 44px;
     width: 44px;
     border-radius: 50%;
