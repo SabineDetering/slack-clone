@@ -1,7 +1,10 @@
 @use "../../styles/mixins" as mix; //also imports _variables.scss
 
-.privacy {
-    padding: 24px 5%;
+
+
+:host {
+    display: block;
+    padding: 0px 5% 34px 5%;
     max-height: calc(100vh - 64px);
     word-break: break-all;
     overflow-y: auto;
@@ -26,3 +29,12 @@
         padding-right: mix.$padding-main;
     }
 }
+
+h2{
+    margin-top: 32px;
+    margin-bottom: 24px;
+    }
+    
+    hr{
+        margin: 12px 0px;
+    }
