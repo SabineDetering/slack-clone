@@ -10,6 +10,7 @@ import { ChannelService } from 'src/services/channel.service';
 import { DialogAddDirectChannelComponent } from '../dialog-add-direct-channel/dialog-add-direct-channel.component';
 import { ThreadService } from 'src/services/thread.service';
 import { LocalStorageService } from 'src/services/local-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-direct-channel-list',
@@ -29,7 +30,9 @@ export class DirectChannelListComponent implements OnInit {
     public Auth: AuthService,
     private cs: ChannelService,
     private ts: ThreadService,
-    private storage: LocalStorageService
+    private storage: LocalStorageService,
+    private router:Router
+
   ) { }
 
 
@@ -70,6 +73,7 @@ export class DirectChannelListComponent implements OnInit {
           this.Auth.currentUserId
         );
         this.setCurrentDirectChannel(directChannel);
+        this.router.navigate(['/channel']);
       }
     })
   }

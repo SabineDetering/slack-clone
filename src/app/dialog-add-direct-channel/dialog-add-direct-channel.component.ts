@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { DirectChannel } from 'src/models/direct-channel.class';
 import { User } from 'src/models/user.class';
 import { AuthService } from 'src/services/auth.service';
+import { ChannelService } from 'src/services/channel.service';
 import { DataService } from 'src/services/data.service';
 
 @Component({
@@ -20,6 +21,7 @@ export class DialogAddDirectChannelComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<DialogAddDirectChannelComponent>,
     public Data: DataService,
+    public cs:ChannelService,
     public Auth: AuthService,
     private _snackBar: MatSnackBar
   ) {
@@ -39,13 +41,19 @@ export class DialogAddDirectChannelComponent implements OnInit {
     if (!this.dm.directChannelMembers.includes(this.Auth.currentUserId)) {
       this.dm.directChannelMembers.push(this.Auth.currentUserId);
     }
-    this.Data.saveDirectChannel(this.dm.toJSON())
+    let duplicate = this.cs.dcWithSameMembers(this.dm.directChannelMembers);
+    if (!duplicate) {
+      this.Data.saveDirectChannel(this.dm.toJSON())
       .then(docRef => {
         this.dm.directChannelID = docRef.id;
         console.log('created dc', this.dm);
         this.openSnackBar('New chat has been created.');
-        this.dialogRef.close(this.dm.toJSON());
+        this.dialogRef.close(this.dm);
       })
       .catch(error => console.error('error adding direct channel to firestore: ', error));
+    } else {
+      this.openSnackBar('You already have a chat with these participants.');
+      this.dialogRef.close(duplicate);
+    }
   }
 }

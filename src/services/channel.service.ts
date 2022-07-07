@@ -37,15 +37,31 @@ export class ChannelService {
   }
 
 
-/**
- * creates directChannelName by listing the names of the members 
- * currentUser is only listed if he is the only member
- * sets directChannelAvatar to the avatar of the first element in the member array
- * @param dc - directChannel
- * @param currentUserID 
- * @returns directChannel with name and avatar
- */
+  dcWithSameMembers(memberList: string[]): DirectChannel|null {
+    for (let i = 0; i < this.Data.directChannels.length; i++) {
+      const dcMembers = this.Data.directChannels[i].directChannelMembers;
+      if (memberList.length != dcMembers.length) {
+        continue;
+      } else if (memberList.sort().toString() != dcMembers.sort().toString()) {
+        continue;
+      } else {
+        console.log('identical member list found', this.Data.directChannels[i]);
+        return this.Data.directChannels[i];
+      }
+    }
+    console.log(' no identical member list found');
+    return null;
+  }
 
+
+  /**
+   * creates directChannelName by listing the names of the members 
+   * currentUser is only listed if he is the only member
+   * sets directChannelAvatar to the avatar of the first element in the member array
+   * @param dc - directChannel
+   * @param currentUserID 
+   * @returns directChannel with name and avatar
+   */
   setDirectChannelProperties(dc: DirectChannel, currentUserID: string) {
     dc.directChannelName = this.Data.users
       .filter(
@@ -84,7 +100,6 @@ export class ChannelService {
   }
 
   async setCurrentChannelToChannel(channelID: any) {
-
     const channel = await this.Data.getChannelFromChannelID(channelID);
     if (channel) {
       this.setCurrentChannelFromChannel(channel);
