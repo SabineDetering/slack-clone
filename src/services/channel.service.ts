@@ -37,7 +37,7 @@ export class ChannelService {
   }
 
 
-  dcWithSameMembers(memberList: string[]): DirectChannel|null {
+  dcWithSameMembers(memberList: string[]): DirectChannel | null {
     for (let i = 0; i < this.Data.directChannels.length; i++) {
       const dcMembers = this.Data.directChannels[i].directChannelMembers;
       if (memberList.length != dcMembers.length) {
@@ -55,25 +55,25 @@ export class ChannelService {
 
 
   /**
-   * creates directChannelName by listing the names of the members 
+   * creates directChannelName by alphabetically listing the names of the members 
    * currentUser is only listed if he is the only member
-   * sets directChannelAvatar to the avatar of the first element in the member array
+   * sets directChannelAvatar to the avatar of the first name
    * @param dc - directChannel
    * @param currentUserID 
    * @returns directChannel with name and avatar
    */
   setDirectChannelProperties(dc: DirectChannel, currentUserID: string) {
-    dc.directChannelName = this.Data.users
+    let participants = this.Data.users
       .filter(
         (user) =>
           dc.directChannelMembers.includes(user.uid) &&
           (user.uid != currentUserID || dc.directChannelMembers.length == 1)
-      )
+      ).sort((a, b) => a.displayName < b.displayName ? -1 : 1);
+    dc.directChannelName = participants
       .map((user) => user.displayName)
-      .sort()
       .join(', ');
     dc.directChannelAvatar = this.Data.users.filter(
-      (user) => dc.directChannelMembers[0] == user.uid
+      (user) => participants[0].uid == user.uid
     )[0].photoURL;
     return dc;
   }
