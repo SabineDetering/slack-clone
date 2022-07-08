@@ -34,7 +34,7 @@ export class MainContainerComponent implements OnInit {
   }
 
   scrollToBottom() {
-    if (this.cs.scrollMain) {   
+    if (this.cs.scrollMain && this.threadContainer) {   
       this.threadContainer.nativeElement.scrollTop =
         this.threadContainer.nativeElement.scrollHeight;
       this.scrollTimer = setTimeout(() => {
