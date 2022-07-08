@@ -24,8 +24,9 @@
       class="channel-list-item"
       [class.current-channel]="Data.currentChannel && channel.channelID == Data.currentChannel.id"
       *ngFor="let channel of Data.channels$ | async | orderBy: 'channelName'"
+      (click)="setCurrentChannel(channel)"
     >
-      <div class="left-part" (click)="setCurrentChannel(channel)">
+      <div class="left-part">
         <span class="hash"># </span>
         <span class="name" [title]="channel.channelName">{{
           channel.channelName
