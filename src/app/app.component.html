@@ -94,7 +94,7 @@
       [sidenavIsOpen]="!( this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread)">
     </app-loading-spinner>
 
-    <div class="outlet-main">
+    <div class="outlet-main"  [style.max-width]="Data.currentThread ? 'calc(100% - 300px' : ''">
       <router-outlet> </router-outlet>
     </div>
     <app-thread-container *ngIf="
