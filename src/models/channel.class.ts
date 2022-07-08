@@ -12,7 +12,7 @@ export class Channel {
 
     toJSON() {
         return {
-            // channelID: this.channelID,
+            channelID: this.channelID,
             channelName: this.channelName,
             channelDescription: this.channelDescription
         }
