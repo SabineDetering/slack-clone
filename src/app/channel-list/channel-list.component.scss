@@ -29,11 +29,12 @@
 
 .channel-list {
     padding-bottom: mix.$padding-main ;
-    @include mix.flex($dir: column);
+    @include mix.flex($dir: column, $gap: 2px);
 
     .channel-list-item {
         padding-left: mix.$padding-main;
         padding-right: 10px;
+        height: 32px;
         width: 250px;
         @include mix.flex($justify: space-between, $align: center);
 
