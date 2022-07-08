@@ -126,8 +126,8 @@ export class AppComponent {
     this.Auth.showLoadingSpinner = true;
     const user = this.Auth.currentUser.currentUser;
     console.log('logged out user', user);
+    await this.closeSession();
     if (user.isAnonymous) {
-      await this.closeSession();
       this.cs.deleteUserFromDirectChannels(user.uid);
       try{
         await this.Data.deleteUser(user.uid);
@@ -149,6 +149,7 @@ export class AppComponent {
    * @returns Promise
    */
   closeSession() {
+    console.log('close session')
     return new Promise((resolve, reject) => {
       this.ts.closeCurrentThread();
       this.cs.closeCurrentChannel();
