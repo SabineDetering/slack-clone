@@ -2,7 +2,7 @@
   <div class="left-part">
     <!--  Logo instead of Menu Icon: BEFORE Login  -->
     <img *ngIf="!Auth.currentUser?.currentUser && !router.url.includes('privacy-notice')" class="menuLogo"
-      src="assets/img/SLACK-white.png" alt="logo">
+      src="assets/img/SLACK-white.png" alt="">
 
     <!--  Return from Imprint Page to Login Page: BEFORE Login  -->
     <button *ngIf="!Auth.currentUser?.currentUser && router.url.includes('privacy-notice')" class="menu-btn"

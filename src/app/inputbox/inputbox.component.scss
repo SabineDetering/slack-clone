@@ -5,6 +5,7 @@
     width: 94%;
     margin-bottom: 8px;
     border-radius: 8px;
+    background-color: #fafafa;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
@@ -87,12 +88,13 @@ button {
 
 mat-icon {
     font-size: 20px;
+    background-color: #fafafa;
     opacity: 0.8;
     cursor: pointer;
     transition: all 150ms ease-in-out;
 
     &:hover {
-        opacity: 0.6;
+        filter: brightness(1.1) !important;
     }
 }
 
