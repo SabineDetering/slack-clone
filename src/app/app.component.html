@@ -1,12 +1,19 @@
 <mat-toolbar color="primary">
   <div class="left-part">
-    <button *ngIf="!router.url.includes('login'); else menuLogo" class="menu-btn" mat-icon-button (click)="sidenav.toggle()">
+    <!--  Logo instead of Menu Icon: BEFORE Login  -->
+    <img *ngIf="!Auth.currentUser?.currentUser && !router.url.includes('privacy-notice')" class="menuLogo"
+      src="assets/img/SLACK-white.png" alt="logo">
+
+    <!--  Return from Imprint Page to Login Page: BEFORE Login  -->
+    <button *ngIf="!Auth.currentUser?.currentUser && router.url.includes('privacy-notice')" class="menu-btn"
+      mat-icon-button [routerLink]="['login']">
+      <mat-icon>first_page</mat-icon> <span>Back to Login</span>
+    </button>
+
+    <!--  Standard Menu Icon: AFTER Login -->
+    <button *ngIf="!!Auth.currentUser?.currentUser" class="menu-btn" mat-icon-button (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
-    <ng-template #menuLogo>
-      <img class="menuLogo" src="assets/img/SLACK-white.png" alt="logo">
-    </ng-template>
-    <!-- <span> Slacky</span> -->
   </div>
 
 
