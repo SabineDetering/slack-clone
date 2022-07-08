@@ -46,7 +46,7 @@ export class EditorService {
     statusbar: false,
     setup: this.editorSetup,
     toolbar:
-      'undo redo | styles | emoticons | bold italic underline | inline-code code-block blockquote | link | aligning lists',
+      'undo redo | emoticons | bold italic underline | inline-code code-block blockquote | link | aligning lists',
     toolbar_groups: {
       aligning: {
         icon: 'align-left',
@@ -78,10 +78,10 @@ export class EditorService {
         },
       },
     },
-    style_formats: [
+/*     style_formats: [
       { title: 'Code', format: 'code' },
       { title: 'Pre', format: 'pre' },
-    ],
+    ], */
   };
 
   constructor() {}
