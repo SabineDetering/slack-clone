@@ -7,9 +7,9 @@ import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { PrivacyNoticeComponent } from './privacy-notice/privacy-notice.component';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'channel', component: MainContainerComponent, canActivate: [LoggedInGuard],},
+  { path: 'channel', component: MainContainerComponent, canActivate: [LoggedInGuard], },
   { path: 'legal-notice', component: LegalNoticeComponent },
   { path: 'privacy-notice', component: PrivacyNoticeComponent },
 
