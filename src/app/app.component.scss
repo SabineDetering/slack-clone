@@ -61,6 +61,9 @@ mat-toolbar {
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
     position: relative;
     z-index: 2;
+    background-color: #05424a!important;   // teal 
+    background-color: #003f61!important;  // blue
+    background-color: #2c4d7d!important;  // blue
 
     .left-part {
         @include mix.flex($align: center);
@@ -73,7 +76,7 @@ mat-toolbar {
 }
 
 mat-sidenav {
-    height: calc(100vh - 196px);
+    height: calc(100vh - 190px);
     width: 251px; // 1px border-right from material
     overflow: auto;
     background-color: mix.$primary-color;
