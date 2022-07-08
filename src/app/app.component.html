@@ -70,7 +70,7 @@
   [hasBackdrop]="( this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread)">
   <mat-sidenav mode="side" #sidenav
     [mode]=" (this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread) ? 'over' : 'side'"
-    [opened]="!( this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread || router.url.includes('login'))"
+    [opened]="!( (this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread) || router.url.includes('login'))"
     (click)="( this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread) ? sidenav.toggle() : null">
     <div class="sidenav-wrapper">
       <div *ngIf="Auth.authenticated">

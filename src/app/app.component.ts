@@ -23,7 +23,6 @@ import { LocalStorageService } from 'src/services/local-storage.service';
 export class AppComponent {
   mobileQueryWithThread: MediaQueryList;
   mobileQueryWithoutThread: MediaQueryList;
-  // hideNavbar: boolean;
   userLinks: LinkMenuItem[];
   currentMessages: Message[];
   touchScreen: boolean;
@@ -55,19 +54,11 @@ export class AppComponent {
     this.mobileQueryWithThread.addEventListener('change', this._mobileQueryListener);
     this.mobileQueryWithoutThread.addEventListener('change', this._mobileQueryListener);
     
-    // this.hideNavbar = this.mobileQueryWithoutThread.matches && !this.Data.currentThread
-    //   || this.mobileQueryWithThread.matches && !!this.Data.currentThread;
-
     //check if screen is touch screen (no hover effects)
     this.touchScreen = media.matchMedia('(hover:none)').matches;
   }
 
-  // sidenavIsClosed() {
-  //   console.log('checkSideNav');
-  //   return this.mobileQueryWithoutThread.matches && !this.Data.currentThread || this.mobileQueryWithThread.matches && !!this.Data.currentThread;
-  // }
-
-
+ 
   openSnackBar(message: string, action?: string) {
     this._snackBar.open(message, action, { duration: 3000 });
   }
