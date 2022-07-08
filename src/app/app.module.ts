@@ -46,7 +46,6 @@ import { OrderByPipe } from 'src/pipes/order-by-pipe.pipe';
 import { MessageComponent } from './message/message.component';
 import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
 import { MessageActionsComponent } from './message-actions/message-actions.component';
-import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { PrivacyNoticeComponent } from './privacy-notice/privacy-notice.component';
 import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-change-avatar.component';
 import { PERSISTENCE } from '@angular/fire/compat/auth';
@@ -68,7 +67,6 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
     MessageComponent,
     DialogConfirmationComponent,
     MessageActionsComponent,
-    LegalNoticeComponent,
     PrivacyNoticeComponent,
     DialogChangeAvatarComponent,
     DialogEditProfileComponent,
