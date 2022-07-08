@@ -1,83 +1,85 @@
-@use '../../styles/mixins' as mix; //also imports _variables.scss
-
+@use "../../styles/mixins" as mix; //also imports _variables.scss
 
 .channel-header {
-    @include mix.flex(space-between, center);
-    padding: mix.$padding-main mix.$padding-main 0 mix.$padding-main;
-    width: 250px;
-    cursor: pointer;
+  @include mix.flex(space-between, center);
+  padding: mix.$padding-main mix.$padding-main 0 mix.$padding-main;
+  width: 250px;
+  cursor: pointer;
 
-    .channel-header-left {
-        @include mix.flex();
+  .channel-header-left {
+    @include mix.flex();
+  }
+
+  .add-btn:not(.touch) {
+    visibility: hidden;
+  }
+
+  &:hover {
+    background-color: mix.$primary-hover;
+
+    .add-btn {
+      visibility: visible;
     }
-
-    .add-btn:not(.touch) {
-        visibility: hidden;
-    }
-
-    &:hover {
-        background-color: mix.$primary-hover;
-
-        .add-btn {
-            visibility: visible;
-        }
-    }
+  }
 }
 
 .direct-channel-list {
-    padding-bottom: mix.$padding-main ;
-    @include mix.flex($dir: column);
+  padding-bottom: mix.$padding-main;
+  @include mix.flex($dir: column);
 
-    .direct-channel-list-item {
-        padding-left: mix.$padding-main;
-        padding-right: 10px;
-        width: 250px;
-        @include mix.flex($justify: space-between, $align: center);
+  .direct-channel-list-item {
+    padding-left: mix.$padding-main;
+    padding-right: 10px;
+    width: 250px;
+    @include mix.flex($justify: space-between, $align: center);
 
-        .left-part {
-            @include mix.flex($align: center, $gap: 8px);
-            flex:1;
+    .left-part {
+      @include mix.flex($align: center, $gap: 8px);
+      flex: 1;
 
-            .avatar-with-number {
-                position: relative;
+      .avatar-with-number {
+        position: relative;
 
-                img {
-                    width: 32px;
-                }
-
-                .number {
-                    position: absolute;
-                    bottom: 0;
-                    right: -4px;
-                    padding: 0 4px;
-                    background-color: mix.$primary-color;
-                    border-radius: 50%;
-                }
-            }
-
-            .name {
-                max-width: calc(250px - 16px - 40px - 40px - 10px);
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
+        img {
+          width: 32px;
+          height: 32px;
+          object-fit: cover;
+          border-radius: 50%;
         }
 
-        .more-btn:not(.touch) {
-            visibility: hidden;
+        .number {
+          position: absolute;
+          bottom: 0;
+          right: -4px;
+          padding: 0 4px;
+          background-color: mix.$primary-color;
+          border-radius: 50%;
         }
+      }
 
-        &:hover {
-            background-color: mix.$primary-hover;
-
-            .more-btn {
-                visibility: visible;
-            }
-        }
+      .name {
+        max-width: calc(250px - 16px - 40px - 40px - 10px);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
+
+    .more-btn:not(.touch) {
+      visibility: hidden;
+    }
+
+    &:hover {
+      background-color: mix.$primary-hover;
+
+      .more-btn {
+        visibility: visible;
+      }
+    }
+  }
 }
 
-.current-channel .name{
-    font-weight: 600;
-    letter-spacing: .04rem;
+.current-channel .name {
+  font-weight: 600;
+  letter-spacing: 0.04rem;
 }
