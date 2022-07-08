@@ -1,10 +1,15 @@
 <mat-toolbar color="primary">
   <div class="left-part">
-    <button class="menu-btn" mat-icon-button (click)="sidenav.toggle()">
+    <button *ngIf="!router.url.includes('login'); else menuLogo" class="menu-btn" mat-icon-button (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
+    <ng-template #menuLogo>
+      <img class="menuLogo" src="assets/img/SLACK-white.png" alt="logo">
+    </ng-template>
     <!-- <span> Slacky</span> -->
   </div>
+
+
 
   <!--  Avatar Img triggers userMenu -->
 
