@@ -1,5 +1,5 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, Inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { Message } from 'src/models/message.class';
 import { DataService } from 'src/services/data.service';
 import { LinkMenuItem } from 'ngx-auth-firebaseui';
@@ -14,6 +14,7 @@ import { ChannelService } from 'src/services/channel.service';
 import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LocalStorageService } from 'src/services/local-storage.service';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,7 @@ export class AppComponent {
   currentMessages: Message[];
   touchScreen: boolean;
   @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
+  @ViewChild('sidenav') sidenav: MatSidenav;
 
   private _mobileQueryListener: () => void;
 
@@ -138,6 +140,7 @@ export class AppComponent {
     }
     await this.Auth.af.signOut();
     this.router.navigate(['/login']);
+    this.sidenav.close();
   }
 
 
