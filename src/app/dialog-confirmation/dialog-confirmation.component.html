@@ -1,7 +1,18 @@
-<h2 mat-dialog-title>{{ data.title }}</h2>
-<mat-dialog-content>{{ data.text }}
+<h2 mat-dialog-title>
+  {{ data.title }}
+</h2>
+<mat-dialog-content>
+  {{ data.text }}
+  <div *ngIf="data.question">
+    <br>
+    {{ data.question }}
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button *ngIf="!!data.discardText" mat-button [mat-dialog-close]="'discard'">{{ data.discardText }}</button>
-    <button mat-button [mat-dialog-close]="'confirm'">{{ data.confirmText }}</button>
+  <button *ngIf="!!data.discardText" mat-button [mat-dialog-close]="'discard'">
+    {{ data.discardText }}
+  </button>
+  <button mat-button [mat-dialog-close]="'confirm'">
+    {{ data.confirmText }}
+  </button>
 </mat-dialog-actions>

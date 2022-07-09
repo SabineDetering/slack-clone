@@ -40,9 +40,11 @@ export class DialogChannelComponent implements OnInit {
   handleEditedChannel() {
     //ask for confirmation before saving
     const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
+      maxWidth: 500,
       data: {
         title: 'Save Changes',
-        text: 'Your changes will be visible for all other users. Do you want to proceed?',
+        text: 'Your changes will be visible for all other users.',
+        question: 'Do you want to proceed?',
         discardText: 'Discard changes',
         confirmText: 'Save changes'
       }

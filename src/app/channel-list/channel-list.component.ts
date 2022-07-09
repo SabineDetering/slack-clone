@@ -68,9 +68,11 @@ export class ChannelListComponent implements OnInit {
 
   openDeleteConfirmation(channel: Channel) {
     const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
+      maxWidth: 500,
       data: {
         title: 'Delete Channel ' + channel.channelName,
-        text: "This will completely delete the channel and its contents for all users and can't be undone. Do you really want to proceed?",
+        text: "This will completely delete the channel and its contents for all users and can't be undone.",
+        question: "Do you really want to proceed?",
         discardText: 'No',
         confirmText: 'Yes',
       },
@@ -90,6 +92,7 @@ export class ChannelListComponent implements OnInit {
    */
   refuseChannelEdit(channel: Channel) {
     this.dialog.open(DialogConfirmationComponent, {
+      maxWidth: 500,
       data: {
         title: 'Editing channel ' + channel.channelName,
         text: "Editing channels is only eligible for registered users.You are currently logged in as guest. To proceed, please register or log in with a registered email address.",
@@ -105,6 +108,7 @@ export class ChannelListComponent implements OnInit {
    */
   refuseDeletion(channel: Channel) {
     this.dialog.open(DialogConfirmationComponent, {
+      maxWidth: 500,
       data: {
         title: 'Deleting channel ' + channel.channelName,
         text: "Deleting channels is only eligible for registered users.You are currently logged in as guest. To proceed, please register or log in with a registered email address.",

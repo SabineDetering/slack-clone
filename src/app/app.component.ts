@@ -55,12 +55,12 @@ export class AppComponent {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQueryWithThread.addEventListener('change', this._mobileQueryListener);
     this.mobileQueryWithoutThread.addEventListener('change', this._mobileQueryListener);
-    
+
     //check if screen is touch screen (no hover effects)
     this.touchScreen = media.matchMedia('(hover:none)').matches;
   }
 
- 
+
   openSnackBar(message: string, action?: string) {
     this._snackBar.open(message, action, { duration: 3000 });
   }
@@ -81,9 +81,11 @@ export class AppComponent {
    */
   deleteAccount() {
     const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
+      maxWidth: 500,
       data: {
         title: 'Delete account of ' + this.Auth.currentUser.currentUser.displayName,
-        text: "This will completely delete your account and can't be undone. Any messages you have posted in channels or direct channels will still be visible but without your name as author. Do you really want to proceed?",
+        text: "This will completely delete your account and can't be undone. Any messages you have posted in channels or direct channels will still be visible but without your name as author.",
+        question:"Do you really want to proceed?",
         discardText: 'No',
         confirmText: 'Yes',
       },
@@ -98,9 +100,9 @@ export class AppComponent {
   }
 
 
- /**
-  * delete user from authentication,firebase and local storage
-  */
+  /**
+   * delete user from authentication,firebase and local storage
+   */
   async deleteUser() {
     const userToDelete = this.Auth.currentUser.currentUser;
     const result = await this.Auth.deleteUserFromAuth(userToDelete);
@@ -129,9 +131,9 @@ export class AppComponent {
     await this.closeSession();
     if (user.isAnonymous) {
       this.cs.deleteUserFromDirectChannels(user.uid);
-      try{
+      try {
         await this.Data.deleteUser(user.uid);
-      } catch(err){
+      } catch (err) {
         console.log(err)
       }
       this.Auth.deleteUserFromAuth(user);
