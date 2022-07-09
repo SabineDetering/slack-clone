@@ -3,6 +3,7 @@ export class DirectChannel {
     directChannelMembers: string[];
     directChannelName: string = '';//property is filled dynamically dependent on logged in user
     directChannelAvatar: string = '';//property is filled dynamically 
+    directChannelAllowDelete: boolean;//property is filled dynamically 
 
     constructor(obj?: any) {
         this.directChannelID = obj ? obj.directChannelID : '';

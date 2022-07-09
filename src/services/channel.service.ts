@@ -13,7 +13,10 @@ export class ChannelService {
 
   scrollMain = true;
 
-  constructor(private Data: DataService, private storage: LocalStorageService, private Auth: AuthService) { }
+  constructor(
+    private Data: DataService,
+    private storage: LocalStorageService,
+    private Auth: AuthService) { }
 
   setCurrentChannelFromChannel(channel: Channel) {
     this.Data.currentChannel$.next(
@@ -75,6 +78,10 @@ export class ChannelService {
     dc.directChannelAvatar = this.Data.users.filter(
       (user) => participants[0].uid == user.uid
     )[0].photoURL;
+    dc.directChannelAllowDelete = (
+      dc.directChannelMembers.length == 1
+      && dc.directChannelMembers[0] == currentUserID
+    )
     return dc;
   }
 

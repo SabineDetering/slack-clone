@@ -11,6 +11,8 @@ import { DialogAddDirectChannelComponent } from '../dialog-add-direct-channel/di
 import { ThreadService } from 'src/services/thread.service';
 import { LocalStorageService } from 'src/services/local-storage.service';
 import { Router } from '@angular/router';
+import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-direct-channel-list',
@@ -31,8 +33,8 @@ export class DirectChannelListComponent implements OnInit {
     private cs: ChannelService,
     private ts: ThreadService,
     private storage: LocalStorageService,
-    private router:Router
-
+    private router: Router,
+    private _snackBar: MatSnackBar
   ) { }
 
 
@@ -56,13 +58,18 @@ export class DirectChannelListComponent implements OnInit {
   }
 
 
-  toggleDirectChannels(event: Event) {
+  openSnackBar(message: string, action?: string) {
+    this._snackBar.open(message, action, { duration: 3000 });
+  }
+
+
+  toggleDirectChannels(event: Event): void {
     event.stopPropagation();
     this.directChannelsOpen = !this.directChannelsOpen;
   }
 
 
-  openAddDirectChannelDialog(event: Event) {
+  openAddDirectChannelDialog(event: Event): void {
     event.stopPropagation();
     const dialogRef = this.dialog.open(DialogAddDirectChannelComponent);
     dialogRef.afterClosed().subscribe((dc) => {
@@ -78,7 +85,7 @@ export class DirectChannelListComponent implements OnInit {
   }
 
 
-  async setCurrentDirectChannel(directChannel: DirectChannel) {
+  async setCurrentDirectChannel(directChannel: DirectChannel): Promise<void> {
     // set new channel only if it's not the same as the last opened channel
     if (!this.sameAsStorageChannel(directChannel.directChannelID)) {
       this.cs.deleteChannelSubscription();
@@ -97,7 +104,7 @@ export class DirectChannelListComponent implements OnInit {
   }
 
 
-  sameAsStorageChannel(directChannelID: string) {
+  sameAsStorageChannel(directChannelID: string): boolean {
     if (this.storage.getUserSessionFromLocalStorage(this.Auth.currentUserId))
       return (
         directChannelID ==
@@ -108,7 +115,48 @@ export class DirectChannelListComponent implements OnInit {
   }
 
 
-  closeCurrentThread() {
+  openDeleteConfirmation(directChannel: DirectChannel) {
+    const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
+      maxWidth: 500,
+      data: {
+        title: 'Delete Chat',
+        text: "This will completely delete the direct channel and all its contents and can't be undone.",
+        question: "Do you really want to proceed?",
+        discardText: 'No',
+        confirmText: 'Yes',
+      },
+    });
+    confirmationRef.afterClosed().subscribe((result) => {
+      if (result == 'confirm') {
+        this.deleteDirectChannel(directChannel.directChannelID);
+        this.openSnackBar('Direct channel has been deleted.');
+      }
+    });
+  }
+
+
+  async deleteDirectChannel(channelID: string) {
+    this.updateObservablesAndLocalStorage(channelID);
+    this.Data.deleteThreadsInChannel(channelID);
+    this.Data.deleteMessagesInChannel(channelID);
+    await this.Data.deleteDirectChannel(channelID);
+  }
+
+
+  updateObservablesAndLocalStorage(channelID: string) {
+    if (this.Data.currentChannel.id == channelID) {
+      if (this.Data.currentThread) {
+        this.ts.closeCurrentThread();
+      }
+      this.Data.currentChannel$.next(null);
+      this.storage.removeUserSessionFromLocalStorage(this.Auth.currentUserId);
+      this.cs.showDefaultChannel();
+    }
+  }
+
+
+  closeCurrentThread(): void {
     this.ts.closeCurrentThread(true, this.Auth.currentUserId);
   }
+
 }

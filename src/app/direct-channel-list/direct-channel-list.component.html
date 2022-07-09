@@ -25,11 +25,15 @@
     >
       <a
         [routerLink]="['/channel']"
-        [class.current-channel]="Data.currentChannel && directChannel.directChannelID == Data.currentChannel.id"
+        [class.current-channel]="
+          Data.currentChannel &&
+          directChannel.directChannelID == Data.currentChannel.id
+        "
         list-item
         class="direct-channel-list-item"
+        (click)="setCurrentDirectChannel(directChannel)"
       >
-        <div class="left-part" (click)="setCurrentDirectChannel(directChannel)">
+        <div class="left-part">
           <div class="avatar-with-number">
             <img [src]="directChannel.directChannelAvatar" />
             <div class="number">
@@ -40,6 +44,23 @@
             {{ directChannel.directChannelName }}</span
           >
         </div>
+        <ng-container *ngIf="directChannel.directChannelAllowDelete">
+          <button
+            mat-icon-button
+            title="More"
+            class="more-btn"
+            [class.touch]="touchScreen"
+            [matMenuTriggerFor]="menu"
+            (click)="$event.stopPropagation(); (false)"
+          >
+            <mat-icon> more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openDeleteConfirmation(directChannel)">
+              Delete
+            </button>
+          </mat-menu></ng-container
+        >
       </a>
     </ng-container>
   </mat-nav-list>

@@ -119,22 +119,21 @@ export class ChannelListComponent implements OnInit {
 
 
   deleteChannel(channelID: string) {
-    this.updateObservables(channelID);
+    this.updateObservablesAndLocalStorage(channelID);
     this.Data.deleteThreadsInChannel(channelID);
     this.Data.deleteMessagesInChannel(channelID);
     this.Data.deleteChannel(channelID);
-    this.storage.removeUserSessionFromLocalStorage(this.Auth.currentUserId);
-    this.cs.showDefaultChannel();
   }
 
 
-  updateObservables(channelID: string) {
-    if (this.Data.currentChannel.id != channelID) return;
-    else {
+  updateObservablesAndLocalStorage(channelID: string) {
+    if (this.Data.currentChannel.id == channelID) {
       if (this.Data.currentThread) {
         this.ts.closeCurrentThread();
       }
       this.Data.currentChannel$.next(null);
+      this.storage.removeUserSessionFromLocalStorage(this.Auth.currentUserId);
+      this.cs.showDefaultChannel();
     }
   }
 

@@ -49,12 +49,7 @@ export class DataService {
 
   public channelSubscription!: Subscription;
   public messagesSubscription!: Subscription;
-  /*   public currentThread$: BehaviorSubject<any> = new BehaviorSubject(
-    new Thread()
-  ); */
 
-  // public currentDirectChannel$: BehaviorSubject<DirectChannel> =
-  //   new BehaviorSubject(new DirectChannel());
 
   constructor(private readonly firestore: AngularFirestore) {
     this.channelCollection = this.firestore.collection<Channel>('channels');
@@ -263,9 +258,9 @@ export class DataService {
     this.threadsCollection.doc(threadID).delete();
   }
 
-  deleteChannel(channelID: string) {
+  async deleteChannel(channelID: string) {
     console.log('deleting channel ', channelID);
-    this.channelCollection.doc(channelID).delete();
+    await this.channelCollection.doc(channelID).delete();
   }
 
   async deleteDirectChannel(directChannelID: string) {
