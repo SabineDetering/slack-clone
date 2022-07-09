@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Channel } from 'src/models/channel.class';
 import { CurrentChannel } from 'src/models/current-channel.class';
 import { DirectChannel } from 'src/models/direct-channel.class';
+import { User } from 'src/models/user.class';
 import { AuthService } from './auth.service';
 import { DataService } from './data.service';
 import { LocalStorageService } from './local-storage.service';
@@ -15,7 +16,8 @@ export class ChannelService {
   constructor(
     private Data: DataService,
     private storage: LocalStorageService,
-    private Auth: AuthService) { }
+    private Auth: AuthService
+  ) {}
 
   setCurrentChannelFromChannel(channel: Channel) {
     this.Data.currentChannel$.next(
@@ -70,20 +72,18 @@ export class ChannelService {
           (user.uid != currentUserID || dc.directChannelMembers.length == 1)
       )
       .sort((a, b) => (a.displayName < b.displayName ? -1 : 1));
-    dc.directChannelName = participants
-      .map((user) => user.displayName)
-      .join(', ');
-      dc.directChannelName = dc.directChannelName.concat(
-        this.addDeletedMembersNames(dc)
-      );
+    dc.directChannelName = this.getDirectChannelName(dc, participants);
     dc.directChannelAvatar = this.Data.users.filter(
       (user) => participants[0].uid == user.uid
     )[0].photoURL;
-    dc.directChannelAllowDelete = (
-      dc.directChannelMembers.length == 1
-      && dc.directChannelMembers[0] == currentUserID
-    )
+    dc.directChannelAllowDelete = this.currentUserIsOnlyChannelMember(dc, currentUserID);
     return dc;
+  }
+
+  getDirectChannelName(dc: DirectChannel, participants: User[]) {
+    const dcNameWithoutDeleted = participants.map((user) => user.displayName).join(', ');
+    const dcNameWithDeleted = dcNameWithoutDeleted.concat(this.addDeletedMembersNames(dc));
+    return dcNameWithDeleted;
   }
 
   addDeletedMembersNames(dc: DirectChannel) {
@@ -91,6 +91,16 @@ export class ChannelService {
       .filter((m) => m == '0')
       .map((m) => (m = ', <span class="deleted-user">deleted user</span>'))
       .join();
+  }
+
+  currentUserIsOnlyChannelMember(dc: DirectChannel, currentUserID: string) {
+    return (
+      dc.directChannelMembers[0] == currentUserID &&
+      (dc.directChannelMembers.length == 1 ||
+        dc.directChannelMembers.length -
+          dc.directChannelMembers.filter((dcm) => dcm == '0').length ==
+          1)
+    );
   }
 
   showDefaultChannel() {
