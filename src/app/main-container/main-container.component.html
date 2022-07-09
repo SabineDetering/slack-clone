@@ -1,5 +1,5 @@
 <div class="head" *ngIf="Data.currentChannel">
-    <span class="channelName">{{ Data.currentChannel.name }}</span>
+    <span class="channelName" [innerHTML] = Data.currentChannel.name></span>
     <span class="channelDescription">{{ Data.currentChannel.description }}</span>
 </div>
 <div>

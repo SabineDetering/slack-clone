@@ -7,10 +7,9 @@ import { DataService } from './data.service';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ChannelService {
-
   scrollMain = true;
 
   constructor(
@@ -39,7 +38,6 @@ export class ChannelService {
     );
   }
 
-
   dcWithSameMembers(memberList: string[]): DirectChannel | null {
     for (let i = 0; i < this.Data.directChannels.length; i++) {
       const dcMembers = this.Data.directChannels[i].directChannelMembers;
@@ -56,13 +54,12 @@ export class ChannelService {
     return null;
   }
 
-
   /**
-   * creates directChannelName by alphabetically listing the names of the members 
+   * creates directChannelName by alphabetically listing the names of the members
    * currentUser is only listed if he is the only member
    * sets directChannelAvatar to the avatar of the first name
    * @param dc - directChannel
-   * @param currentUserID 
+   * @param currentUserID
    * @returns directChannel with name and avatar
    */
   setDirectChannelProperties(dc: DirectChannel, currentUserID: string) {
@@ -71,10 +68,14 @@ export class ChannelService {
         (user) =>
           dc.directChannelMembers.includes(user.uid) &&
           (user.uid != currentUserID || dc.directChannelMembers.length == 1)
-      ).sort((a, b) => a.displayName < b.displayName ? -1 : 1);
+      )
+      .sort((a, b) => (a.displayName < b.displayName ? -1 : 1));
     dc.directChannelName = participants
       .map((user) => user.displayName)
       .join(', ');
+      dc.directChannelName = dc.directChannelName.concat(
+        this.addDeletedMembersNames(dc)
+      );
     dc.directChannelAvatar = this.Data.users.filter(
       (user) => participants[0].uid == user.uid
     )[0].photoURL;
@@ -83,6 +84,13 @@ export class ChannelService {
       && dc.directChannelMembers[0] == currentUserID
     )
     return dc;
+  }
+
+  addDeletedMembersNames(dc: DirectChannel) {
+    return dc.directChannelMembers
+      .filter((m) => m == '0')
+      .map((m) => (m = ', <span class="deleted-user">deleted user</span>'))
+      .join();
   }
 
   showDefaultChannel() {
@@ -132,13 +140,11 @@ export class ChannelService {
     }
   }
 
-
   closeCurrentChannel() {
     this.Data.currentChannel$.next(null);
     this.Data.currentThreads$.next([]);
     this.deleteChannelSubscription();
   }
-
 
   deleteChannelSubscription() {
     if (this.Data.channelSubscription) {
@@ -146,12 +152,11 @@ export class ChannelService {
     } else return;
   }
 
-
   /**
- * if User is the only member in direct channel, the channel  is deleted
- * if User is one of several members, userID is deleted from member list
- * @param userID
- */
+   * if User is the only member in direct channel, the channel  is deleted
+   * if User is one of several members, userID is deleted from member list
+   * @param userID
+   */
   deleteUserFromDirectChannels(userID: string) {
     this.Data.directChannels.forEach((dc) => {
       if (dc.directChannelMembers.includes(userID)) {
@@ -160,16 +165,13 @@ export class ChannelService {
           this.Data.deleteThreadsInChannel(dc.directChannelID);
           this.Data.deleteMessagesInChannel(dc.directChannelID);
         } else {
-          dc.directChannelMembers.splice(
-            dc.directChannelMembers.indexOf(userID),
-            1
-          );
-          this.Data.updateDirectChannel(dc.directChannelID, {
-            directChannelMembers: dc.directChannelMembers,
-          });
+          dc.directChannelMembers[dc.directChannelMembers.indexOf(userID)] =
+            '0';
         }
+        this.Data.updateDirectChannel(dc.directChannelID, {
+          directChannelMembers: dc.directChannelMembers,
+        });
       }
     });
   }
-
 }
