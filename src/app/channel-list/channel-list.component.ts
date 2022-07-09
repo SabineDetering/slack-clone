@@ -31,14 +31,17 @@ export class ChannelListComponent implements OnInit {
 
   ngOnInit(): void { }
 
+
   toggleChannels(event: Event) {
     event.stopPropagation();
     this.channelsOpen = !this.channelsOpen;
   }
 
+
   openSnackBar(message: string, action?: string) {
     this._snackBar.open(message, action, { duration: 3000 });
   }
+
 
   /**
    * if user is registered:opens dialog to create new channel or edit existing channel 
@@ -53,25 +56,31 @@ export class ChannelListComponent implements OnInit {
     }
   }
 
-  openDeleteConfirmation(channel: Channel) {
+
+  handleDelete(channel: Channel) {
     if (this.Auth.currentUser.currentUser.isAnonymous) {
       this.refuseDeletion(channel);
     } else {//registered user
-      const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
-        data: {
-          title: 'Delete Channel ' + channel.channelName,
-          text: "This will completely delete the channel and its contents for all users and can't be undone. Do you really want to proceed?",
-          discardText: 'No',
-          confirmText: 'Yes',
-        },
-      });
-      confirmationRef.afterClosed().subscribe((result) => {
-        if (result == 'confirm') {
-          this.deleteChannel(channel.channelID);
-          this.openSnackBar('Channel has been deleted.');
-        }
-      });
+      this.openDeleteConfirmation(channel)
     }
+  }
+
+
+  openDeleteConfirmation(channel: Channel) {
+    const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
+      data: {
+        title: 'Delete Channel ' + channel.channelName,
+        text: "This will completely delete the channel and its contents for all users and can't be undone. Do you really want to proceed?",
+        discardText: 'No',
+        confirmText: 'Yes',
+      },
+    });
+    confirmationRef.afterClosed().subscribe((result) => {
+      if (result == 'confirm') {
+        this.deleteChannel(channel.channelID);
+        this.openSnackBar('Channel has been deleted.');
+      }
+    });
   }
 
 
@@ -87,7 +96,6 @@ export class ChannelListComponent implements OnInit {
         confirmText: 'Ok'
       }
     });
-
   }
 
 
@@ -105,14 +113,16 @@ export class ChannelListComponent implements OnInit {
     });
   }
 
+
   deleteChannel(channelID: string) {
     this.updateObservables(channelID);
     this.Data.deleteThreadsInChannel(channelID);
     this.Data.deleteMessagesInChannel(channelID);
     this.Data.deleteChannel(channelID);
-    this.storage.removeUserSessionFromLocalStorage(this.Auth.currentUserId)
+    this.storage.removeUserSessionFromLocalStorage(this.Auth.currentUserId);
     this.cs.showDefaultChannel();
   }
+
 
   updateObservables(channelID: string) {
     if (this.Data.currentChannel.id != channelID) return;
@@ -123,6 +133,7 @@ export class ChannelListComponent implements OnInit {
       this.Data.currentChannel$.next(null);
     }
   }
+
 
   setCurrentChannel(channel: Channel) {
     if (!this.sameAsStorageChannel(channel.channelID)) {
