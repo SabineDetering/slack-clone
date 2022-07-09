@@ -175,7 +175,7 @@ export class DataService {
   // ############  SAVE FUNCTIONS  ############
 
   addChannel(channel: any) {
-    this.channelCollection.add(channel);
+    return this.channelCollection.doc(channel.channelID).set(channel);
   }
 
   saveEditedChannel(channel: any) {
@@ -254,12 +254,12 @@ export class DataService {
   }
 
   deleteMessage(messageID: string) {
-    console.log('deleting message ', messageID);
+    // console.log('deleting message ', messageID);
     this.messageCollection.doc(messageID).delete();
   }
 
   deleteThread(threadID: string) {
-    console.log('deleting thread ', threadID);
+    // console.log('deleting thread ', threadID);
     this.threadsCollection.doc(threadID).delete();
   }
 

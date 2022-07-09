@@ -65,7 +65,7 @@
     mat-button
     mat-dialog-close
     [disabled]="!addChannelForm.valid"
-    (click)="channel.channelID ? saveEditedChannel() : addChannel()"
+    (click)="channel.channelID ? handleEditedChannel() : addChannel()"
   >
     Save
   </button>

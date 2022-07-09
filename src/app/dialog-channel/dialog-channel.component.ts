@@ -13,7 +13,6 @@ import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confi
 })
 export class DialogChannelComponent implements OnInit {
 
-
   public channel!: Channel;
 
   constructor(
@@ -38,11 +37,8 @@ export class DialogChannelComponent implements OnInit {
   }
 
 
-  /**
-   * save edited channel, if user confirms, discard changes otherwise
-   */
-  saveEditedChannel() {
-    console.log('saveEdited');
+  handleEditedChannel() {
+    //ask for confirmation before saving
     const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
       data: {
         title: 'Save Changes',
@@ -53,14 +49,7 @@ export class DialogChannelComponent implements OnInit {
     });
     confirmationRef.afterClosed().subscribe(result => {
       if (result == 'confirm') {
-        this.Data.saveEditedChannel(this.channel.toJSON());
-        this.Data.currentChannel$.next(new CurrentChannel({
-          type: 'channel',
-          id: this.channel.channelID,
-          name: this.channel.channelName,
-          description: this.channel.channelDescription
-        }));
-        this.openSnackBar('Channel name or description has been changed.');
+        this.saveEditedChannel();
       } else {
         this.openSnackBar('Changes have been discarded.');
       }
@@ -68,13 +57,34 @@ export class DialogChannelComponent implements OnInit {
   }
 
 
-  /**
-   * add a new channel
-   */
+  saveEditedChannel() {
+    this.Data.saveEditedChannel(this.channel.toJSON());
+    this.Data.currentChannel$.next(new CurrentChannel({
+      type: 'channel',
+      id: this.channel.channelID,
+      name: this.channel.channelName,
+      description: this.channel.channelDescription
+    }));
+    this.openSnackBar('Channel name or description has been changed.');
+  }
+
+
   addChannel() {
-    console.log('add');
-    this.Data.addChannel(this.channel.toJSON());
-    this.openSnackBar('New channel has been created.');
+    this.channel.channelID = this.createUniqueChannelId();
+    this.Data.addChannel(this.channel.toJSON())
+      .then(() => {
+        console.log('created channel', this.channel);
+        this.openSnackBar('New channel has been created.');
+      })
+      .catch(error => {
+        console.error('error saving direct channel: ', error);
+        this.openSnackBar("Chat couldn't be saved.");
+      });
+  }
+
+
+  createUniqueChannelId(): string {
+    return 'c' + Date.now() + Math.round(Math.random() * 100);
   }
 
 }
