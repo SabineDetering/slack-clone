@@ -66,7 +66,6 @@ export class DirectChannelListComponent implements OnInit {
     event.stopPropagation();
     const dialogRef = this.dialog.open(DialogAddDirectChannelComponent);
     dialogRef.afterClosed().subscribe((dc) => {
-      console.log('dialog result', dc);
       if (dc) {
         const directChannel = this.cs.setDirectChannelProperties(
           dc,

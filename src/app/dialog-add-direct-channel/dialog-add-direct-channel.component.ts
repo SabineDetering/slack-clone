@@ -21,7 +21,7 @@ export class DialogAddDirectChannelComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<DialogAddDirectChannelComponent>,
     public Data: DataService,
-    public cs:ChannelService,
+    public cs: ChannelService,
     public Auth: AuthService,
     private _snackBar: MatSnackBar
   ) {
@@ -36,24 +36,46 @@ export class DialogAddDirectChannelComponent implements OnInit {
   }
 
 
-  async saveDirectChannel() {
-    //currentUser must always be part of member list
+  async handleNewDirectChannel(): Promise<void> {
+    this.addCurrentUserToDCMembers();
+    let duplicate = this.cs.dcWithSameMembers(this.dm.directChannelMembers);
+    if (!duplicate) {
+      await this.saveDirectChannel();
+    } else {
+      this.informAboutDuplicate(duplicate);
+    }
+  }
+
+  
+  addCurrentUserToDCMembers(): void {
     if (!this.dm.directChannelMembers.includes(this.Auth.currentUserId)) {
       this.dm.directChannelMembers.push(this.Auth.currentUserId);
     }
-    let duplicate = this.cs.dcWithSameMembers(this.dm.directChannelMembers);
-    if (!duplicate) {
-      this.Data.saveDirectChannel(this.dm.toJSON())
-      .then(docRef => {
-        this.dm.directChannelID = docRef.id;
+  }
+
+
+  createUniqueDCId(): string {
+    return 'dc' + Date.now() + Math.round(Math.random() * 100);
+  }
+
+
+  async saveDirectChannel(): Promise<void> {
+    this.dm.directChannelID = this.createUniqueDCId();
+    this.Data.saveDirectChannel(this.dm.toJSON())
+      .then(() => {
         console.log('created dc', this.dm);
         this.openSnackBar('New chat has been created.');
         this.dialogRef.close(this.dm);
       })
-      .catch(error => console.error('error adding direct channel to firestore: ', error));
-    } else {
-      this.openSnackBar('You already have a chat with these participants.');
-      this.dialogRef.close(duplicate);
-    }
+      .catch(error => {
+        this.openSnackBar("Chat couldn't be saved.");
+        console.error('error saving direct channel: ', error)
+      });
+  }
+
+
+  informAboutDuplicate(duplicate: DirectChannel): void {
+    this.openSnackBar('You already have a chat with these participants.');
+    this.dialogRef.close(duplicate);
   }
 }
