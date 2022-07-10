@@ -73,6 +73,7 @@ import { ExcludePipe } from 'src/pipes/exclude-pipe.pipe';
     DialogEditProfileComponent,
     LoadingSpinnerComponent,
     ExcludePipe,
+    OrderByPipe, 
   ],
   imports: [
     BrowserModule,

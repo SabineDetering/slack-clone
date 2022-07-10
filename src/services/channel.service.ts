@@ -17,7 +17,7 @@ export class ChannelService {
     private Data: DataService,
     private storage: LocalStorageService,
     private Auth: AuthService
-  ) {}
+  ) { }
 
   setCurrentChannelFromChannel(channel: Channel) {
     this.Data.currentChannel$.next(
@@ -73,15 +73,15 @@ export class ChannelService {
       )
       .sort((a, b) => (a.displayName < b.displayName ? -1 : 1));
     dc.directChannelName = this.getDirectChannelName(dc, participants);
-    dc.directChannelAvatar = this.getDirectChanneAvatar(participants)
-    dc.directChannelAllowDelete = participants.length == 0;
+    dc.directChannelAvatar = this.getDirectChannelAvatar(participants);
+    dc.directChannelAllowDelete = this.currentUserIsOnlyNotDeletedChannelMember(dc, currentUserID);
     return dc;
   }
 
   getDirectChannelName(dc: DirectChannel, participants: User[]) {
     const dcActiveMembers = participants.map((user) => user.displayName).join(', ');
-    const dcDeltedMembers = this.addDeletedMembersNames(dc);
-    const dcActiveAndDeletedMembers = dcActiveMembers ? (dcDeltedMembers ? dcActiveMembers.concat(', ', dcDeltedMembers) : dcActiveMembers) : dcDeltedMembers;
+    const dcDeletedMembers = this.addDeletedMembersNames(dc);
+    const dcActiveAndDeletedMembers = dcActiveMembers ? (dcDeletedMembers ? dcActiveMembers.concat(', ', dcDeletedMembers) : dcActiveMembers) : dcDeletedMembers;
     return dcActiveAndDeletedMembers;
   }
 
@@ -92,13 +92,22 @@ export class ChannelService {
       .join(', ');
   }
 
-  getDirectChanneAvatar(participants: User[]){
-    if(participants.length > 0)
-    return this.Data.users.filter(
-      (user) => participants[0].uid == user.uid
-    )[0].photoURL;
+  getDirectChannelAvatar(participants: User[]) {
+    if (participants.length > 0)
+      return this.Data.users.filter(
+        (user) => participants[0].uid == user.uid
+      )[0].photoURL;
     else return 'assets/img/avatar-unknown.png';
   }
+
+
+  currentUserIsOnlyNotDeletedChannelMember(dc: DirectChannel, currentUserID: string): boolean {
+    let directChannelMembersWithoutDeleted = dc.directChannelMembers.filter((dcm) => dcm != '0');
+    return (
+      directChannelMembersWithoutDeleted.length == 1 && directChannelMembersWithoutDeleted[0] == currentUserID 
+    );
+  }
+
 
   showDefaultChannel() {
     const showDefaultChannelSubscription = this.Data.channels$.subscribe(

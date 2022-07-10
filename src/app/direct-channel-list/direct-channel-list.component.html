@@ -40,8 +40,11 @@
               {{ (directChannel.directChannelMembers | countElementsExcluding:'0') -1}}
             </div>
           </div>
-          <span class="name" [title]="getTitle(directChannel.directChannelName)" [innerHTML]="directChannel.directChannelName"></span
-          >
+          <span
+            class="name"
+            [title]="getTitle(directChannel.directChannelName)"
+            [innerHTML]="directChannel.directChannelName"
+          ></span>
         </div>
         <ng-container *ngIf="directChannel.directChannelAllowDelete">
           <button
@@ -55,7 +58,10 @@
             <mat-icon> more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="openDeleteConfirmation(directChannel)">
+            <button
+              mat-menu-item
+              (click)="openDeleteConfirmation(directChannel)"
+            >
               Delete
             </button>
           </mat-menu></ng-container
