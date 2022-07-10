@@ -157,4 +157,10 @@ export class DirectChannelListComponent implements OnInit {
     this.ts.closeCurrentThread(true, this.Auth.currentUserId);
   }
 
+  getTitle(nameWithTag: string){
+    let tempDiv = document.createElement('div')
+    tempDiv.innerHTML = nameWithTag;
+    return tempDiv.innerText;
+  }
+
 }
