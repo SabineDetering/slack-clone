@@ -73,25 +73,32 @@ export class ChannelService {
       )
       .sort((a, b) => (a.displayName < b.displayName ? -1 : 1));
     dc.directChannelName = this.getDirectChannelName(dc, participants);
-    dc.directChannelAvatar = this.Data.users.filter(
-      (user) => participants[0].uid == user.uid
-    )[0].photoURL;
+    dc.directChannelAvatar = this.getDirectChanneAvatar(participants)
     dc.directChannelAllowDelete = this.currentUserIsOnlyChannelMember(dc, currentUserID);
     return dc;
   }
 
   getDirectChannelName(dc: DirectChannel, participants: User[]) {
     const dcNameWithoutDeleted = participants.map((user) => user.displayName).join(', ');
-    const dcNameWithDeleted = dcNameWithoutDeleted.concat(this.addDeletedMembersNames(dc));
+    const dcNameWithDeleted = dcNameWithoutDeleted ? dcNameWithoutDeleted.concat(', ', this.addDeletedMembersNames(dc)) : this.addDeletedMembersNames(dc);
     return dcNameWithDeleted;
   }
 
   addDeletedMembersNames(dc: DirectChannel) {
     return dc.directChannelMembers
       .filter((m) => m == '0')
-      .map((m) => (m = ', <span class="deleted-user">deleted user</span>'))
-      .join();
+      .map((m) => (m = '<span class="deleted-user">deleted user</span>'))
+      .join(', ');
   }
+
+  getDirectChanneAvatar(participants: User[]){
+    if(participants.length > 0)
+    return this.Data.users.filter(
+      (user) => participants[0].uid == user.uid
+    )[0].photoURL;
+    else return 'assets/img/avatar-unknown.png';
+  }
+
 
   currentUserIsOnlyChannelMember(dc: DirectChannel, currentUserID: string) {
     return (

@@ -40,8 +40,7 @@
               {{ (directChannel.directChannelMembers | exclude:'0') -1}}
             </div>
           </div>
-          <span class="name" [title]="directChannel.directChannelName">
-            {{ directChannel.directChannelName }}</span
+          <span class="name" [title]="directChannel.directChannelName" [innerHTML]="directChannel.directChannelName"></span
           >
         </div>
         <ng-container *ngIf="directChannel.directChannelAllowDelete">
