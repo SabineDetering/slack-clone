@@ -46,7 +46,7 @@ export class EditorService {
     statusbar: false,
     setup: this.editorSetup,
     toolbar:
-      'undo redo | emoticons | bold italic underline | inline-code code-block blockquote | link | aligning lists',
+      'undo redo | emoticons | bold italic underline | inline-code code-block blockquote | link | lists',
     toolbar_groups: {
       aligning: {
         icon: 'align-left',
