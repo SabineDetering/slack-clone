@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Channel } from 'src/models/channel.class';
-import { CurrentChannel } from 'src/models/current-channel.class';
 import { Message } from 'src/models/message.class';
 import { Thread } from 'src/models/thread.class';
 import { AuthService } from 'src/services/auth.service';
@@ -10,6 +9,7 @@ import { DataService } from 'src/services/data.service';
 import { EditorService } from 'src/services/editor.service';
 import { LocalStorageService } from 'src/services/local-storage.service';
 import { ThreadService } from 'src/services/thread.service';
+import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 
 @Component({
   selector: 'app-message-actions',
@@ -17,22 +17,20 @@ import { ThreadService } from 'src/services/thread.service';
   styleUrls: ['./message-actions.component.scss'],
 })
 export class MessageActionsComponent implements OnInit {
-  /* @Input() currentChannel!: CurrentChannel; */
   @Input() thread!: Thread;
   @Input() message!: Message;
   @Input() actionsType!: string;
   message$: Observable<Message>;
-  // currentChannel!: Channel;
-  /*   currentChannel: CurrentChannel;
-   */
+
   constructor(
     public router: Router,
     private Data: DataService,
     private editor: EditorService,
     private Auth: AuthService,
     private storage: LocalStorageService,
-    private ts: ThreadService
-  ) {}
+    private ts: ThreadService,
+    public dialog: MatDialog,
+  ) { }
 
   ngOnInit(): void {
     if (!this.message) {
@@ -45,7 +43,7 @@ export class MessageActionsComponent implements OnInit {
 
   answerInThread() {
     if (this.Data.messagesSubscription) this.ts.deleteMessagesSubscription();
-    if(this.Data.currentMessages.length > 0) this.Data.currentMessages$.next([])
+    if (this.Data.currentMessages.length > 0) this.Data.currentMessages$.next([])
     this.Data.currentThread$.next(this.thread);
     this.Data.getMessagesFromThreadID(this.thread.threadID);
     this.storage.setUserSessionInLocalStorage(
@@ -55,6 +53,25 @@ export class MessageActionsComponent implements OnInit {
       this.thread.threadID
     );
   }
+
+  openDeleteConfirmation() {
+    const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
+      maxWidth: 500,
+      data: {
+        title: 'Delete Message',
+        text: "Deleting your message can't be undone.",
+        question: "Do you really want to proceed?",
+        discardText: 'No',
+        confirmText: 'Yes',
+      },
+    });
+    confirmationRef.afterClosed().subscribe((result) => {
+      if (result == 'confirm') {
+        this.deleteMessage();
+      }
+    });
+  }
+
 
   async deleteMessage() {
     this.Data.deleteMessage(this.message.messageID);
@@ -68,7 +85,7 @@ export class MessageActionsComponent implements OnInit {
     }
   }
 
-  userHasEditRights(){
+  userHasEditRights() {
     return this.Auth?.currentUserId == this.message?.authorID;
   };
 
