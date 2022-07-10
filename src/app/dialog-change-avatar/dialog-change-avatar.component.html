@@ -1,14 +1,5 @@
 <h2 mat-dialog-title>Upload avatar picture</h2>
 
-<button
-  class="close-btn"
-  mat-icon-button
-  mat-dialog-close
-  title="close without saving"
->
-  <mat-icon>close</mat-icon>
-</button>
-
 <mat-dialog-content >
     <input type="file" name="avatar" id="avatar" cdkFocusInitial accept=".png,.jpg,.svg" (change)="uploadFile($event)">
     <mat-progress-bar *ngIf="uploadPercent" mode="determinate" [value]="uploadPercent|async"></mat-progress-bar>

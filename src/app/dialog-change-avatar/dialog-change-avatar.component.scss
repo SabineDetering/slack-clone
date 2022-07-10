@@ -1,15 +1,5 @@
 @use '../../styles/mixins' as mix; //also imports _variables.scss
 
-:host {
-    position: relative;
-}
-
-.close-btn {
-    position: absolute;
-    top: -12px;
-    right: -12px;
-}
-
 h2 {
     max-width: calc(100% - 40px)
 }

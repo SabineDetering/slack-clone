@@ -1,21 +1,11 @@
 @use '../../styles/mixins' as mix; //also imports _variables.scss
 
-:host {
-    /* position: relative; */
-}
-
-.close-btn {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
 mat-dialog-content{
     margin-top: 22px;
 }
 
 h2 {
-    max-width: calc(100% - 40px);
+    // max-width: calc(100% - 40px);
     margin-bottom: 0em!important;
 }
 
