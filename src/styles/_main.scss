@@ -1,12 +1,11 @@
-@use 'mixins' as mix;
+@use "mixins" as mix;
 
 /*material icons fonts*/
-@import '~material-icons-font/sass/variables';
-@import '~material-icons-font/sass/mixins';
+@import "~material-icons-font/sass/variables";
+@import "~material-icons-font/sass/mixins";
 $MaterialIcons_FontPath: "~material-icons-font/fonts";
-@import '~material-icons-font/sass/main';
-@import '~material-icons-font/sass/Regular';
-
+@import "~material-icons-font/sass/main";
+@import "~material-icons-font/sass/Regular";
 
 * {
   margin: 0;
@@ -24,9 +23,8 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-
 .bg-primary {
-  background-color: mix.$primary-color ;
+  background-color: mix.$primary-color;
   color: white;
 }
 
@@ -61,20 +59,23 @@ pre {
   border: 1px solid #ddd;
   padding: 5px;
   margin: 12px 0;
-  margin-right:mix.$padding-main;
+  margin-right: mix.$padding-main;
   max-width: 100%;
   overflow: auto;
 }
 
-        
-.channelName .deleted-user{
-  color: grey !important;
+.channelName,
+.direct-channel-list-item {
+  .deleted-user {
+    color: #b4b4b4 !important;
+  }
 }
 
-
-@include mix.scrollbar(rgba(255, 255, 255, 0.107), mix.$primary-hover, mix.$primary-hover);
-
-
+@include mix.scrollbar(
+  rgba(255, 255, 255, 0.107),
+  mix.$primary-hover,
+  mix.$primary-hover
+);
 
 //  MATERIAL DESIGN
 
