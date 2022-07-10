@@ -51,6 +51,7 @@ import { DialogChangeAvatarComponent } from './dialog-change-avatar/dialog-chang
 import { PERSISTENCE } from '@angular/fire/compat/auth';
 import { DialogEditProfileComponent } from './dialog-edit-profile/dialog-edit-profile.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { ExcludePipe } from 'src/pipes/exclude-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
     DialogChangeAvatarComponent,
     DialogEditProfileComponent,
     LoadingSpinnerComponent,
+    ExcludePipe,
   ],
   imports: [
     BrowserModule,
@@ -133,7 +135,7 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
     LayoutModule,
   ],
   providers: [
-    OrderByPipe,
+    OrderByPipe, 
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
     { provide: PERSISTENCE, useValue: 'local' },
   ],
