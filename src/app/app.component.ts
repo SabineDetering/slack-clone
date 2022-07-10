@@ -62,7 +62,7 @@ export class AppComponent {
 
 
   openSnackBar(message: string, action?: string) {
-    this._snackBar.open(message, action, { duration: 3000 });
+    this._snackBar.open(message, action, action ? null : { duration: 3000 });
   }
 
 
@@ -85,7 +85,7 @@ export class AppComponent {
       data: {
         title: 'Delete account of ' + this.Auth.currentUser.currentUser.displayName,
         text: "This will completely delete your account and can't be undone. Any messages you have posted in channels or direct channels will still be visible but without your name as author.",
-        question:"Do you really want to proceed?",
+        question: "Do you really want to proceed?",
         discardText: 'No',
         confirmText: 'Yes',
       },
@@ -106,6 +106,8 @@ export class AppComponent {
   async deleteUser() {
     const userToDelete = this.Auth.currentUser.currentUser;
     const result = await this.Auth.deleteUserFromAuth(userToDelete);
+    console.log('result');
+    console.log(result);
     if (result == 'success') {
       //delete user from firebase collections
       this.cs.deleteUserFromDirectChannels(userToDelete.uid);
@@ -113,8 +115,10 @@ export class AppComponent {
       //delete user session from local storage
       this.storage.removeUserSessionFromLocalStorage(userToDelete.uid);
       this.openSnackBar('Your account has been deleted.');
+    } else if (result == "FirebaseError: Firebase: This operation is sensitive and requires recent authentication. Log in again before retrying this request. (auth/requires-recent-login).") {
+      this.openSnackBar("Timeout-Error! You have to re-login to verify your account. Please log out (via click on the menu-avatar), then log in again to finalize the deletion.", 'Ok');
     } else {
-      this.openSnackBar("Your account couldn't be deleted.", result);
+      this.openSnackBar("Your account couldn't be deleted." + result, 'Ok');
     }
     this.router.navigate(['/login']);
   }
