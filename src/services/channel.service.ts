@@ -74,7 +74,7 @@ export class ChannelService {
       .sort((a, b) => (a.displayName < b.displayName ? -1 : 1));
     dc.directChannelName = this.getDirectChannelName(dc, participants);
     dc.directChannelAvatar = this.getDirectChanneAvatar(participants)
-    dc.directChannelAllowDelete = this.currentUserIsOnlyChannelMember(dc, currentUserID);
+    dc.directChannelAllowDelete = participants.length == 0;
     return dc;
   }
 
@@ -98,17 +98,6 @@ export class ChannelService {
       (user) => participants[0].uid == user.uid
     )[0].photoURL;
     else return 'assets/img/avatar-unknown.png';
-  }
-
-
-  currentUserIsOnlyChannelMember(dc: DirectChannel, currentUserID: string) {
-    return (
-      dc.directChannelMembers[0] == currentUserID &&
-      (dc.directChannelMembers.length == 1 ||
-        dc.directChannelMembers.length -
-          dc.directChannelMembers.filter((dcm) => dcm == '0').length ==
-          1)
-    );
   }
 
   showDefaultChannel() {
