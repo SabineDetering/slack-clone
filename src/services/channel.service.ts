@@ -79,9 +79,10 @@ export class ChannelService {
   }
 
   getDirectChannelName(dc: DirectChannel, participants: User[]) {
-    const dcNameWithoutDeleted = participants.map((user) => user.displayName).join(', ');
-    const dcNameWithDeleted = dcNameWithoutDeleted ? dcNameWithoutDeleted.concat(', ', this.addDeletedMembersNames(dc)) : this.addDeletedMembersNames(dc);
-    return dcNameWithDeleted;
+    const dcActiveMembers = participants.map((user) => user.displayName).join(', ');
+    const dcDeltedMembers = this.addDeletedMembersNames(dc);
+    const dcActiveAndDeletedMembers = dcActiveMembers ? (dcDeltedMembers ? dcActiveMembers.concat(', ', dcDeltedMembers) : dcActiveMembers) : dcDeltedMembers;
+    return dcActiveAndDeletedMembers;
   }
 
   addDeletedMembersNames(dc: DirectChannel) {
