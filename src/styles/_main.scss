@@ -109,3 +109,13 @@ mat-card.mat-card.mat-focus-indicator._mat-animation-noopable.ng-star-inserted {
     height: 100vh;
   }
 }
+
+ngx-auth-firebaseui-user{
+  .mat-card{
+      .mat-card-header{
+          .mat-icon.mat-warn{
+              display: none!important;
+          }
+      }
+  }
+}
