@@ -104,7 +104,7 @@ export class ChannelService {
   currentUserIsOnlyNotDeletedChannelMember(dc: DirectChannel, currentUserID: string): boolean {
     let directChannelMembersWithoutDeleted = dc.directChannelMembers.filter((dcm) => dcm != '0');
     return (
-      directChannelMembersWithoutDeleted.length == 1 && directChannelMembersWithoutDeleted[0] == currentUserID 
+      directChannelMembersWithoutDeleted.length == 1 && directChannelMembersWithoutDeleted[0] == currentUserID
     );
   }
 
@@ -176,17 +176,17 @@ export class ChannelService {
   deleteUserFromDirectChannels(userID: string) {
     this.Data.directChannels.forEach((dc) => {
       if (dc.directChannelMembers.includes(userID)) {
-        if (dc.directChannelMembers.length == 1) {
+        if (this.currentUserIsOnlyNotDeletedChannelMember(dc, userID)) {
           this.Data.deleteDirectChannel(dc.directChannelID);
           this.Data.deleteThreadsInChannel(dc.directChannelID);
           this.Data.deleteMessagesInChannel(dc.directChannelID);
         } else {
           dc.directChannelMembers[dc.directChannelMembers.indexOf(userID)] =
             '0';
+          this.Data.updateDirectChannel(dc.directChannelID, {
+            directChannelMembers: dc.directChannelMembers,
+          });
         }
-        this.Data.updateDirectChannel(dc.directChannelID, {
-          directChannelMembers: dc.directChannelMembers,
-        });
       }
     });
   }
