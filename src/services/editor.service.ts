@@ -20,14 +20,62 @@ export class EditorService {
       icon: 'sourcecode',
       onAction: (_) => {
         let selectionNode = editor.selection.getNode();
-        let selection: string = editor.selection.getContent();
-        if (!!selection && selectionNode.nodeName == 'CODE') return;
-        else {
+        let selection = editor.selection.getContent();
+        console.log(selection);
+        console.log(selection == '');
+        console.log(selectionNode);
+        console.log(selectionNode.innerText);
+        console.log(editor.selection.getSel().anchorNode);
+        console.log(editor.selection.getSel().anchorNode.textContent);
+        console.log(
+          selectionNode.innerText.trim() ==
+            editor.selection.getSel().anchorNode.textContent.trim()
+        );
+
+        if (selection == '' && selectionNode.nodeName != 'CODE') {
+          console.log('if')
           editor.execCommand('mceToggleFormat', false, 'code');
-          editor.selection.select(editor.selection.getEnd(), true);
-          editor.selection.collapse(false)
-          editor.insertContent('&nbsp;')
+          console.log(editor.selection.getNode());
+          let currentNode = editor.selection.getNode();
+          editor.selection.select(currentNode, true);
+          editor.selection.collapse(false);
+          editor.insertContent('&nbsp;');
+          /* editor.selection.select(currentSelection, true);
+          editor.selection.collapse(true); */
+          /*  let range = new Range()
+          range.setStart(currentNode.firstChild, 0)
+          range.setEnd(currentNode.firstChild, 0)
+          editor.selection.setRng(range) */
+          editor.selection.setCursorLocation(currentNode, 0);
+          /* editor.execCommand('mceSelectNode', true, currentSelection); */
+          /* editor.selection.collapse(false); */
+          
+        } else if(selection == '' && selectionNode.nodeName == 'CODE'){
+          console.log('else if 1');
+          console.log(selectionNode.innerText.trim() == '');
+          editor.selection.select(selectionNode);
+          editor.selection.setContent('');
         }
+        else if (selection != '' && selectionNode.nodeName != 'CODE') {
+          console.log('else if 2');
+          editor.execCommand('mceToggleFormat', false, 'code');
+          const currentSelection = editor.selection.getEnd();
+          editor.selection.select(currentSelection, true);
+          editor.selection.collapse(false);
+          editor.insertContent('&nbsp;');
+          editor.selection.select(currentSelection, true);
+          editor.selection.collapse(false);
+        } else if (selection != '' && selectionNode.nodeName == 'CODE') {
+          console.log('else if 3');
+          let tempDiv = document.createElement('div');
+          tempDiv.innerHTML = selection;
+          console.log(tempDiv);
+          if (tempDiv.innerText.trim() == selectionNode.innerText.trim()) {
+            editor.selection.setContent(`${selectionNode.innerText}`);
+          }
+          /* editor.setContent(`${selectionNode.innerText}`); */
+          /* editor.selection.setContent(`${selectionNode.innerText}`); */
+        } //  && selectionNode.innerText.trim() == editor.selection.getSel().anchorNode.textContent.trim()
       },
     });
     editor.ui.registry.addButton('code-block', {
