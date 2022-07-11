@@ -104,6 +104,7 @@ export class MessageActionsComponent implements OnInit {
   }
 
   deleteThread() {
+    this.ts.closeCurrentThread(true, this.Auth.currentUserId)
     this.Data.deleteThread(this.thread.threadID);
   }
 

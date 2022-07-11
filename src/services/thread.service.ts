@@ -12,7 +12,6 @@ export class ThreadService {
   constructor(private Data: DataService, private storage: LocalStorageService) { }
 
   updateAnswerAmountInThread(increase?: Boolean) {
-    console.log('updateAnswerAmountInThread')
     let thread = new Thread(this.Data.currentThread);
     if(increase) thread.answerAmount++;
     else thread.answerAmount--;
@@ -21,7 +20,6 @@ export class ThreadService {
   }
 
   closeCurrentThread(removeFromLocalStorage?: boolean, userID?: string) {
-    console.log('closeCurrentThread');
     this.Data.currentMessages$.next([]);
     this.Data.currentThread$.next(null);
     this.deleteMessagesSubscription();
@@ -31,10 +29,8 @@ export class ThreadService {
   }
 
   deleteMessagesSubscription() {
-    console.log('deletemessagesSubscription');
     if (this.Data.messagesSubscription) {
       this.Data.messagesSubscription.unsubscribe();
-      console.log(this.Data.messagesSubscription);
     } else return;
   }
 

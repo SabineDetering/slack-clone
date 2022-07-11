@@ -51,11 +51,11 @@ export class InputboxComponent implements OnInit {
   handleEditMessage() {
     this.message = new Message(this.editMessage);
     this.userInput = this.message.messageText;
-    console.log('handleEditMessage:', this.editMessage);
+    /* console.log('handleEditMessage:', this.editMessage); */
   }
 
   handleSendingMessage(): void {
-    console.log('handleSendingMessage:', this.message);
+    /* console.log('handleSendingMessage:', this.message); */
 
     /* this.getCurrentChannel(); */
     if (this.userInput.length > 0 || this.messageFiles.length > 0) {

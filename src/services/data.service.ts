@@ -88,7 +88,7 @@ export class DataService {
   subscribeToCurrentChannel() {
     this.currentChannel$.subscribe((channel) => {
       this.currentChannel = channel;
-      console.log('subscribeToCurrentChannel ', this.currentChannel);
+      /* console.log('subscribeToCurrentChannel ', this.currentChannel); */
     });
   }
 
@@ -186,7 +186,7 @@ export class DataService {
   }
 
   saveThread(thread: any) {
-    console.log('save thread ', thread.threadID);
+    /* console.log('save thread ', thread.threadID); */
     return new Promise((resolve, reject) => {
       this.threadsCollection.doc(thread.threadID).set(thread);
       resolve('thread added to DB');
@@ -195,7 +195,7 @@ export class DataService {
   }
 
   saveMessage(message: any) {
-    console.log('save message ', message.messageID);
+    /* console.log('save message ', message.messageID); */
     return new Promise((resolve, reject) => {
       this.messageCollection.doc(message.messageID).set(message);
       resolve('message added to DB');
@@ -206,7 +206,7 @@ export class DataService {
   // ############  UPDATE FUNCTIONS  ############
 
   updateMessage(message: any) {
-    console.log('updateMessage', message);
+    /* console.log('updateMessage', message); */
     return new Promise((resolve, reject) => {
       this.messageCollection.doc(message.messageID).update(message);
       resolve('edited message added to DB');
@@ -225,7 +225,6 @@ export class DataService {
   // ############  DELETE FUNCTIONS #############
 
   deleteThreadsInChannel(channelID: string) {
-    console.log('deleting threads from channel ', channelID);
     this.firestore
       .collection<Thread>('threads', (ref) =>
         ref.where('channelID', '==', channelID)
@@ -237,7 +236,6 @@ export class DataService {
   }
 
   deleteMessagesInChannel(channelID: string) {
-    console.log('deleting messages from channel ', channelID);
     this.firestore
       .collection<Message>('messages', (ref) =>
         ref.where('channelID', '==', channelID)
@@ -259,12 +257,12 @@ export class DataService {
   }
 
   async deleteChannel(channelID: string) {
-    console.log('deleting channel ', channelID);
+    /* console.log('deleting channel ', channelID); */
     await this.channelCollection.doc(channelID).delete();
   }
 
   async deleteDirectChannel(directChannelID: string) {
-    console.log('deleting directChannel ', directChannelID);
+    /* console.log('deleting directChannel ', directChannelID); */
     await this.directChannelCollection.doc(directChannelID).delete();
   }
 
