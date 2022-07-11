@@ -6,6 +6,7 @@ import { DataService } from 'src/services/data.service';
 import { ChannelService } from 'src/services/channel.service';
 import { LocalStorageService } from 'src/services/local-storage.service';
 import { ThreadService } from 'src/services/thread.service';
+import { EditorService } from 'src/services/editor.service';
 
 @Component({
   selector: 'app-main-container',
@@ -24,12 +25,17 @@ export class MainContainerComponent implements OnInit {
     private Auth: AuthService,
     private cs: ChannelService,
     private ts: ThreadService,
+    private editor: EditorService,
     private storage: LocalStorageService
   ) {
+
     this.getLastUserSessionFromLocalStorage();
   }
 
   ngOnInit(): void {
+    console.log('MainContainerComponent');
+    
+    this.closeAllOpenInputboxes();
     this.cs.scrollMain = true;  // initial scroll to bottom after login
   }
 
@@ -75,6 +81,7 @@ export class MainContainerComponent implements OnInit {
   }
 
   openThread(thread: Thread) {
+    this.closeAllOpenInputboxes();
     /* console.log('open thread', thread); */
     if (this.Data.messagesSubscription) this.ts.deleteMessagesSubscription();
     if (this.Data.currentMessages.length > 0)
@@ -88,6 +95,11 @@ export class MainContainerComponent implements OnInit {
       thread.threadID
     );
     this.Auth.showLoadingSpinner = false;
+  }
+
+  // make sure, all Messages have no inputboxes open ( if users left Edit Mode open, without sending the message)
+  closeAllOpenInputboxes(){
+    this.editor.messageToEdit = null;
   }
 
   getTrackByCondition(index: any, thread: Thread) {
