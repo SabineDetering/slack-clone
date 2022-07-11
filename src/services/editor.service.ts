@@ -22,7 +22,12 @@ export class EditorService {
         let selectionNode = editor.selection.getNode();
         let selection: string = editor.selection.getContent();
         if (!!selection && selectionNode.nodeName == 'CODE') return;
-        else editor.execCommand('mceToggleFormat', false, 'code');
+        else {
+          editor.execCommand('mceToggleFormat', false, 'code');
+          editor.selection.select(editor.selection.getEnd(), true);
+          editor.selection.collapse(false)
+          editor.insertContent('&nbsp;')
+        }
       },
     });
     editor.ui.registry.addButton('code-block', {
@@ -46,7 +51,7 @@ export class EditorService {
     statusbar: false,
     setup: this.editorSetup,
     toolbar:
-      'undo redo | emoticons | bold italic underline | inline-code code-block blockquote | link | lists',
+      'undo redo | emoticons | bold italic underline | inline-code code-block blockquote select-node| link | lists',
     toolbar_groups: {
       aligning: {
         icon: 'align-left',
@@ -78,7 +83,7 @@ export class EditorService {
         },
       },
     },
-/*     style_formats: [
+    /*     style_formats: [
       { title: 'Code', format: 'code' },
       { title: 'Pre', format: 'pre' },
     ], */
