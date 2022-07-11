@@ -16,7 +16,7 @@
 }
 
 .head {
-  @include mix.flex(space-between, center, row, 5vw);
+  @include mix.flex(space-between, center, row);
   padding: mix.$padding-medium 5%;
   width: 100%;
   min-height: 60px;
@@ -24,15 +24,23 @@
 
   .title-container{
   @include mix.flex(flex-start, flex-start, column);
+  max-width: calc(100% - 35px);
   }
 
   .icon{
     border-radius: 5px;
   }
 
-  .threadTitle {
+  .thread-title {
     font-weight: 700;
     font-size: 20px;
+  }
+
+  .thread-description{
+      white-space: nowrap;
+      max-width: 100%;
+      text-overflow: ellipsis;
+      overflow: hidden
   }
 }
 
