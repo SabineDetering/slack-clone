@@ -9,6 +9,7 @@ import { DialogChannelComponent } from '../dialog-channel/dialog-channel.compone
 import { DialogConfirmationComponent } from '../dialog-confirmation/dialog-confirmation.component';
 import { ThreadService } from 'src/services/thread.service';
 import { LocalStorageService } from 'src/services/local-storage.service';
+import { EditorService } from 'src/services/editor.service';
 @Component({
   selector: 'app-channel-list',
   templateUrl: './channel-list.component.html',
@@ -25,46 +26,44 @@ export class ChannelListComponent implements OnInit {
     public Data: DataService,
     private cs: ChannelService,
     private ts: ThreadService,
+    private editor: EditorService,
     private storage: LocalStorageService,
     private _snackBar: MatSnackBar
-  ) { }
+  ) {}
 
-  ngOnInit(): void { }
-
+  ngOnInit(): void {}
 
   toggleChannels(event: Event) {
     event.stopPropagation();
     this.channelsOpen = !this.channelsOpen;
   }
 
-
   openSnackBar(message: string, action?: string) {
     this._snackBar.open(message, action, { duration: 3000 });
   }
 
-
   /**
-   * if user is registered:opens dialog to create new channel or edit existing channel 
+   * if user is registered:opens dialog to create new channel or edit existing channel
    * otherwise: info dialog
    * @param channel - channel to be edited; if null, new channel is created
    */
   openChannelDialog(channel?: Channel) {
     if (this.Auth.currentUser.currentUser.isAnonymous && !!channel) {
       this.refuseChannelEdit(channel);
-    } else {//registered user
+    } else {
+      //registered user
       this.dialog.open(DialogChannelComponent, { data: channel });
     }
   }
 
-
   handleDelete(channel: Channel) {
     if (this.Auth.currentUser.currentUser.isAnonymous) {
       this.refuseDeletion(channel);
-    } else {//registered user
-      this.openDeleteConfirmation(channel)
+    } else {
+      //registered user
+      this.openDeleteConfirmation(channel);
     }
   }
-
 
   openDeleteConfirmation(channel: Channel) {
     const confirmationRef = this.dialog.open(DialogConfirmationComponent, {
@@ -72,7 +71,7 @@ export class ChannelListComponent implements OnInit {
       data: {
         title: 'Delete Channel ' + channel.channelName,
         text: "This will completely delete the channel and its contents for all users and can't be undone.",
-        question: "Do you really want to proceed?",
+        question: 'Do you really want to proceed?',
         discardText: 'No',
         confirmText: 'Yes',
       },
@@ -85,38 +84,35 @@ export class ChannelListComponent implements OnInit {
     });
   }
 
-
   /**
    * inform (anonymous) user that he is not eligible for editing channels
-   * @param channel 
+   * @param channel
    */
   refuseChannelEdit(channel: Channel) {
     this.dialog.open(DialogConfirmationComponent, {
       maxWidth: 500,
       data: {
         title: 'Editing channel ' + channel.channelName,
-        text: "Editing channels is only eligible for registered users.You are currently logged in as guest. To proceed, please register or log in with a registered email address.",
-        confirmText: 'Ok'
-      }
+        text: 'Editing channels is only eligible for registered users.You are currently logged in as guest. To proceed, please register or log in with a registered email address.',
+        confirmText: 'Ok',
+      },
     });
   }
 
-
   /**
    * inform (anonymous) user that he is not eligible for deleting channels
-   * @param channel 
+   * @param channel
    */
   refuseDeletion(channel: Channel) {
     this.dialog.open(DialogConfirmationComponent, {
       maxWidth: 500,
       data: {
         title: 'Deleting channel ' + channel.channelName,
-        text: "Deleting channels is only eligible for registered users.You are currently logged in as guest. To proceed, please register or log in with a registered email address.",
-        confirmText: 'Ok'
-      }
+        text: 'Deleting channels is only eligible for registered users.You are currently logged in as guest. To proceed, please register or log in with a registered email address.',
+        confirmText: 'Ok',
+      },
     });
   }
-
 
   deleteChannel(channelID: string) {
     this.updateObservablesAndLocalStorage(channelID);
@@ -124,7 +120,6 @@ export class ChannelListComponent implements OnInit {
     this.Data.deleteMessagesInChannel(channelID);
     this.Data.deleteChannel(channelID);
   }
-
 
   updateObservablesAndLocalStorage(channelID: string) {
     if (this.Data.currentChannel.id == channelID) {
@@ -136,7 +131,6 @@ export class ChannelListComponent implements OnInit {
       this.cs.showDefaultChannel();
     }
   }
-
 
   setCurrentChannel(channel: Channel) {
     if (!this.sameAsStorageChannel(channel.channelID)) {
@@ -153,9 +147,14 @@ export class ChannelListComponent implements OnInit {
       if (this.Data.currentThread) {
         this.ts.closeCurrentThread(true, this.Auth.currentUserId);
       }
+      this.resetEditmodusForAllMessages();
     }
   }
 
+  // make sure, all Messages have no inputboxes open ( if users left Edit Mode open, without sending the message)
+  resetEditmodusForAllMessages() {
+    this.editor.messageToEdit = null;
+  }
 
   sameAsStorageChannel(channelID: string) {
     if (this.storage.getUserSessionFromLocalStorage(this.Auth.currentUserId))

@@ -32,10 +32,8 @@ export class MainContainerComponent implements OnInit {
     this.getLastUserSessionFromLocalStorage();
   }
 
-  ngOnInit(): void {
-    console.log('MainContainerComponent');
-    
-    this.closeAllOpenInputboxes();
+  ngOnInit(): void {   
+    this.resetEditmodusForAllMessages();
     this.cs.scrollMain = true;  // initial scroll to bottom after login
   }
 
@@ -64,6 +62,7 @@ export class MainContainerComponent implements OnInit {
   }
 
   async setCurrentThread(storageSession: any) {
+    
     const thread = await this.Data.getThreadFromThreadID(
       storageSession.threadID
     );
@@ -81,7 +80,7 @@ export class MainContainerComponent implements OnInit {
   }
 
   openThread(thread: Thread) {
-    this.closeAllOpenInputboxes();
+    this.resetEditmodusForAllMessages();
     /* console.log('open thread', thread); */
     if (this.Data.messagesSubscription) this.ts.deleteMessagesSubscription();
     if (this.Data.currentMessages.length > 0)
@@ -98,7 +97,7 @@ export class MainContainerComponent implements OnInit {
   }
 
   // make sure, all Messages have no inputboxes open ( if users left Edit Mode open, without sending the message)
-  closeAllOpenInputboxes(){
+  resetEditmodusForAllMessages(){
     this.editor.messageToEdit = null;
   }
 
