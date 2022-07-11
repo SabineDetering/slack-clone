@@ -32,6 +32,11 @@ export class EditorService {
             editor.selection.getSel().anchorNode.textContent.trim()
         );
 
+        let tempDiv = document.createElement('div');
+        tempDiv.innerHTML = selection;
+        console.log(tempDiv);
+
+        //insert empty inline-code
         if (selection == '' && selectionNode.nodeName != 'CODE') {
           console.log('if')
           editor.execCommand('mceToggleFormat', false, 'code');
@@ -50,13 +55,16 @@ export class EditorService {
           /* editor.execCommand('mceSelectNode', true, currentSelection); */
           /* editor.selection.collapse(false); */
           
-        } else if(selection == '' && selectionNode.nodeName == 'CODE'){
+          // remove empty inline-code
+        } else if(selection == '' && selectionNode.nodeName == 'CODE' && selectionNode.innerText == ''){
           console.log('else if 1');
           console.log(selectionNode.innerText.trim() == '');
           editor.selection.select(selectionNode);
           editor.selection.setContent('');
         }
-        else if (selection != '' && selectionNode.nodeName != 'CODE') {
+
+        // format unformatted text
+        else if (selection != '' && selectionNode.nodeName != 'CODE' && tempDiv.firstChild.nodeName != 'CODE') {
           console.log('else if 2');
           editor.execCommand('mceToggleFormat', false, 'code');
           const currentSelection = editor.selection.getEnd();
@@ -65,11 +73,10 @@ export class EditorService {
           editor.insertContent('&nbsp;');
           editor.selection.select(currentSelection, true);
           editor.selection.collapse(false);
-        } else if (selection != '' && selectionNode.nodeName == 'CODE') {
+
+          // unformat formatted text
+        } else if (selection != ''&& tempDiv.firstChild.nodeName == 'CODE') {
           console.log('else if 3');
-          let tempDiv = document.createElement('div');
-          tempDiv.innerHTML = selection;
-          console.log(tempDiv);
           if (tempDiv.innerText.trim() == selectionNode.innerText.trim()) {
             editor.selection.setContent(`${selectionNode.innerText}`);
           }
