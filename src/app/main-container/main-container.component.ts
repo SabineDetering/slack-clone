@@ -45,15 +45,11 @@ export class MainContainerComponent implements OnInit {
 
   // checks if a current channel and thread are stored in local storage for the current user and if so, sets them in Data.currentChannel$ and Data.currentThread$
   async getLastUserSessionFromLocalStorage() {
-    console.log('getLastUserSessionFromLocalStorage');
     const storageSession = await this.storage.getUserSessionFromLocalStorage(
       this.Auth.currentUserId
     );
-    console.log(storageSession);
     if (!storageSession) this.cs.showDefaultChannel();
     else {
-      console.log('else');
-
       await this.cs.setCurrentChannel(storageSession);
       if (!!storageSession.threadID) {
         this.setCurrentThread(storageSession);
@@ -79,7 +75,7 @@ export class MainContainerComponent implements OnInit {
   }
 
   openThread(thread: Thread) {
-    console.log('open thread', thread);
+    /* console.log('open thread', thread); */
     if (this.Data.messagesSubscription) this.ts.deleteMessagesSubscription();
     if (this.Data.currentMessages.length > 0)
       this.Data.currentMessages$.next([]);

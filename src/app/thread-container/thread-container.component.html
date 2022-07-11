@@ -1,7 +1,7 @@
 <div class="head">
   <div class="title-container">
     <span class="threadTitle">Thread</span>
-    <span class="threadDescription">{{ Data.currentChannel.name }}</span>
+    <span class="threadDescription" [innerHTML]="Data.currentChannel.name"></span>
   </div>
   <div class="icon" (click)="closeThreadContainer()">
     <mat-icon class="close-icon">close</mat-icon>
